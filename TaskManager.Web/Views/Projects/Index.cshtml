@@ -1,0 +1,63 @@
+﻿@using TaskManager.Projects.Abstractions
+@model IEnumerable<ProjectDto>
+
+@{
+    ViewData["Title"] = "Projects";
+    string Badge(ProjectStatus s) => s switch
+    {
+        ProjectStatus.Planned => "badge bg-secondary",
+        ProjectStatus.InProgress => "badge bg-info text-dark",
+        ProjectStatus.Completed => "badge bg-success",
+        ProjectStatus.Archived => "badge bg-dark",
+        _ => "badge bg-light text-dark"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">📁 Projects</h1>
+    <a asp-action="Create" class="btn btn-create">➕ Create New Project</a>
+</div>
+
+@if (TempData["Ok"] is string ok && !string.IsNullOrWhiteSpace(ok))
+{
+    <div class="alert alert-success">@ok</div>
+}
+@if (TempData["Err"] is string err && !string.IsNullOrWhiteSpace(err))
+{
+    <div class="alert alert-danger">@err</div>
+}
+
+<!-- Kanban board: 1 cột -->
+<div class="kanban-board-prj d-flex flex-wrap gap-4">
+    <div class="kanban-column-prj flex-grow-1">
+        <h4 class="kanban-title">All Projects</h4>
+        <div class="kanban-cards">
+            @foreach (var p in Model)
+            {
+                <a asp-action="Details" asp-route-id="@p.Id" class="text-decoration-none">
+                    <div class="card shadow-sm mb-3 hover-card">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h5 class="card-title text-primary mb-0">@p.Name</h5>
+                                <span class="@Badge(p.Status)">@p.Status</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2 mt-2">
+                                <small><strong>Start:</strong> @(p.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                                <small><strong>End:</strong> @(p.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(p.Description))
+                            {
+                                <p class="card-text text-muted mb-2">@p.Description</p>
+                            }
+
+                            <small class="text-muted">Created: @p.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>
+

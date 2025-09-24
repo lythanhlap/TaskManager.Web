@@ -1,0 +1,587 @@
+﻿/* 🌸 NỀN TOÀN TRANG */
+body {
+    background-color: #ffe4e1;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.register-card {
+    box-shadow: none !important; /* bỏ bóng nổi */
+    border: 1px solid #f5f5f5; /* thêm viền nhạt để nhìn vẫn gọn */
+    background-color: #fff; /* giữ nền trắng */
+}
+
+    .register-card:hover {
+        box-shadow: none !important; /* không nổi khi hover */
+        transform: none !important; /* không nhích lên */
+    }
+/* 🌺 THANH ĐIỀU HƯỚNG */
+.bg-custom {
+    background-color: #f8d7da;
+    color: #333;
+}
+
+/* 📁 TIÊU ĐỀ TRANG + NÚT TẠO MỚI */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 1rem 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d6336c;
+    margin: 0;
+}
+
+.btn-create {
+    background-color: #ff69b4;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2);
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+    .btn-create:hover {
+        background-color: #e055a3;
+        transform: translateY(-1px);
+    }
+
+/* 📋 KANBAN CHUNG */
+.kanban-board {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    flex-wrap: wrap;
+    height: auto;
+}
+
+.kanban-column {
+    flex: 1 1 45%;
+    max-width: 600px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow-y: auto;
+    min-height: 500px;
+    transition: transform 0.2s ease;
+}
+
+    .kanban-column:hover {
+        transform: translateY(-2px);
+    }
+
+.kanban-column {
+    scrollbar-width: none;
+}
+
+/* 📋 KANBAN PROJECT */
+.kanban-board-prj {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 2rem 1rem;
+}
+
+.kanban-column-prj {
+    min-width: 340px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+    .kanban-column-prj:hover {
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        transform: translateY(-2px);
+    }
+
+/* 🏷️ TIÊU ĐỀ CỘT */
+.kanban-title,
+.kanban-column h5 {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.25rem;
+    color: #444;
+    padding-bottom: 0.5rem;
+}
+
+.kanban-title {
+    font-size: 1.4rem;
+    border-bottom: 2px solid #f8d7da;
+}
+
+.kanban-column h5 {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    color: #212529;
+}
+
+/* 📦 THẺ DỰ ÁN / NHIỆM VỤ */
+.card,
+.kanban-card {
+    background-color: #fff;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.card {
+    border-left: 6px solid #ff69b4;
+}
+
+.kanban-card {
+    border-left: 5px solid #0d6efd;
+    padding: 1rem;
+}
+
+    .card:hover,
+    .kanban-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+
+    .kanban-card:hover {
+        background-color: #e9f5ff;
+    }
+
+/* 📄 NỘI DUNG THẺ */
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px;
+}
+
+.card-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #ff69b4;
+}
+
+.card-dates {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    color: #555;
+}
+
+    .card-dates::before {
+        content: "📅 ";
+    }
+
+.card-text {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+/* 👥 DANH SÁCH THÀNH VIÊN */
+.card ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    padding: 0;
+}
+
+    .card ul li {
+        font-size: 0.85rem;
+        background-color: #e2e3e5;
+        padding: 0.4em 0.7em;
+        border-radius: 12px;
+        color: #333;
+    }
+
+.members-prj ul li::before {
+    content: "👤 ";
+}
+
+/* 🛠️ NÚT TRONG THẺ */
+.card .btn,
+.kanban-card .btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+}
+
+.kanban-card .badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background-color: #ffc107;
+    color: #212529;
+}
+
+/* ✅ TRẠNG THÁI */
+.completed {
+    border-left: 5px solid #198754;
+}
+
+.in-progress {
+    border-left: 5px solid #ffc107;
+}
+
+/* 🎀 HERO SECTION */
+.hero-section {
+    padding: 80px 20px;
+    background: linear-gradient(to right, #ffb6c1, #ffe4e1);
+    border-radius: 0 0 40px 40px;
+    color: #333;
+}
+
+.brand {
+    color: #d6336c;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #d6336c;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #b02a57;
+    }
+
+/* 📌 LIÊN KẾT */
+a {
+    color: #d6336c;
+    text-decoration: underline;
+}
+
+    a:hover {
+        color: #b02a57;
+    }
+
+/* ✨ FEATURES SECTION */
+.features-section {
+    padding: 60px 20px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #d6336c;
+}
+
+.features-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.feature-box {
+    background-color: #ffe4e1;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 280px;
+    transition: transform 0.3s ease;
+}
+
+    .feature-box:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-box h3 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        color: #d6336c;
+    }
+
+    .feature-box p {
+        font-size: 1rem;
+        color: #555;
+    }
+
+/* 🚀 CTA SECTION */
+.cta-section {
+    background: linear-gradient(to right, #ffb6c1, #ffc0cb);
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 40px;
+    margin-top: 40px;
+    color: #333;
+}
+
+    .cta-section h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .cta-section p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+/* 🔑 LOGIN PAGE */
+.login-page {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(to right, #fff0f5, #ffe4e1);
+    font-family: 'Segoe UI', sans-serif;
+    padding: 40px;
+}
+
+    .login-page .login-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 60px;
+        color: #d6336c;
+    }
+
+    .login-page .logo {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .login-page .slogan {
+        font-size: 1.2rem;
+        font-style: italic;
+    }
+
+    .login-page .login-form-box {
+        flex: 1;
+        max-width: 480px;
+        margin-left: auto;
+        background-color: #fff;
+        padding: 60px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .login-page .form-title {
+        font-size: 50px;
+        font-weight: bold;
+        text-align: center;
+        color: #d6336c;
+        margin-bottom: 36px;
+        letter-spacing: 1px;
+    }
+
+    .login-page .form-control {
+        border-radius: 8px;
+        padding: 10px 12px;
+    }
+
+        .login-page .form-control:focus {
+            border-color: #ff69b4;
+            box-shadow: 0 0 6px rgba(255, 105, 180, 0.3);
+            outline: none;
+        }
+
+    .login-page .btn-login {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        margin: 8px auto;
+        padding: 16px 0;
+        background-color: #ff69b4;
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .login-page .btn-login:hover {
+            background-color: #e055a3;
+        }
+
+    .login-page .register-text {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 15px;
+        color: #666;
+        width: 100%;
+    }
+
+/* 📝 TEXT + FORM */
+.text-title {
+    color: #e91e63;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(233, 30, 99, 0.2);
+}
+
+.text-center {
+    color: #666;
+}
+
+.login-text {
+    color: #e91e63;
+}
+
+.form-floating label {
+    color: #e91e63;
+    font-weight: 500;
+}
+
+.form-control {
+    border: 2px solid #f8bbd0;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #d6336c;
+    transition: border-color 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: #e91e63;
+        box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
+    }
+
+/* 🌸 BUTTON CHUNG */
+.btn-success {
+    background-color: #ff69b4;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    padding: 10px 16px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-success:hover {
+        background-color: #e055a3;
+    }
+
+/* ⚠️ VALIDATION */
+.text-danger {
+    font-size: 0.875rem;
+}
+
+.alert-danger {
+    background-color: #f8bbd0;
+    color: #880e4f;
+    border: none;
+    border-radius: 8px;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+    .kanban-board,
+    .kanban-board-prj {
+        flex-direction: column;
+    }
+
+    .kanban-column,
+    .kanban-column-prj {
+        width: 100%;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .btn-create {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+
+
+/* ======= Biểu đồ tròn & cột ======= */
+canvas {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+    canvas:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+/* ======= Khung biểu đồ ======= */
+.row.justify-content-center {
+    margin-bottom: 40px;
+}
+
+/* ======= Tiêu đề biểu đồ ======= */
+h4.text-center {
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Làm alert-danger thực sự đỏ và bỏ nền xám của <li> */
+.validation-summary-errors.alert {
+    background-color: #f8d7da; /* nền đỏ nhạt */
+    border-color: #f5c2c7;
+    color: #842029; /* chữ đỏ đậm */
+}
+
+.validation-summary-errors ul {
+    margin: 0;
+    padding: 0;
+}
+
+    .validation-summary-errors ul li {
+        list-style: none;
+        background: transparent !important; /* bỏ viên xám */
+        color: inherit !important;
+        padding: 0;
+        border-radius: 0;
+        display: block;
+    }
+
+
+/*  full width: gắn class page-wide vào <body> */
+.page-wide .site-container {
+    max-width: 100% !important; 
+    padding-left: 12px; 
+    padding-right: 12px;
+}
+
+@media (min-width: 768px) {
+    .page-wide .site-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+

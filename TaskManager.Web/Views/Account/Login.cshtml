@@ -1,0 +1,49 @@
+﻿@model TaskManager.Web.Models.LoginVm
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="login-page">
+    <div class="login-info">
+        <h1 class="logo">🐾 MEoW</h1>
+        <p class="slogan">Your friendly task manager</p>
+    </div>
+
+    <div class="login-form-box">
+        <h2 class="form-title">🐾 Login</h2>
+
+        <form asp-action="Login" method="post" asp-route-returnUrl="@Model?.ReturnUrl" class="login-form">
+            @Html.AntiForgeryToken()
+             
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+
+            <div class="form-group">
+                <label asp-for="Identifier" class="form-label">Username or Email</label>
+                <input asp-for="Identifier" class="form-control" />
+                <span asp-validation-for="Identifier" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            @if (ViewBag.Error is string err)
+            {
+                <div class="alert alert-danger" role="alert">@err</div>
+            }
+
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+
+        <p class="register-text">
+            Don't have an account?
+            <a asp-action="Register" asp-controller="Account" class="link-register">Register here</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

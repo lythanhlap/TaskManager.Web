@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="lib\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Scriban" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TaskManager.Identity.Abstractions">
+      <HintPath>lib\identity\TaskManager.Identity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Identity.Core">
+      <HintPath>lib\identity\TaskManager.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Identity.Persistence.EFCore">
+      <HintPath>lib\identity\TaskManager.Identity.Persistence.EFCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Notifications.Abstractions">
+      <HintPath>lib\notification\TaskManager.Notifications.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Notifications.Core">
+      <HintPath>lib\notification\TaskManager.Notifications.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Notifications.Email.Smtp">
+      <HintPath>lib\notification\TaskManager.Notifications.Email.Smtp.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Notifications.Persistence.EFCore">
+      <HintPath>lib\notification\TaskManager.Notifications.Persistence.EFCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Notifications.Templating.Scriban">
+      <HintPath>lib\notification\TaskManager.Notifications.Templating.Scriban.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Projects.Abstractions">
+      <HintPath>lib\notification\TaskManager.Projects.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Projects.Core">
+      <HintPath>lib\notification\TaskManager.Projects.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Projects.Persistence.EFCore">
+      <HintPath>lib\notification\TaskManager.Projects.Persistence.EFCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Users.Abstractions">
+      <HintPath>lib\users.abstraction\TaskManager.Users.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

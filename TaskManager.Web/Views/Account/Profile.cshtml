@@ -1,0 +1,27 @@
+﻿@model TaskManager.Web.Models.ProfileVm
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm" style="border-radius:16px;">
+        <div class="card-body">
+            <h3 class="mb-3">👤 Thông tin tài khoản</h3>
+            <dl class="row">
+                <dt class="col-sm-3">User ID</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3">Username</dt>
+                <dd class="col-sm-9">@Model.Username</dd>
+
+                <dt class="col-sm-3">Họ tên</dt>
+                <dd class="col-sm-9">@Model.FullName</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+            </dl>
+
+            <a asp-action="ChangePassword" class="btn btn-primary">Đổi mật khẩu</a>
+        </div>
+    </div>
+</div>
