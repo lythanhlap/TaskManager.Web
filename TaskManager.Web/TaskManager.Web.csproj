@@ -60,6 +60,15 @@
     <Reference Include="TaskManager.Projects.Persistence.EFCore">
       <HintPath>lib\notification\TaskManager.Projects.Persistence.EFCore.dll</HintPath>
     </Reference>
+    <Reference Include="TaskManager.Tasks.Abstractions">
+      <HintPath>lib\task\TaskManager.Tasks.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Tasks.Core">
+      <HintPath>lib\task\TaskManager.Tasks.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Tasks.Persistence.EFCore">
+      <HintPath>lib\task\TaskManager.Tasks.Persistence.EFCore.dll</HintPath>
+    </Reference>
     <Reference Include="TaskManager.Users.Abstractions">
       <HintPath>lib\users.abstraction\TaskManager.Users.Abstractions.dll</HintPath>
     </Reference>

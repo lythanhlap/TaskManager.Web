@@ -36,17 +36,16 @@
     <div class="alert alert-danger">@err</div>
 }
 
-<div class="row g-4 mx-5">
-    <div class="col-lg-4">
 
-        
+<div class="row g-4">
+
+    <div class="col-lg-3">
         <div class="card mb-4">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div><span class="@Badge(Model.Status)">@Model.Status</span></div>
                     <small class="text-muted">Created: @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
                 </div>
-
                 <div class="row">
                     <div class="col-md-6">
                         <small><strong>Start:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
@@ -55,7 +54,6 @@
                         <small><strong>End:</strong> @(Model.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
                     </div>
                 </div>
-
                 @if (!string.IsNullOrWhiteSpace(Model.Description))
                 {
                     <hr />
@@ -64,17 +62,15 @@
             </div>
         </div>
 
-        <!-- Members -->
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title">Members</h5>
-
                 @if (Model.Members?.Any() == true)
                 {
-                    <ul class="list-group">
+                    <ul class="list-group list-group-flush">
                         @foreach (var m in Model.Members)
                         {
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                                 <span>
                                     <strong>@m.Username</strong>
                                     <small class="text-muted">(@m.Role)</small>
@@ -83,8 +79,6 @@
                                         <span class="badge bg-dark ms-2">owner</span>
                                     }
                                 </span>
-
-                                @* Nút xoá *@
                                 @if (isOwner && m.UserId != Model.OwnerUserId)
                                 {
                                     <form asp-action="RemoveMember" asp-route-id="@Model.Id" method="post" class="d-inline">
@@ -96,7 +90,7 @@
                                         </button>
                                     </form>
                                 }
-                                else if (!isOwner && m.UserId == currentUserId)  @* member tự rời *@
+                                else if (!isOwner && m.UserId == currentUserId)
                                 {
                                     <form asp-action="RemoveMember" asp-route-id="@Model.Id" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
@@ -118,72 +112,206 @@
             </div>
         </div>
 
-
-        <!-- Thêm nhiều thành viên bằng username (CSV) -->
-        @* Chỉ owner mới được thêm thành viên *@
         @if (isOwner)
         {
-            <hr />
-            <h6>Thêm thành viên</h6>
-            <form asp-action="AddMembers" asp-route-id="@Model.Id" method="post">
-                @Html.AntiForgeryToken()
-                <div class="row g-2">
-                    <div class="col-9 position-relative">
-                        <input id="usernamesCsv" name="usernamesCsv" class="form-control" placeholder="alice, bob, charlie" autocomplete="off" />
-                        <div id="user-suggest-box" class="list-group position-absolute w-75" style="z-index:1000; display:none; max-height:220px; overflow:auto;"></div>
-                    </div>
-                    <div class="col-3">
-                        <select name="role" class="form-select">
-                            <option value="member">member</option>
-                            <option value="viewer">viewer</option>
-                            <option value="editor">editor</option>
-                        </select>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Quản lý</h5>
+
+                    <h6 class="mt-3">Thêm thành viên</h6>
+                    <form asp-action="AddMembers" asp-route-id="@Model.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-2">
+                            <div class="col-12 position-relative">
+                                <input id="usernamesCsv" name="usernamesCsv" class="form-control" placeholder="alice, bob, charlie" autocomplete="off" />
+                                <div id="user-suggest-box" class="list-group position-absolute w-100" style="z-index:1000; display:none; max-height:220px; overflow:auto;"></div>
+                            </div>
+                            <div class="col-12">
+                                <select name="role" class="form-select">
+                                    <option value="member">member</option>
+                                    <option value="viewer">viewer</option>
+                                    <option value="editor">editor</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mt-2 w-100" type="submit">Thêm</button>
+                    </form>
+
+                    <hr />
+
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-outline-primary w-50"
+                           asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
+
+                        <form asp-action="Delete" asp-route-id="@Model.Id" class="w-50"
+                              method="post" onsubmit="return confirm('Xóa dự án này?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger w-100">Xóa</button>
+                        </form>
                     </div>
                 </div>
-                <button class="btn btn-primary mt-2" type="submit">Thêm</button>
-            </form>
-
-            <div class="mt-3 d-flex gap-2">
-                <a class="btn btn-outline-primary"
-                   asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
-
-                <form asp-action="Delete" asp-route-id="@Model.Id"
-                      method="post" onsubmit="return confirm('Xóa dự án này?');">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-outline-danger">Xóa</button>
-                </form>
             </div>
         }
-        
-
     </div>
+    <!--Task-->
 
-    <!-- right task-->
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Thông tin các task</h5>
+                @if (isOwner)
+                {
+                    <a class="btn btn-outline-secondary btn-sm"
+                       asp-controller="ProjectTasksPages"
+                       asp-action="Create"
+                       asp-route-projectId="@Model.Id">Thêm task</a>
+
+                }
                 <a class="btn btn-sm btn-primary"
-                   asp-controller="Task" asp-action="Index" asp-route-projectId="@Model.Id">
+                   asp-controller="ProjectTasksPages"
+                   asp-action="Index"
+                   asp-route-projectId="@Model.Id">
                     Quản lí task
                 </a>
             </div>
-            <div class="card-body">
-                @* Tùy bạn: render danh sách task hoặc placeholder *@
-                <div id="tasks-panel">
-                    <div class="text-muted">Chưa tải danh sách task. Nhấn “Quản lí task” để vào màn quản lí.</div>
+
+            <div id="tasksContainer" class="card shadow-sm">
+                <div class="card-body">
+                    <div id="tasksTableHolder">Đang tải task…</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!--Comment-->
+
+    <div class="col-lg-3">
+        <div class="card shadow-sm" style="position:sticky; top:1rem;">
+            <div class="card-body">
+                <h5 class="mb-3">💬 Comment</h5>
+                <div id="commentPanel" style="min-height:400px;">
+                    <em>Đang phát triển…</em>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 
 
 
+
+
 @section Scripts {
+
+    <script>
+        (function () {
+            const projectId = '@Model.Id';
+            const actorId = '@(User.FindFirst("sub")?.Value ?? User.FindFirstValue(ClaimTypes.NameIdentifier))';
+            const isOwner = @((User.FindFirst("sub")?.Value ?? User.FindFirstValue(ClaimTypes.NameIdentifier)) == Model.OwnerUserId ? "true" : "false");
+
+            const holder = document.getElementById('tasksTableHolder');
+            if (!holder) return;
+
+            document.addEventListener('DOMContentLoaded', loadTasks);
+
+            async function loadTasks() {
+                holder.innerHTML = 'Đang tải task…';
+                try {
+                    const res = await fetch(`/api/projects/${projectId}/tasks?page=1&pageSize=200`);
+                    if (!res.ok) {
+                        holder.innerHTML = `Không tải được task (HTTP ${res.status}).`;
+                        return;
+                    }
+                    const items = await res.json();
+                    renderTasks(items);
+                } catch (e) {
+                    console.error(e);
+                    holder.innerHTML = 'Lỗi kết nối khi tải task.';
+                }
+            }
+
+            function renderTasks(rows) {
+                if (!rows || rows.length === 0) {
+                    holder.innerHTML = '<div class="text-muted">Chưa có task.</div>';
+                    return;
+                }
+
+                const html = `
+                              <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>Tiêu đề</th>
+                                    <th>Thời gian</th>
+                                    <th>Trạng thái</th>
+                                    <th>Assignees</th>
+                                    <th class="text-end"></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  ${rows.map(t => {
+                    const done = t.status === 1; // 0=Incomplete, 1=Complete
+                    const badge = done
+                        ? '<span class="badge bg-success">Hoàn thành</span>'
+                        : '<span class="badge bg-secondary">Chưa hoàn thành</span>';
+                    const meAssigned = (t.assigneeUserIds || []).includes(actorId);
+                    const canToggle = isOwner || meAssigned;
+                    const toggleBtn = canToggle
+                        ? `<button class="btn btn-sm btn-outline-primary"
+                                                   onclick="toggleTaskStatus('${t.id}', ${done ? 0 : 1})">
+                                             Đổi sang ${done ? 'Chưa hoàn thành' : 'Hoàn thành'}
+                                           </button>`
+                        : '';
+                    return `
+                                        <tr>
+                                          <td class="fw-semibold">${escapeHtml(t.name)}
+                                            ${t.description ? `<div class="small text-muted">${escapeHtml(t.description)}</div>` : ''}
+                                          </td>
+                                          <td class="small">${fmt(t.startAt)} → ${fmt(t.endAt)}</td>
+                                          <td>${badge}</td>
+                                          <td class="small">${(t.assigneeUserIds || []).join(', ') || '(chưa gán)'}</td>
+                                          <td class="text-end">${toggleBtn}</td>
+                                        </tr>`;
+                }).join('')}
+                                </tbody>
+                              </table>`;
+                holder.innerHTML = html;
+            }
+
+            // Đổi trạng thái (Owner hoặc chính assignee)
+            window.toggleTaskStatus = async (taskId, statusVal) => {
+                try {
+                    const res = await fetch(`/api/projects/${projectId}/tasks/${taskId}/status?status=${statusVal === 1 ? 'Complete' : 'Incomplete'}`, {
+                        method: 'PATCH'
+                    });
+                    if (res.ok) {
+                        await loadTasks();
+                    } else if (res.status === 403) {
+                        alert('Bạn không có quyền đổi trạng thái task này.');
+                    } else {
+                        alert('Đổi trạng thái thất bại.');
+                    }
+                } catch (e) {
+                    console.error(e);
+                    alert('Lỗi kết nối.');
+                }
+            };
+
+            function fmt(d) {
+                if (!d) return '';
+                const dt = new Date(d);
+                return isNaN(dt) ? '' : dt.toLocaleString();
+            }
+
+            function escapeHtml(s) {
+                return (s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            }
+        })();
+    </script>
+
+
+
     @if (isOwner)
     {
         <script>

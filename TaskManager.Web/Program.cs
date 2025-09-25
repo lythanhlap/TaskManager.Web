@@ -3,18 +3,25 @@ using TaskManager.Identity.Core.Options; // IdentityOptions
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+// Identity
 using TaskManager.Identity.Persistence.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using TaskManager.Projects.Core;                 // AddProjectsComponent
-using TaskManager.Projects.Persistence.EFCore;   // ProjectsDbContext (migrate)
+// Projects
+using TaskManager.Projects.Core;
+using TaskManager.Projects.Persistence.EFCore;
 using TaskManager.Users.Abstractions;   // IUserReadOnly
 using TaskManager.Web.Adapters;
+// Notifications
 using TaskManager.Notifications.Core;
 using TaskManager.Notifications.Email.Smtp;
 using TaskManager.Notifications.Templating.Scriban;
 using TaskManager.Notifications.Persistence.EFCore;
-using TaskManager.Notifications.Abstractions; // INotificationClient
+using TaskManager.Notifications.Abstractions;
+// dang ki su dung task 
+using TaskManager.Tasks.Persistence.EFCore;
+using TaskManager.Tasks.Abstractions;
+using TaskManager.Tasks.Core;
 
 
 namespace TaskManager.Web
@@ -27,12 +34,18 @@ namespace TaskManager.Web
             var services = builder.Services;
             var cfg = builder.Configuration;
 
-            // 1. Gắn component Identity (DbContext + IAuthService + Options)
+            // 1 Gắn component Identity (DbContext + IAuthService + Options)
             services.AddIdentityComponent(cfg);
             // Gắn component Projects (DbContext + Repositories)
             services.AddProjectsComponent(cfg);
 
-            
+            builder.Services.AddDbContext<TasksDbContext>(options =>
+                options.UseSqlServer(
+                    cfg.GetConnectionString("DefaultConnection"),
+                    x => x.MigrationsAssembly("TaskManager.Tasks.Persistence.EFCore")
+                )
+            );
+
             // Notifications: DbContext
             services.AddNotificationsDb(db =>
                 db.UseSqlServer(
@@ -51,8 +64,12 @@ namespace TaskManager.Web
             services.AddScoped<TaskManager.Notifications.Core.IEmailSender, SmtpEmailSender>();
             services.AddScoped<TaskManager.Notifications.Core.ITemplateRenderer, ScribanTemplateRenderer>();
 
+            services.AddScoped<ITaskService, TaskService>();
+
             // Facade gọn để gọi từ nghiệp vụ
             services.AddScoped<NotificationFacade>();
+            //SmtpOptions smtpOptions = cfg.GetSection("Smtp").Get<SmtpOptions>()!;
+            //smtpOptions.FromName ??= "Task Manager";
 
 
             var idOpt = cfg.GetSection("Identity").Get<IdentityOptions>()!;
@@ -138,16 +155,9 @@ namespace TaskManager.Web
                         HtmlBody = "<p><b>{{ MentionedBy }}</b> nhắc tới bạn:</p><blockquote>{{ CommentExcerpt }}</blockquote><p>Xem: <a href='{{ ContextUrl }}'>liên kết</a></p>"
                     });
 
-                // (tuỳ chọn) template nhắc sắp đến hạn
-                if (!t.Any(e => e.Key == "task_due_soon"))
-                    t.Add(new TaskManager.Notifications.Persistence.EFCore.Entities.NotificationTemplate
-                    {
-                        Key = "task_due_soon",
-                        Subject = "⏰ Sắp đến hạn: {{ TaskName }} — {{ DueAtUtc | date.to_string format='%d/%m/%Y %H:%M' }} UTC",
-                        HtmlBody = "<p>Nhiệm vụ <b>{{ TaskName }}</b>{{ if ProjectName }} (dự án <b>{{ ProjectName }}</b>){{ end }} đến hạn lúc <b>{{ DueAtUtc | date.to_string format='%d/%m/%Y %H:%M' }} UTC</b>.</p>"
-                    });
-
                 await notiDb.SaveChangesAsync();
+
+                await sp.GetRequiredService<TasksDbContext>().Database.MigrateAsync();
 
 
             }
