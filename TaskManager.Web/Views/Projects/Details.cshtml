@@ -204,7 +204,6 @@
 
 
 @section Scripts {
-
     <script>
         (function () {
             const projectId = '@Model.Id';
@@ -214,12 +213,27 @@
             const holder = document.getElementById('tasksTableHolder');
             if (!holder) return;
 
+
+            const uname = Object.create(null);            // userId -> username
+
             document.addEventListener('DOMContentLoaded', loadTasks);
 
             async function loadTasks() {
                 holder.innerHTML = 'Đang tải task…';
                 try {
-                    const res = await fetch(`/api/projects/${projectId}/tasks?page=1&pageSize=200`);
+                    // Lấy username của member + tasks song song
+                    const [mRes, res] = await Promise.all([
+                        fetch(`/api/projects/${projectId}/members/usernames`),
+                        fetch(`/api/projects/${projectId}/tasks?page=1&pageSize=200`)
+                    ]);
+
+                    if (mRes.ok) {
+                        const members = await mRes.json(); // [{ userId, username, role }]
+                        for (let i = 0; i < members.length; i++) {
+                            uname[members[i].userId] = members[i].username;
+                        }
+                    }
+
                     if (!res.ok) {
                         holder.innerHTML = `Không tải được task (HTTP ${res.status}).`;
                         return;
@@ -239,43 +253,50 @@
                 }
 
                 const html = `
-                              <table class="table table-hover align-middle mb-0">
-                                <thead>
-                                  <tr>
-                                    <th>Tiêu đề</th>
-                                    <th>Thời gian</th>
-                                    <th>Trạng thái</th>
-                                    <th>Assignees</th>
-                                    <th class="text-end"></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  ${rows.map(t => {
+                    <table class="table table-hover align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th>Tiêu đề</th>
+                          <th>Thời gian</th>
+                          <th>Trạng thái</th>
+                          <th>Assignees</th>
+                          <th class="text-end"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${rows.map(t => {
                     const done = t.status === 1; // 0=Incomplete, 1=Complete
                     const badge = done
                         ? '<span class="badge bg-success">Hoàn thành</span>'
                         : '<span class="badge bg-secondary">Chưa hoàn thành</span>';
+
                     const meAssigned = (t.assigneeUserIds || []).includes(actorId);
                     const canToggle = isOwner || meAssigned;
                     const toggleBtn = canToggle
                         ? `<button class="btn btn-sm btn-outline-primary"
-                                                   onclick="toggleTaskStatus('${t.id}', ${done ? 0 : 1})">
-                                             Đổi sang ${done ? 'Chưa hoàn thành' : 'Hoàn thành'}
-                                           </button>`
+                                           onclick="toggleTaskStatus('${t.id}', ${done ? 0 : 1})">
+                                     Đổi sang ${done ? 'Chưa hoàn thành' : 'Hoàn thành'}
+                                   </button>`
                         : '';
+
+                    // -> đổi ID sang username
+                    const names = (t.assigneeUserIds && t.assigneeUserIds.length)
+                        ? t.assigneeUserIds.map(id => uname[id] ? (uname[id]) : id).join(', ')
+                        : '(chưa gán)';
+
                     return `
-                                        <tr>
-                                          <td class="fw-semibold">${escapeHtml(t.name)}
-                                            ${t.description ? `<div class="small text-muted">${escapeHtml(t.description)}</div>` : ''}
-                                          </td>
-                                          <td class="small">${fmt(t.startAt)} → ${fmt(t.endAt)}</td>
-                                          <td>${badge}</td>
-                                          <td class="small">${(t.assigneeUserIds || []).join(', ') || '(chưa gán)'}</td>
-                                          <td class="text-end">${toggleBtn}</td>
-                                        </tr>`;
+                              <tr>
+                                <td class="fw-semibold">${escapeHtml(t.name)}
+                                  ${t.description ? `<div class="small text-muted">${escapeHtml(t.description)}</div>` : ''}
+                                </td>
+                                <td class="small">${fmt(t.startAt)} → ${fmt(t.endAt)}</td>
+                                <td>${badge}</td>
+                                <td class="small">${names}</td>
+                                <td class="text-end">${toggleBtn}</td>
+                              </tr>`;
                 }).join('')}
-                                </tbody>
-                              </table>`;
+                      </tbody>
+                    </table>`;
                 holder.innerHTML = html;
             }
 

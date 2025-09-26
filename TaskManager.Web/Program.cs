@@ -1,5 +1,5 @@
-﻿using TaskManager.Identity.Core;          // AddIdentityComponent
-using TaskManager.Identity.Core.Options; // IdentityOptions
+﻿using TaskManager.Identity.Core;          
+using TaskManager.Identity.Core.Options; 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 // Projects
 using TaskManager.Projects.Core;
 using TaskManager.Projects.Persistence.EFCore;
-using TaskManager.Users.Abstractions;   // IUserReadOnly
+using TaskManager.Users.Abstractions;  
 using TaskManager.Web.Adapters;
 // Notifications
 using TaskManager.Notifications.Core;
@@ -34,9 +34,9 @@ namespace TaskManager.Web
             var services = builder.Services;
             var cfg = builder.Configuration;
 
-            // 1 Gắn component Identity (DbContext + IAuthService + Options)
+            //component Identity (DbContext + IAuthService + Options)
             services.AddIdentityComponent(cfg);
-            // Gắn component Projects (DbContext + Repositories)
+            //component Projects (DbContext + Repositories)
             services.AddProjectsComponent(cfg);
 
             builder.Services.AddDbContext<TasksDbContext>(options =>
@@ -66,7 +66,7 @@ namespace TaskManager.Web
 
             services.AddScoped<ITaskService, TaskService>();
 
-            // Facade gọn để gọi từ nghiệp vụ
+           
             services.AddScoped<NotificationFacade>();
             //SmtpOptions smtpOptions = cfg.GetSection("Smtp").Get<SmtpOptions>()!;
             //smtpOptions.FromName ??= "Task Manager";
@@ -92,7 +92,7 @@ namespace TaskManager.Web
                     NameClaimType = "username"
                 };
 
-                // Lấy token từ cookie "access_token"
+                // Lấy token từ cookie access_token
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = ctx =>
@@ -110,8 +110,7 @@ namespace TaskManager.Web
             services.AddAuthorization();
 
             services.AddScoped<IUserReadOnly, IdentityUserReadOnlyAdapter>();
-
-            // 3. MVC
+            
             services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -172,8 +171,6 @@ namespace TaskManager.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            // 4. Thêm Authentication trước Authorization
             app.UseAuthentication();
             app.UseAuthorization();
 

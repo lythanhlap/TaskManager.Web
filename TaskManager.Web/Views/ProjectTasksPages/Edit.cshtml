@@ -1,0 +1,224 @@
+﻿@model TaskManager.Web.Models.TaskEditVm
+@{
+    ViewData["Title"] = "Sửa task";
+    var pid = Model.ProjectId;
+}
+
+<h3 class="mb-3">Sửa task</h3>
+
+<form asp-action="Edit" asp-route-projectId="@pid" asp-route-taskId="@Model.Id" method="post" id="taskEditForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="ProjectId" />
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-2">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-2">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" rows="3" class="form-control"></textarea>
+    </div>
+
+    <div class="row g-2">
+        <div class="col">
+            <label asp-for="StartAt" class="form-label"></label>
+            <input asp-for="StartAt" type="datetime-local" class="form-control" />
+        </div>
+        <div class="col">
+            <label asp-for="EndAt" class="form-label"></label>
+            <input asp-for="EndAt" type="datetime-local" class="form-control" />
+            <span asp-validation-for="EndAt" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <label asp-for="Status" class="form-label">Trạng thái</label>
+        <!-- Tránh trùng enum bằng cách dùng GetEnumSelectList -->
+        <select asp-for="Status"
+                class="form-select"
+                asp-items="Html.GetEnumSelectList<TaskManager.Tasks.Abstractions.TaskStatus>()">
+        </select>
+    </div>
+
+    <div class="mt-3 position-relative">
+        <label class="form-label">Assignees (tìm theo username trong project)</label>
+        <input id="assigneeSearch" class="form-control form-control-sm" placeholder="Gõ username..." autocomplete="off" />
+        <div id="assigneeSuggest" class="list-group position-absolute w-100"
+             style="z-index:1000; display:none; max-height:220px; overflow:auto;"></div>
+
+        <div id="assigneesChips" class="d-flex flex-wrap gap-2 mt-2"></div>
+
+        <!-- Hidden inputs để POST -->
+        <div id="assigneesHidden">
+            @if (Model.AssigneeUserIds?.Any() == true)
+            {
+                foreach (var id in Model.AssigneeUserIds)
+                {
+                    <input type="hidden" name="AssigneeUserIds" value="@id" data-user-id="@id" />
+                }
+            }
+        </div>
+        <small class="text-muted d-block mt-1">Click gợi ý để thêm; bấm × để bỏ.</small>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+        <a class="btn btn-outline-secondary" asp-action="Index" asp-route-projectId="@pid">Quay lại</a>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        (function () {
+            var pid    = '@Model.ProjectId';
+            var input  = document.getElementById('assigneeSearch');
+            var box    = document.getElementById('assigneeSuggest');
+            var chips  = document.getElementById('assigneesChips');
+            var hidden = document.getElementById('assigneesHidden');
+
+            var AT = String.fromCharCode(64);
+            var usernameDict = Object.create(null); // userId -> username (prefetch)
+            var selected = new Map(); // userId -> username
+
+            // Preload selections từ hidden inputs (chưa biết username => tạm dùng userId)
+            var preload = hidden.querySelectorAll('input[name="AssigneeUserIds"]');
+            for (var i = 0; i < preload.length; i++) {
+                var id = preload[i].value;
+                selected.set(id, id);
+            }
+
+            // Tải toàn bộ username thuộc project để hiển thị chip đẹp và hỗ trợ tìm nhanh (tuỳ chọn)
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('/api/projects/' + pid + '/members/usernames')
+                    .then(function (r) { return r.ok ? r.json() : []; })
+                    .then(function (items) {
+                        for (var i = 0; i < items.length; i++) {
+                            usernameDict[items[i].userId] = items[i].username;
+                        }
+                        // render chip cho selections đã có
+                        selected.forEach(function (_, id) {
+                            addChipIfNotExists(id, usernameDict[id] || id);
+                        });
+                    })
+                    .catch(function () { /* ignore */ });
+            });
+
+            // Debounce helper
+            function debounce(fn, ms) { var t; return function () { var a = arguments; clearTimeout(t); t = setTimeout(function () { fn.apply(null, a); }, ms); }; }
+
+            // Ngăn Enter submit form
+            input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); } });
+
+            // Gợi ý khi gõ
+            input.addEventListener('input', debounce(onSuggest, 150));
+
+            // Ẩn hộp gợi ý khi click ra ngoài
+            document.addEventListener('click', function (e) {
+                if (!box.contains(e.target) && e.target !== input) hideSuggest();
+            });
+
+            function onSuggest() {
+                var q = (input.value || '').trim();
+                if (!q) { hideSuggest(); return; }
+
+                fetch('/api/projects/' + pid + '/members/suggest?q=' + encodeURIComponent(q) + '&take=8')
+                    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+                    .then(function (items) {
+                        // bỏ user đã chọn
+                        var filtered = [];
+                        for (var i = 0; i < items.length; i++) {
+                            if (!selected.has(items[i].userId)) filtered.push(items[i]);
+                        }
+                        renderSuggest(filtered);
+                    })
+                    .catch(function () { hideSuggest(); });
+            }
+
+            function renderSuggest(items) {
+                box.style.display = 'none';
+                box.innerHTML = '';
+                if (!items || !items.length) return;
+
+                for (var i = 0; i < items.length; i++) {
+                    var x = items[i];
+                    var btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'list-group-item list-group-item-action';
+                    btn.setAttribute('data-id', x.userId);
+                    btn.setAttribute('data-name', x.username);
+                    btn.textContent = AT + (x.username || x.userId);
+                    btn.addEventListener('click', function () {
+                        var id = this.getAttribute('data-id');
+                        var name = this.getAttribute('data-name');
+                        addSelection(id, name);
+                        input.value = '';
+                        hideSuggest();
+                        input.focus();
+                    });
+                    box.appendChild(btn);
+                }
+                box.style.display = 'block';
+            }
+
+            function addSelection(userId, username) {
+                if (selected.has(userId)) return;
+                selected.set(userId, username);
+
+                // hidden input để POST
+                var hid = document.createElement('input');
+                hid.type = 'hidden';
+                hid.name = 'AssigneeUserIds';
+                hid.value = userId;
+                hid.setAttribute('data-user-id', userId);
+                hidden.appendChild(hid);
+
+                addChipIfNotExists(userId, username);
+            }
+
+            function addChipIfNotExists(userId, username) {
+                var exist = chips.querySelector('span[data-user-id="' + cssEscape(userId) + '"]');
+                if (exist) {
+                    var label = exist.querySelector('span[data-label="1"]');
+                    if (label) label.textContent = (username || userId);
+                    return;
+                }
+
+                var chip = document.createElement('span');
+                chip.className = 'badge rounded-pill text-bg-secondary';
+                chip.style.userSelect = 'none';
+                chip.setAttribute('data-user-id', userId);
+
+                var txt = document.createElement('span');
+                txt.setAttribute('data-label', '1');
+                txt.textContent = (username || userId);
+                chip.appendChild(txt);
+
+                var closeBtn = document.createElement('button');
+                closeBtn.type = 'button';
+                closeBtn.className = 'btn-close btn-close-white btn-sm ms-1';
+                closeBtn.setAttribute('aria-label', 'Remove');
+                closeBtn.addEventListener('click', function () {
+                    selected.delete(userId);
+                    chip.remove();
+                    var hid = hidden.querySelector('input[data-user-id="' + cssEscape(userId) + '"]');
+                    if (hid) hid.remove();
+                });
+                chip.appendChild(closeBtn);
+
+                chips.appendChild(chip);
+            }
+
+            function hideSuggest() { box.style.display = 'none'; box.innerHTML = ''; }
+
+            function cssEscape(s) {
+                try { return CSS.escape(s); } catch (e) { return String(s).replace(/["'\\]/g, "\\$&"); }
+            }
+        })();
+    </script>
+}
