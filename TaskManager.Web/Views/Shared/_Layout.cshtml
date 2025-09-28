@@ -17,15 +17,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MEoW</title>
+    <title>@ViewData["Title"] - Task Manager</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 
+
     <style>
         .navbar-custom {
-            background: linear-gradient(to right, #ffb6c1, #ffe4e1);
-            border-bottom: 2px solid #f3a6b1;
+            background: linear-gradient(to right, #6baef7, #C4E7FF);
+            border-bottom: 2px solid #5fa2e0;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             border-radius: 0 0 12px 12px;
         }
@@ -37,7 +38,7 @@
         }
 
             .navbar-brand::before {
-                content: "🐾 ";
+                content: " ";
             }
 
         .nav-link {
@@ -51,7 +52,7 @@
             }
 
         .login-btn {
-            background-color: #d6336c;
+            background-color: #0C66E4;
             color: #fff;
             border: none;
             padding: 8px 16px;
@@ -63,7 +64,8 @@
         }
 
             .login-btn:hover {
-                background-color: #b02a57;
+                background-color: #69A7E4;
+                color: #000;
             }
 
         .account-menu {
@@ -122,9 +124,9 @@
 </head>
 <body >
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light navbar-custom mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light navbar-custom mb-3 ">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MEoW</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Task Manager </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

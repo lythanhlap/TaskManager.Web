@@ -15,6 +15,7 @@ namespace TaskManager.Web.Controllers
 
         public IActionResult Index()
         {
+           
             if (User.Identity?.IsAuthenticated == true)
             {
                 var hour = DateTime.Now.Hour;
@@ -29,7 +30,20 @@ namespace TaskManager.Web.Controllers
                 var userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Meowster" : User.Identity.Name;
                 ViewBag.WelcomeMessage = $"{timeGreeting}, {userName}! 👋";
             }
+            else
+            {
+                return View("Landing");
+            }
 
+            return View();
+        }
+
+        public IActionResult UITest()
+        {
+            return View();
+        }
+        public IActionResult Dashboard()
+        {
             return View();
         }
 
