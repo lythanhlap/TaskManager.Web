@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TaskManager.Notifications.Abstractions;
 using TaskManager.Tasks.Abstractions;
 using TaskManager.Users.Abstractions;
 using TaskManager.Web.Models;
@@ -13,8 +14,18 @@ public sealed class ProjectTasksPagesController : Controller
 {
     private readonly ITaskService _tasks;
     private readonly IUserReadOnly _users;
-    public ProjectTasksPagesController(ITaskService tasks, IUserReadOnly users)
-    { _tasks = tasks; _users = users; }
+    private readonly INotificationClient _noti;
+    public ProjectTasksPagesController(ITaskService tasks, IUserReadOnly users, INotificationClient _noti)
+    {
+        _tasks = tasks;
+        _users = users;
+        this._noti = _noti;
+
+    }
+    private string Uid =>
+            User.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? User.FindFirst("sub")?.Value
+            ?? throw new InvalidOperationException("No user id claim.");
 
     private string ActorId => User.FindFirst("sub")?.Value
                            ?? User.FindFirstValue(ClaimTypes.NameIdentifier)!;

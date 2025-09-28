@@ -1,13 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Welcome to Task Manager";
+    ViewData["Title"] = "Welcome to MEoW";
 }
 
 @if (User.Identity.IsAuthenticated)
 {
     <div class="hero-section text-center mt-5">
-        <h1 class="display-4 text-xxl-center">@ViewBag.WelcomeMessage</h1>
-        <p class="lead ">Glad to see you again. Ready to conquer your tasks today?</p>
-        <a class="btn btn-primary btn-lg mt-3" href="/Dashboard">Go to Dashboard</a>
+        <h1 class="display-4">🐾 @ViewBag.WelcomeMessage</h1>
+        <p class="lead">Glad to see you again. Ready to conquer your tasks today?</p>
+        <a class="btn btn-primary btn-lg mt-3" href="/Projects">Go to Dashboard</a>
     </div>
 
     <div class="features-section mt-5">
@@ -32,12 +32,12 @@
 else
 {
     <div class="hero-section text-center">
-        <h1 class="display-4">Welcome to <span class="brand">Task Manager </span></h1>
+        <h1 class="display-4">🐾 Welcome to <span class="brand">MEoW</span></h1>
         <a class="btn btn-primary btn-lg mt-3" href="/Account/Register">Get Started</a>
     </div>
 
     <div class="features-section">
-        <h2 class="section-title">✨ What You Can Do with Task Manager</h2>
+        <h2 class="section-title">✨ What You Can Do with MEoW</h2>
         <div class="features-grid">
             <div class="feature-box">
                 <h3>📁 Manage Projects</h3>
@@ -56,7 +56,7 @@ else
 
     <div class="cta-section">
         <h2>Ready to boost your productivity?</h2>
-        <p>Join with us today and simplify your workflow.</p>
+        <p>Join MEoW today and simplify your workflow.</p>
         <a href="/Account/Register" class="btn btn-primary btn-lg">Create Your Account</a>
     </div>
 }

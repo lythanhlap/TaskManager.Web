@@ -1,0 +1,318 @@
+﻿@using TaskManager.Projects.Abstractions
+@model IEnumerable<ProjectDto>
+
+@{
+    ViewData["Title"] = "Dashboard";
+    var userName = User?.Identity?.Name ?? "Test I";
+    var fullName = User?.FindFirst("name")?.Value ?? userName;
+}
+@{
+    Layout = null;
+}
+@using System.Security.Claims
+@{
+    // Lấy userId (ưu tiên NameIdentifier, fallback "sub")
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                 ?? User.FindFirst("sub")?.Value
+                 ?? string.Empty;
+
+    // Lấy username để hiển thị
+    var username = User.FindFirst("username")?.Value
+                ?? User.FindFirst("name")?.Value
+                ?? User.FindFirstValue(ClaimTypes.Name)
+                ?? User.Identity?.Name
+                ?? "User";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <style>
+    :root{
+      --bg:#e9f6fb;
+      --border:#224f60;
+      --brand:#104e5b;
+      --header:#b5efac;
+      --sidebar-top:#92cfe4;
+      --sidebar:#0e5670;
+      --main:#f6ded3;
+      --card:#eec6e7;
+      --banner:#8eb8f0;
+      --accent:#f2f6ff;
+      --radius:14px;
+      --radius-lg:14px;
+      --shadow:0 2px 6px rgba(0,0,0,.08);
+
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+            margin: 0;
+            background: #FFFFFF;
+            color: #13353f;
+            font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+    /* Layout shell */
+    .app{max-width:100%;  overflow:hidden;}
+
+    /* Header */
+    .app__header{
+      display:grid; grid-template-columns:220px 1fr 160px; gap:12px;
+      align-items:center; padding:10px 14px;
+            border-bottom: 1px solid #ccc5c5
+    }
+    .logo{font-size:22px; font-weight:700; color:#0b3b44; padding:8px 12px; border:2px solid var(--brand); border-radius:10px; background:#e8ffe3; text-align:center}
+    .search{display:flex; align-items:center; gap:10px; padding:0 6px}
+    .search input{width:100%; padding:10px 12px; border:2px solid var(--brand); border-radius:10px; outline:none; background:white}
+    .account{justify-self:end; font-weight:700; border:2px solid #f1c40f; background:#fff9ce; padding:0px 8px; border-radius:10px}
+
+    /* Body split */
+    .app__body{
+        display:grid; grid-template-columns:280px 1fr; gap:16px; padding:16px;
+        margin-right:16px; 
+    
+    }
+
+
+
+    /* Sidebar */
+    .sidebar{display:flex; flex-direction:column; gap:16px}
+    .sidebar .panel{
+     border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow);
+    }
+    .sidebar .panel--top{}
+    .sidebar .panel--top h3{margin:0; padding:24px 18px; font-size:20px; color:black; text-shadow:0 1px 0 rgba(0,0,0,.25)}
+    .sidebar .panel--main{min-height:360px}
+
+    /* Main */
+    .main{}
+
+    .banner{
+            background-image: linear-gradient(135deg, #88A2FF, #A87EBB);
+      border-radius:8px; 
+      height:130px; 
+      display:grid;
+      align-items:start; 
+      padding:10px; 
+      box-shadow:var(--shadow);
+    }
+    .banner .hello{
+        border-radius:8px; 
+        font-weight:700;
+        width: fit-content;
+        font-size: 24px;
+        height:80px;
+        
+    }
+
+    .section-title{
+      margin:16px 0 12px; color:black; font-size:20px; font-weight:700; padding-top:10px; padding-right:10px;
+    }
+
+    .cards{display:grid; grid-template-columns:repeat(4, minmax(180px,1fr)); gap:14px;margin-right: 120px}
+
+        .card {
+            display: block;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            text-decoration: none;
+            color: #333;
+            font-family: sans-serif;
+        }
+
+        .card-header {
+            height: 70%;
+            background: linear-gradient(135deg, #667eea, #e964a6); /* tím -> hồng */
+        }
+            .card-header:hover {
+                filter: brightness(1.3);
+            }
+
+        .card-body {
+            height: 30%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+    .card--new{
+            background: #E8E8E8;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+    }
+        .card--new:hover {
+            background: #d4d4d4;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .account-menu {
+            position: relative;
+            margin-left: 1rem;
+        }
+
+        .account-icon {
+            background: transparent;
+            border: 0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform .2s;
+        }
+
+            .account-icon:hover {
+                transform: scale(1.1);
+            }
+
+        .account-dropdown {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.1);
+            display: none;
+            flex-direction: column;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+            .account-dropdown a, .account-dropdown button {
+                padding: 10px 16px;
+                text-decoration: none;
+                color: #333;
+                font-size: 14px;
+                border-bottom: 1px solid #eee;
+                display: block;
+                width: 100%;
+                text-align: left;
+                background: none;
+            }
+
+                .account-dropdown a:last-child, .account-dropdown button:last-child {
+                    border-bottom: none;
+                }
+
+                .account-dropdown a:hover, .account-dropdown button:hover {
+                    background: #f8d7da;
+                    color: #d6336c;
+                }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+        <!-- Header -->
+        <header class="app__header">
+            <div class="logo">Task Manager</div>
+            <div class="search">
+                <input type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm" />
+                
+            </div>
+            <div class="account">
+                <div class="d-flex align-items-center">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <span class="me-2 text-dark"> @username</span>
+
+                        <div class="account-menu">
+                            <button class="account-icon" id="accountToggle" title="Quản lý tài khoản">👤</button>
+                            <div class="account-dropdown" id="accountDropdown">
+                                <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
+                                <a asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
+
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-link dropdown-item p-2 ps-3">Đăng xuất</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="login-btn" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="login-btn" asp-controller="Account" asp-action="Register">Register</a>
+                    }
+                </div>
+            </div>
+        </header>
+
+    <!-- Body -->
+    <div class="app__body">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <section class="panel panel--top">
+                    <h3><a class="nav-link text-black" asp-controller="Home" asp-action="Index">Trang chủ</a></h3>
+        </section>
+        <section class="panel panel--main" aria-label="Điều hướng phụ"></section>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main">
+        <div class="banner">
+          <div id="today">
+
+          </div>
+          <div class="hello">Xin chào @fullName </div>
+        </div>
+
+        <div class="section-title">Dự án của bạn</div>
+
+        <section class="cards" aria-label="Danh sách dự án">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var p in Model)
+                        {
+                            <a class="card" href="/projects/@p.Id" title="@p.Name">
+                                <div class="card-header"></div>
+                                <div class="card-body">@p.Name</div>
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <div class="tm-card">Chưa có dự án</div>
+                    }
+                    <a class="card card--new" href="/projects/create">Tạo dự án mới</a>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<script>
+    const today = new Date();
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    document.getElementById("today").textContent = today.toLocaleDateString("vi-VN", options);
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("accountToggle");
+        const dropdown = document.getElementById("accountDropdown");
+        if (toggle && dropdown) {
+            toggle.addEventListener("click", function () {
+                dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+            });
+            document.addEventListener("click", function (e) {
+                if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
+</html>

@@ -45,11 +45,64 @@
 
     <div class="mb-3">
         <label class="form-label">Members (usernames, comma-separated)</label>
-        <input name="memberUsernamesCsv" class="form-control" placeholder="alice, bob, charlie" />
+        <div class="col-12 position-relative">
+            <input id="usernamesCsv" name="usernamesCsv" class="form-control" placeholder="alice, bob, charlie" autocomplete="off" />
+            <div id="user-suggest-box" class="list-group position-absolute w-100" style="z-index:1000; display:none; max-height:220px; overflow:auto;"></div>
+        </div>
         <div class="form-text">Thêm thành viên bằng username (đã đăng ký trong hệ thống).</div>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary ms-2">Back</a>
 </form>
+
+
+@section Scripts {
+    <script>
+        (function () {
+            const input = document.getElementById('usernamesCsv');
+            const box = document.getElementById('user-suggest-box');
+            if (!input || !box) return;
+
+            const debounce = (fn, ms) => {
+                let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }
+            };
+
+            function render(list) {
+                if (!Array.isArray(list) || list.length === 0) {
+                    box.style.display = 'none'; box.innerHTML = ''; return;
+                }
+                box.innerHTML = list.map(u =>
+                    `<button type="button" class="list-group-item list-group-item-action">${u}</button>`
+                ).join('');
+                box.style.display = 'block';
+                box.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const parts = input.value.split(',');
+                        parts[parts.length - 1] = ' ' + btn.textContent;
+                        input.value = parts.map(p => p.trim()).filter(Boolean).join(', ') + ', ';
+                        input.focus(); box.style.display = 'none'; box.innerHTML = '';
+                    });
+                });
+            }
+
+            const onInput = debounce(async () => {
+                const parts = input.value.split(',');
+                const term = (parts[parts.length - 1] || '').trim();
+                if (!term) { render([]); return; }
+                try {
+                    const r = await fetch(`/api/users/suggest_create?q=${encodeURIComponent(term)}`);
+                    if (r.ok) render(await r.json());
+                } catch { }
+            }, 200);
+
+            input.addEventListener('input', onInput);
+            document.addEventListener('click', (e) => {
+                if (!box.contains(e.target) && e.target !== input) {
+                    box.style.display = 'none';
+                }
+            });
+        })();
+    </script>
+}
 

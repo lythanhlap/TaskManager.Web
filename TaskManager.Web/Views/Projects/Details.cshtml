@@ -158,13 +158,13 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Thông tin các task</h5>
+                <h5 class="mb-0">Thông tin các công việc</h5>
                 @if (isOwner)
                 {
                     <a class="btn btn-outline-secondary btn-sm"
                        asp-controller="ProjectTasksPages"
                        asp-action="Create"
-                       asp-route-projectId="@Model.Id">Thêm task</a>
+                       asp-route-projectId="@Model.Id">Thêm công việc</a>
 
                 }
                 <a class="btn btn-sm btn-primary"
@@ -175,11 +175,14 @@
                 </a>
             </div>
 
+
             <div id="tasksContainer" class="card shadow-sm">
                 <div class="card-body">
-                    <div id="tasksTableHolder">Đang tải task…</div>
+                    <div id="tasksTableHolder">Đang tải công việc…</div>
                 </div>
             </div>
+            
+            
         </div>
     </div>
 
@@ -196,6 +199,7 @@
         </div>
     </div>
 </div>
+
 
 
 
@@ -337,7 +341,6 @@
     {
         <script>
             (function () {
-                // gợi ý username (như bạn đã làm)
                 const input = document.getElementById('usernamesCsv');
                 const box = document.getElementById('user-suggest-box');
                 if (!input || !box) return;

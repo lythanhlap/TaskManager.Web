@@ -132,7 +132,7 @@ namespace TaskManager.Web.Controllers
                     id.ToString(),
                     projectName,
                     ownerDisplay,            // AddedBy
-                    ownerUser                // AddedByUserName  👈 tham số thứ 6
+                    ownerUser                // AddedByUserName  
                 ));
             }
 

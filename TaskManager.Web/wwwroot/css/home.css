@@ -1,10 +1,14 @@
 ﻿/* 🌸 NỀN TOÀN TRANG */
 body {
-    background-color: #ffe4e1;
+    background-color: #fff;
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
 }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
 
 .register-card {
     box-shadow: none !important; /* bỏ bóng nổi */
@@ -35,12 +39,12 @@ body {
 .page-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #d6336c;
+    color: #000;
     margin: 0;
 }
 
 .btn-create {
-    background-color: #ff69b4;
+    background-color: #1868DB;
     color: #fff;
     font-weight: 600;
     padding: 0.6rem 1.2rem;
@@ -52,7 +56,7 @@ body {
 }
 
     .btn-create:hover {
-        background-color: #e055a3;
+        background-color: #1B75F7;
         transform: translateY(-1px);
     }
 
@@ -122,9 +126,22 @@ body {
 }
 
 .kanban-title {
+    position: relative;
     font-size: 1.4rem;
-    border-bottom: 2px solid #f8d7da;
+    padding-bottom: 6px;
 }
+
+    .kanban-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 3px; 
+        background: linear-gradient(to right, #7b5cd6, #d56bc6);
+        border-radius: 2px; 
+    }
+
 
 .kanban-column h5 {
     font-size: 1.2rem;
@@ -143,8 +160,20 @@ body {
 }
 
 .card {
-    border-left: 6px solid #ff69b4;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
 }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px; 
+        height: 100%;
+        background: linear-gradient(to bottom, #7b5cd6, #d56bc6);
+    }
 
 .kanban-card {
     border-left: 5px solid #0d6efd;
@@ -244,7 +273,7 @@ body {
 /* 🎀 HERO SECTION */
 .hero-section {
     padding: 80px 20px;
-    background: linear-gradient(to right, #ffb6c1, #ffe4e1);
+    background: linear-gradient(to right, #6baef7, #C4E7FF);
     border-radius: 0 0 40px 40px;
     color: #333;
 }
@@ -255,7 +284,7 @@ body {
 }
 
 .btn-primary {
-    background-color: #d6336c;
+    background-color: #0853C2;
     border: none;
     padding: 12px 24px;
     border-radius: 8px;
@@ -264,7 +293,7 @@ body {
 }
 
     .btn-primary:hover {
-        background-color: #b02a57;
+        background-color: #0C95FA;
     }
 
 /* 📌 LIÊN KẾT */
@@ -287,7 +316,7 @@ a {
 .section-title {
     font-size: 2rem;
     margin-bottom: 40px;
-    color: #d6336c;
+    color: #000;
 }
 
 .features-grid {
@@ -298,7 +327,7 @@ a {
 }
 
 .feature-box {
-    background-color: #ffe4e1;
+    background-color: #C4E7FF;
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -345,10 +374,15 @@ a {
 .login-page {
     display: flex;
     min-height: 100vh;
-    background: linear-gradient(to right, #fff0f5, #ffe4e1);
+    max-width: none !important;
+    background: linear-gradient(to right, #DEEAFD, #EEF4FD);
     font-family: 'Segoe UI', sans-serif;
     padding: 40px;
+    
 }
+    .login-page body {
+        background-image: url('/img/backgound.png');
+    }
 
     .login-page .login-info {
         flex: 1;
@@ -357,7 +391,7 @@ a {
         justify-content: center;
         align-items: center;
         padding: 60px;
-        color: #d6336c;
+        color: #000;
     }
 
     .login-page .logo {
@@ -388,7 +422,8 @@ a {
         font-size: 50px;
         font-weight: bold;
         text-align: center;
-        color: #d6336c;
+/*        color: #d6336c;*/
+        color: #000;
         margin-bottom: 36px;
         letter-spacing: 1px;
     }
@@ -410,7 +445,7 @@ a {
         max-width: 320px;
         margin: 8px auto;
         padding: 16px 0;
-        background-color: #ff69b4;
+        background-color: #0C66E4;
         color: white;
         border: none;
         border-radius: 14px;
@@ -421,7 +456,7 @@ a {
     }
 
         .login-page .btn-login:hover {
-            background-color: #e055a3;
+            background-color: #4994E4;
         }
 
     .login-page .register-text {
@@ -459,7 +494,6 @@ a {
     border: 2px solid #f8bbd0;
     border-radius: 8px;
     background-color: #fff;
-    color: #d6336c;
     transition: border-color 0.3s ease;
 }
 

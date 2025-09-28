@@ -3,14 +3,15 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="login-page">
+
+<div class=" login-page body">
     <div class="login-info">
-        <h1 class="logo">🐾 MEoW</h1>
+        <h1 class="logo">Task Manager</h1>
         <p class="slogan">Your friendly task manager</p>
     </div>
 
     <div class="login-form-box">
-        <h2 class="form-title">🐾 Login</h2>
+        <h2 class="form-title"> Login</h2>
 
         <form asp-action="Login" method="post" asp-route-returnUrl="@Model?.ReturnUrl" class="login-form">
             @Html.AntiForgeryToken()
