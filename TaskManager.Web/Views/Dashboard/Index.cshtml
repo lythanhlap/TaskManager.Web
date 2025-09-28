@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Dashboard";
     var userName = User?.Identity?.Name ?? "Test I";
+    var fullName = User?.FindFirst("name")?.Value ?? userName;
 }
 @{
     Layout = null;
@@ -222,7 +223,7 @@
                 <div class="d-flex align-items-center">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        <span class="me-2 text-dark"> @username!</span>
+                        <span class="me-2 text-dark"> @username</span>
 
                         <div class="account-menu">
                             <button class="account-icon" id="accountToggle" title="Quản lý tài khoản">👤</button>
@@ -262,7 +263,7 @@
           <div id="today">
 
           </div>
-          <div class="hello">Xin chào @username !</div>
+          <div class="hello">Xin chào @fullName </div>
         </div>
 
         <div class="section-title">Dự án của bạn</div>
@@ -282,7 +283,7 @@
                     {
                         <div class="tm-card">Chưa có dự án</div>
                     }
-                    <a class="card card--new" href="#" title="Tạo dự án mới">Tạo dự án mới</a>
+                    <a class="card card--new" href="/projects/create">Tạo dự án mới</a>
         </section>
       </main>
     </div>

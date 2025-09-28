@@ -48,5 +48,21 @@ namespace TaskManager.Web.Controllers
 
             return Json(names);
         }
+
+        [HttpGet("suggest_create")]
+        public async Task<IActionResult> Suggest(string q)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return Ok(Array.Empty<string>());
+
+            var users = await _idDb.Users.AsNoTracking()
+                .Where(u => u.Username.Contains(q))
+                .OrderBy(u => u.Username)
+                .Select(u => u.Username)
+                .Take(10) // lay 10
+                .ToListAsync();
+
+            return Ok(users);
+        }
     }
 }
