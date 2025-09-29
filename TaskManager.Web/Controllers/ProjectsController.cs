@@ -76,7 +76,7 @@ namespace TaskManager.Web.Controllers
                         dto.Id.ToString(),      // ProjectId
                         name,                   // ProjectName
                         ownerDisplay,           // AddedBy (FullName/DisplayName)
-                        ownerUser               // AddedByUserName   👈 tham số thứ 6 mới
+                        ownerUser               // AddedByUserName  
                     ));
                 }
             }

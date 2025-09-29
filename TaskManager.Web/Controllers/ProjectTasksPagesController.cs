@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 using TaskManager.Notifications.Abstractions;
+using TaskManager.Notifications.Abstractions.Events;
 using TaskManager.Tasks.Abstractions;
 using TaskManager.Users.Abstractions;
 using TaskManager.Web.Models;
@@ -76,12 +79,23 @@ public sealed class ProjectTasksPagesController : Controller
             Description = vm.Description,
             StartAt = vm.StartAt,
             EndAt = vm.EndAt,
-            AssigneeUserIds = vm.AssigneeUserIds ?? new()
+            AssigneeUserIds = vm.AssigneeUserIds ?? new List<string>()
         };
 
         try
         {
-            await _tasks.CreateAsync(dto, ActorId, ct); // chỉ Owner mới tạo được, service sẽ kiểm
+            var created = await _tasks.CreateAsync(dto, ActorId, ct); // chỉ Owner mới tạo được, service sẽ kiểm tra
+
+            Guid newTaskId = created.Id;
+
+            // send notification to assignees
+            await NotifyTaskAssignedAsync(
+            projectId, /* projectName */ "",
+            newTaskId, vm.Name!,
+            dto.AssigneeUserIds!,
+            dto.EndAt,
+            ct);
+
             TempData["Toast"] = "Đã tạo task.";
             return RedirectToAction(nameof(Index), new { projectId });
         }
@@ -149,6 +163,9 @@ public sealed class ProjectTasksPagesController : Controller
 
         if (!ModelState.IsValid) return View(vm);
 
+        var before = await _tasks.GetAsync(taskId, ActorId, ct);
+        var beforeSet = new HashSet<string>(before?.AssigneeUserIds ?? Enumerable.Empty<string>());
+
         var input = new TaskUpdateDto
         {
             Name = vm.Name,
@@ -156,12 +173,30 @@ public sealed class ProjectTasksPagesController : Controller
             StartAt = vm.StartAt,
             EndAt = vm.EndAt,
             Status = vm.Status,
-            AssigneeUserIds = vm.AssigneeUserIds ?? new()
+            AssigneeUserIds = vm.AssigneeUserIds ?? new List<string>()
         };
 
         try
         {
-            await _tasks.UpdateAsync(taskId, input, ActorId, ct);
+            var created = await _tasks.UpdateAsync(taskId, input, ActorId, ct);
+            Guid newTaskId = created.Id;
+
+            // send notification to assignees if changed
+
+            var afterSet = new HashSet<string>(vm.AssigneeUserIds ?? new());
+            afterSet.ExceptWith(beforeSet); // chỉ người mới
+
+            if (afterSet.Count > 0)
+            {
+                await NotifyTaskAssignedAsync(
+                    projectId, /* projectName */ "",
+                    taskId,
+                    vm.Name!,
+                    afterSet,
+                    vm.EndAt,               
+                    ct);
+            }
+
             TempData["Toast"] = "Đã cập nhật task.";
             return RedirectToAction(nameof(Index), new { projectId });
         }
@@ -203,4 +238,42 @@ public sealed class ProjectTasksPagesController : Controller
         }
         catch (UnauthorizedAccessException) { return Forbid(); }
     }
+
+    // lay ten nguoi gan
+    private async Task<(string Display, string UserName)> ResolveAssignerAsync(CancellationToken ct)
+    {
+        var u = await _users.GetUserByIdAsync(ActorId, ct);
+        var display = string.IsNullOrWhiteSpace(u?.FullName) ? (u?.Username ?? "system") : u!.FullName;
+        var uname = u?.Username ?? "system";
+        return (display, uname);
+    }
+    private async Task NotifyTaskAssignedAsync(
+    Guid projectId, string projectName,
+    Guid taskId, string taskName,
+    IEnumerable<string> assigneeUserIds,
+    DateTimeOffset? EndAt,
+    CancellationToken ct)
+    {
+        var (assignerDisplay, assignerUser) = await ResolveAssignerAsync(ct);
+
+        foreach (var uid in assigneeUserIds ?? Enumerable.Empty<string>())
+        {
+            var u = await _users.GetUserByIdAsync(uid, ct);
+            var email = u?.Email;
+            if (string.IsNullOrWhiteSpace(email)) continue;
+
+            await _noti.EnqueueAsync(new TaskAssigned(
+                email,                          // 1 RecipientEmail
+                uid,                            // 2 RecipientUserId
+                taskId.ToString(),              // 3 TaskId
+                taskName,                       // 4 TaskName
+                projectId.ToString(),           // 5 ProjectId
+                projectName ?? string.Empty,    // 6 ProjectName (fallback rỗng nếu chưa có)
+                EndAt?.UtcDateTime,            // 7 DueDate (DateTime?) ← cung cấp giá trị này!
+                assignerDisplay,                // 8 AssignedBy (display/full name)
+                assignerUser                    // 9 AssignedByUserName
+            ), ct);
+        }
+    }
+
 }
