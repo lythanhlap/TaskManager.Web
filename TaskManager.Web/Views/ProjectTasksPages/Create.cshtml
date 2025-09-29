@@ -121,7 +121,7 @@
 
                 // chip
                 var chip = document.createElement('span');
-                chip.className = 'badge rounded-pill text-bg-secondary';
+                chip.className = 'badge rounded-pill text-bg-secondary text-black';
                 chip.style.userSelect = 'none';
 
                 var chipText = document.createElement('span');
@@ -130,7 +130,7 @@
 
                 var x = document.createElement('button');
                 x.type = 'button';
-                x.className = 'btn-close btn-close-white btn-sm ms-1';
+                x.className = 'btn-close btn-close-red btn-sm ms-1';
                 x.setAttribute('aria-label', 'Remove');
                 x.addEventListener('click', function () {
                     selected.delete(userId);

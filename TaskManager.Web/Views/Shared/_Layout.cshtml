@@ -122,6 +122,8 @@
 
     </style>
 </head>
+
+
 <body >
     <header>
         <nav class="navbar navbar-expand-sm navbar-light navbar-custom mb-3 ">
@@ -135,11 +137,12 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="projects" asp-action="Index">Projects</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Task" asp-action="Index">Tasks</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="projects" asp-action="Index">Dự án</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="progress" asp-action="Index">Tiến độ</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
                     </ul>
+
 
                     <div class="d-flex align-items-center">
                         @if (User.Identity?.IsAuthenticated == true)
