@@ -208,6 +208,35 @@
                     color: #d6336c;
                 }
 
+        .card-title{font-weight:600;margin-bottom:6px}
+         
+        .progress-meta{display:flex;gap:10px;font-size:12px;color:#64748b;margin-top:6px;flex-wrap:wrap}
+        .progress-meta .percent{margin-left:auto;font-weight:700;color:#111827}
+        .card-title{font-weight:600;margin-bottom:6px;text-align:center}
+        .progress-line{ height:10px; background:#fff; border:3px solid #000; border-radius:6px; overflow:hidden; }
+        .progress-line__bar{ height:100%; background:#22c55e; transition:width .35s ease; }
+        .card{ position:relative; }
+        .card-body{ padding-bottom: 26px; } 
+
+        .progress-rail{
+          position:absolute; left:0px; right:0px; bottom:0px;
+          height:12px; border:1px solid #000; border-radius:10px;
+          background:#fff; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.12);
+        }
+        .progress-rail__bar{
+          height:100%; background:#22c55e; transition:width .35s ease;
+        }
+        .progress-rail__label{
+          position:absolute; inset:0;        
+          display:flex; align-items:center; justify-content:center;
+          font-size:12px; font-weight:700; letter-spacing:.2px;
+          color:#111; text-shadow:0 1px 0 rgba(255,255,255,.6);
+          pointer-events:none;                
+        }
+
+
+        
+
   </style>
 </head>
 <body>
@@ -269,21 +298,31 @@
         <div class="section-title">Dự án của bạn</div>
 
         <section class="cards" aria-label="Danh sách dự án">
-                    @if (Model != null && Model.Any())
-                    {
-                        foreach (var p in Model)
-                        {
-                            <a class="card" href="/projects/@p.Id" title="@p.Name">
-                                <div class="card-header"></div>
-                                <div class="card-body">@p.Name</div>
-                            </a>
-                        }
-                    }
-                    else
-                    {
-                        <div class="tm-card">Chưa có dự án</div>
-                    }
-                    <a class="card card--new" href="/projects/create">Tạo dự án mới</a>
+              @if (Model != null && Model.Any())
+              {
+                  foreach (var p in Model)
+                  {
+                      <a class="card" href="/projects/@p.Id" title="@p.Name" data-project-id="@p.Id">
+                          <div class="card-header"></div>
+
+                          <div class="card-body">
+                            <div class="card-title">@p.Name</div>
+                          </div>
+                          <div class="progress-rail" role="progressbar"
+                             aria-label="Tiến độ dự án"
+                             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                              <div class="progress-rail__bar" style="width:0%"></div>
+                              <span class="progress-rail__label">0%</span>
+                        </div>
+                      </a>
+                         
+                  }
+              }
+              else
+              {
+                  <div class="tm-card">Chưa có dự án</div>
+              }
+          <a class="card card--new" href="/projects/create">Tạo dự án mới</a>
         </section>
       </main>
     </div>
@@ -315,4 +354,50 @@
         }
     });
 </script>
+
+<script>
+(async function(){
+  const res = await fetch('/api/reports/portfolio', { credentials:'same-origin' });
+  if(!res.ok) return;
+  const data = await res.json();
+  const map = new Map(data.items.map(i => [String(i.projectId).toLowerCase(), i]));
+
+  document.querySelectorAll('.card[data-project-id]').forEach(card=>{
+    const id  = (card.getAttribute('data-project-id')||'').toLowerCase();
+    const itm = map.get(id);
+    if(!itm) return;
+
+    const completed = itm.completedCount|0;
+    const pending   = itm.pendingCount|0;
+    const total     = completed + pending;
+    const pct       = total ? (completed*100/total) : 0;
+
+    const rail  = card.querySelector('.progress-rail');
+    const bar   = card.querySelector('.progress-rail__bar');
+    const label = card.querySelector('.progress-rail__label');
+
+    if(bar)   bar.style.width = pct.toFixed(2) + '%';
+    if(rail)  rail.setAttribute('aria-valuenow', pct.toFixed(0));
+    if(label){
+      label.textContent = pct.toFixed(0) + '%';
+      // chữ trắng khi nền xanh chiếm nhiều, dễ đọc hơn
+      label.style.color = (pct >= 55) ? '#fff' : '#111';
+      label.style.textShadow = (pct >= 55) ? '0 1px 0 rgba(0,0,0,.35)' : '0 1px 0 rgba(255,255,255,.6)';
+    }
+
+    // màu thanh theo % (tùy chọn)
+    if(bar){
+      bar.style.background = pct >= 80 ? '#16a34a'
+                          : pct >= 40 ? '#22c55e'
+                                      : '#f97316';
+    }
+  });
+})();
+</script>
+
+
+
+
 </html>
+
+
