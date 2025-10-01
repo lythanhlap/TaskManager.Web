@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="lib\" />
+    <Folder Include="lib\report\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +60,15 @@
     </Reference>
     <Reference Include="TaskManager.Projects.Persistence.EFCore">
       <HintPath>lib\notification\TaskManager.Projects.Persistence.EFCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Reports.Abstractions">
+      <HintPath>lib\report\TaskManager.Reports.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Reports.Core">
+      <HintPath>lib\report\TaskManager.Reports.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TaskManager.Reports.Mvc">
+      <HintPath>lib\report\TaskManager.Reports.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="TaskManager.Tasks.Abstractions">
       <HintPath>lib\task\TaskManager.Tasks.Abstractions.dll</HintPath>
