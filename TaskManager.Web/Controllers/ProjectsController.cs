@@ -5,6 +5,8 @@ using TaskManager.Projects.Abstractions;
 using TaskManager.Notifications.Abstractions;          // INotificationClient
 using TaskManager.Notifications.Abstractions.Events;   // ProjectMemberAdded
 using TaskManager.Users.Abstractions;
+using Microsoft.CodeAnalysis;
+using TaskManager.Web.Services;
 
 namespace TaskManager.Web.Controllers
 {
@@ -15,11 +17,15 @@ namespace TaskManager.Web.Controllers
         private readonly IProjectService _svc;
         private readonly INotificationClient _noti;
         private readonly IUserReadOnly _users;
-        public ProjectsController(IProjectService svc, INotificationClient noti, IUserReadOnly users)
+        private readonly IProjectAutoStatus _auto;
+
+        public ProjectsController(IProjectService svc, INotificationClient noti, IUserReadOnly users, IProjectAutoStatus auto)
         {
             _svc = svc;
             _noti = noti;
             _users = users;
+            _auto = auto;
+
         }
 
         private string Uid =>
@@ -28,8 +34,15 @@ namespace TaskManager.Web.Controllers
             ?? throw new InvalidOperationException("No user id claim.");
 
         [HttpGet("")]
-        public async Task<IActionResult> Index()
-            => View(await _svc.GetForUserAsync(Uid));
+        public async Task<IActionResult> Index(CancellationToken ct)
+        {
+            var list = await _svc.GetForUserAsync(Uid);
+            await _auto.RecalcManyAsync(list.Select(p => p.Id), ct);              
+            list = await _svc.GetForUserAsync(Uid);                           
+
+            return View(list);
+        }
+            
 
         [HttpGet("create")]
         public IActionResult Create() => View();
@@ -87,8 +100,9 @@ namespace TaskManager.Web.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details(Guid id, CancellationToken ct)
         {
+            await _auto.RecalcAsync(id, ct);
             var dto = await _svc.GetDetailsAsync(id, Uid);
             if (dto is null) return NotFound();
             return View(dto);
@@ -234,6 +248,14 @@ namespace TaskManager.Web.Controllers
                 return RedirectToAction(nameof(Details), new { id });
             }
         }
+        // dong bo trang thai du an
+        [HttpPost("{projectId:guid}/recalc")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForceRecalc(Guid projectId, CancellationToken ct)
+        {
+            await _auto.RecalcAsync(projectId, ct);
+            return RedirectToAction(nameof(Details), new { id = projectId });
+        }
 
         private async Task<(string? Email, string? UserId)> ResolveUserAsync(string key)
         {
@@ -241,7 +263,7 @@ namespace TaskManager.Web.Controllers
 
             if (key.Contains('@'))
             {
-                // Không có FindByEmailAsync → dùng thẳng email, không có userId
+                // Không có FindByEmailAsync dùng thẳng email, không có userId
                 return (key, null);
             }
             else
