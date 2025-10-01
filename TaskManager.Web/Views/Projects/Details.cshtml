@@ -26,6 +26,15 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="page-title">📁 @Model.Name</h2>
+    <form asp-action="ForceRecalc"
+      asp-controller="Projects"
+      asp-route-projectId="@Model.Id"
+      method="post" class="d-inline">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-sm">
+            <i class="fa-solid fa-rotate" style="color: #74C0FC;"></i>
+        </button>
+    </form>
     <a asp-action="Index" class="btn btn-light">← Back to Projects</a>
 </div>
 @if (TempData["Ok"] is string ok && !string.IsNullOrWhiteSpace(ok))

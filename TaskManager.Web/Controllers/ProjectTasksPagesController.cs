@@ -8,6 +8,7 @@ using TaskManager.Notifications.Abstractions.Events;
 using TaskManager.Tasks.Abstractions;
 using TaskManager.Users.Abstractions;
 using TaskManager.Web.Models;
+using TaskManager.Web.Services;
 
 namespace TaskManager.Web.Controllers;
 
@@ -18,11 +19,13 @@ public sealed class ProjectTasksPagesController : Controller
     private readonly ITaskService _tasks;
     private readonly IUserReadOnly _users;
     private readonly INotificationClient _noti;
-    public ProjectTasksPagesController(ITaskService tasks, IUserReadOnly users, INotificationClient _noti)
+    private readonly IProjectAutoStatus _auto;
+    public ProjectTasksPagesController(ITaskService tasks, IUserReadOnly users, INotificationClient _noti, IProjectAutoStatus auto)
     {
         _tasks = tasks;
         _users = users;
         this._noti = _noti;
+        _auto = auto;
 
     }
     private string Uid =>
@@ -96,6 +99,8 @@ public sealed class ProjectTasksPagesController : Controller
             dto.EndAt,
             ct);
 
+            await _auto.RecalcAsync(projectId, ct);
+
             TempData["Toast"] = "Đã tạo task.";
             return RedirectToAction(nameof(Index), new { projectId });
         }
@@ -111,6 +116,7 @@ public sealed class ProjectTasksPagesController : Controller
         try
         {
             await _tasks.DeleteAsync(taskId, ActorId, ct);
+            await _auto.RecalcAsync(projectId, ct);
             TempData["Toast"] = "Đã xóa task.";
             return RedirectToAction(nameof(Index), new { projectId });
         }
@@ -196,6 +202,8 @@ public sealed class ProjectTasksPagesController : Controller
                     vm.EndAt,               
                     ct);
             }
+
+            await _auto.RecalcAsync(projectId, ct);
 
             TempData["Toast"] = "Đã cập nhật task.";
             return RedirectToAction(nameof(Index), new { projectId });

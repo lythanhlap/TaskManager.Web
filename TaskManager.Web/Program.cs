@@ -28,6 +28,8 @@ using TaskManager.Tasks.Persistence.EFCore.Entities;
 using TaskManager.Projects.Persistence.EFCore.Entities;
 using TaskManager.Reports.Abstractions;
 using TaskManager.Reports.Mvc;
+using TaskManager.Web.Services;
+using TaskManager.Web.Services;
 
 
 namespace TaskManager.Web
@@ -87,6 +89,7 @@ namespace TaskManager.Web
                 cfg.IsCompletedByPredicate(t => t.Status == (int)Tasks.Abstractions.TaskStatus.Complete);
             });
 
+            builder.Services.AddScoped<IProjectAutoStatus, ProjectAutoStatus>();
 
             var idOpt = cfg.GetSection("Identity").Get<IdentityOptions>()!;
             services.AddAuthentication(options =>
