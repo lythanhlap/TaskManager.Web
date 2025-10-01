@@ -263,15 +263,15 @@ public sealed class ProjectTasksPagesController : Controller
             if (string.IsNullOrWhiteSpace(email)) continue;
 
             await _noti.EnqueueAsync(new TaskAssigned(
-                email,                          // 1 RecipientEmail
-                uid,                            // 2 RecipientUserId
-                taskId.ToString(),              // 3 TaskId
-                taskName,                       // 4 TaskName
-                projectId.ToString(),           // 5 ProjectId
-                projectName ?? string.Empty,    // 6 ProjectName (fallback rỗng nếu chưa có)
-                EndAt?.UtcDateTime,            // 7 DueDate (DateTime?) ← cung cấp giá trị này!
-                assignerDisplay,                // 8 AssignedBy (display/full name)
-                assignerUser                    // 9 AssignedByUserName
+                email,                          
+                uid,                          
+                taskId.ToString(),             
+                taskName,                       
+                projectId.ToString(),           
+                projectName ?? string.Empty,   
+                EndAt?.UtcDateTime,            
+                assignerDisplay,                
+                assignerUser                    
             ), ct);
         }
     }

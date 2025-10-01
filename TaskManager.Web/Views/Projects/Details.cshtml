@@ -23,6 +23,7 @@
         _ => "badge bg-light text-dark"
     };
 }
+
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="page-title">📁 @Model.Name</h2>
     <a asp-action="Index" class="btn btn-light">← Back to Projects</a>
@@ -193,16 +194,12 @@
             <div class="card-body">
                 <h5 class="mb-3">💬 Comment</h5>
                 <div id="commentPanel" style="min-height:400px;">
-                    <em>Đang phát triển…</em>
+                    <textarea class="form-control" rows="3" placeholder="Viết bình luận..."></textarea>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
 
 
 

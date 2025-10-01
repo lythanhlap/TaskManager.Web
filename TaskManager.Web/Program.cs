@@ -22,6 +22,12 @@ using TaskManager.Notifications.Abstractions;
 using TaskManager.Tasks.Persistence.EFCore;
 using TaskManager.Tasks.Abstractions;
 using TaskManager.Tasks.Core;
+// report
+using TaskManager.Reports.Core.Typed;
+using TaskManager.Tasks.Persistence.EFCore.Entities;
+using TaskManager.Projects.Persistence.EFCore.Entities;
+using TaskManager.Reports.Abstractions;
+using TaskManager.Reports.Mvc;
 
 
 namespace TaskManager.Web
@@ -70,6 +76,16 @@ namespace TaskManager.Web
             services.AddScoped<NotificationFacade>();
             //SmtpOptions smtpOptions = cfg.GetSection("Smtp").Get<SmtpOptions>()!;
             //smtpOptions.FromName ??= "Task Manager";
+
+
+            services.AddReportsCoreTwoDb<ProjectsDbContext, TasksDbContext, Project, TaskItem>(cfg =>
+            {
+                cfg.ProjectKey = p => p.Id;
+                cfg.ProjectName = p => p.Name;
+                cfg.TaskProjectKey = t => t.ProjectId;
+
+                cfg.IsCompletedByPredicate(t => t.Status == (int)Tasks.Abstractions.TaskStatus.Complete);
+            });
 
 
             var idOpt = cfg.GetSection("Identity").Get<IdentityOptions>()!;

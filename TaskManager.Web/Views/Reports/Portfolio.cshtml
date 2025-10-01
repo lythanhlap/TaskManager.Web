@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Tổng quan tiến độ";
+}
+<h3 class="mb-3">Tổng quan tiến độ</h3>
+<div class="row">
+    <div class="col-md-6"><canvas id="portfolio_pie"></canvas></div>
+    <div class="col-md-6"><canvas id="portfolio_bar"></canvas></div>
+</div>
+<hr />
+<div id="project_table_holder" class="mt-3"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    (async function(){
+      const res = await fetch('/api/reports/portfolio');
+      if(!res.ok){ alert('Không tải được dữ liệu'); return; }
+      const data = await res.json();
+
+      new Chart(document.getElementById('portfolio_pie').getContext('2d'), {
+        type: 'pie',
+        data: {
+          labels: ['Completed','Incomplete'],
+          datasets: [{ data: [data.totalCompleted, data.totalPending] }]
+        }
+      });
+
+      new Chart(document.getElementById('portfolio_bar').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: data.items.map(x => x.projectName),
+          datasets: [
+            { label: 'Completed',  data: data.items.map(x => x.completedCount) },
+            { label: 'Incomplete', data: data.items.map(x => x.pendingCount) }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } } }
+      });
+
+      document.getElementById('project_table_holder').innerHTML = `
+        <table class="table table-striped">
+          <thead><tr>
+            <th>Dự án</th><th>Hoàn thành</th><th>Chưa hoàn thành</th><th>Tổng</th><th>% Đã xong</th>
+          </tr></thead>
+          <tbody>
+            ${data.items.map(x => `
+              <tr>
+                <td>${x.projectName}</td>
+                <td>${x.completedCount}</td>
+                <td>${x.pendingCount}</td>
+                <td>${x.completedCount + x.pendingCount}</td>
+                <td>${(x.completedPercent).toFixed(2)}%</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>`;
+    })();
+</script>
