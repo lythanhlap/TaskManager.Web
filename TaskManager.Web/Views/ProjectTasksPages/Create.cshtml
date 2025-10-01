@@ -1,10 +1,10 @@
 ﻿@model TaskManager.Web.Models.TaskCreateVm
 @{
-    ViewData["Title"] = "Thêm task";
+    ViewData["Title"] = "Thêm công việc";
     var pid = Model.ProjectId;
 }
 
-<h3 class="mb-3">Thêm task</h3>
+<h3 class="mb-3">Thêm công việc</h3>
 
 <form asp-action="Create" asp-route-projectId="@pid" method="post" id="taskCreateForm">
     @Html.AntiForgeryToken()

@@ -55,6 +55,8 @@
             background: #FFFFFF;
             color: #13353f;
             font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+            background-image: url(/img/bg1.png);
+            background-size: cover;
         }
 
     /* Layout shell */
@@ -283,7 +285,12 @@
         <section class="panel panel--top">
                     <h3><a class="nav-link text-black" asp-controller="Home" asp-action="Index">Trang chủ</a></h3>
         </section>
-        <section class="panel panel--main" aria-label="Điều hướng phụ"></section>
+        <section class="panel panel--main" aria-label="Điều hướng phụ">
+            <h4><a class="nav-link text-black" asp-controller="Projects" asp-action="Index">Dự án</a></h4>
+                    <h4><a class="nav-link text-black" asp-controller="Reports" asp-action="Portfolio">Tiến độ</a></h4>
+            <h4><a class="nav-link text-black" asp-controller="Account" asp-action="Profile">Tài khoản</a></h4>
+
+        </section>
       </aside>
 
       <!-- Main content -->
