@@ -99,6 +99,7 @@ public sealed class ProjectTasksPagesController : Controller
             dto.EndAt,
             ct);
 
+            // thay goi trang thai prj
             await _auto.RecalcAsync(projectId, ct);
 
             TempData["Toast"] = "Đã tạo task.";

@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TaskManager.Tasks.Persistence.EFCore;            // TasksDbContext
-using TaskManager.Projects.Persistence.EFCore;         // ProjectsDbContext
-
-// enum ở Abstractions, chỉ để lấy "giá trị Complete"
+using TaskManager.Tasks.Persistence.EFCore;     
+using TaskManager.Projects.Persistence.EFCore;        
 using TTaskStatus = TaskManager.Tasks.Abstractions.TaskStatus;
 using PjStatus = TaskManager.Projects.Abstractions.ProjectStatus;
 
@@ -23,11 +21,11 @@ namespace TaskManager.Web.Services
 
         public async Task<bool> RecalcAsync(Guid projectId, CancellationToken ct = default)
         {
-            // Đếm task của project
+            // count prj task
             var q = _tdb.Tasks.AsNoTracking().Where(t => t.ProjectId == projectId);
             var total = await q.CountAsync(ct);
 
-            // Lấy project
+            // lay project
             var proj = await _pdb.Projects.FirstOrDefaultAsync(x => x.Id == projectId, ct);
             if (proj is null) return false;
 
@@ -35,13 +33,12 @@ namespace TaskManager.Web.Services
 
             if (total == 0)
             {
-                proj.Status = (int)PjStatus.Planned;                 // không có task
+                proj.Status = (int)PjStatus.Planned;               
             }
             else
             {
-                var completedValue = (int)TTaskStatus.Complete;      // giá trị "Complete"
+                var completedValue = (int)TTaskStatus.Complete;     
                 var notCompleted = await q.CountAsync(t => t.Status != completedValue, ct);
-
                 proj.Status = notCompleted == 0
                     ? (int)PjStatus.Completed                        // tất cả Complete
                     : (int)PjStatus.InProgress;                      // còn task chưa xong
