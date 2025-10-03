@@ -1,30 +1,34 @@
 ﻿@model TaskManager.Web.Models.LoginVm
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Đăng nhập";
 }
 
-<div class=" login-page body">
+<link rel="stylesheet" href="~/css/login.css" />
+
+<div class="login-container">
+    <!-- Bên trái: Logo + slogan -->
     <div class="login-info">
         <h1 class="logo">Task Manager</h1>
-        <p class="slogan">Your friendly task manager</p>
+        <p class="slogan">Trợ thủ quản lý công việc thân thiện của bạn</p>
     </div>
 
+    <!-- Bên phải: Form đăng nhập -->
     <div class="login-form-box">
-        <h2 class="form-title"> Login</h2>
+        <h2 class="form-title">Đăng nhập</h2>
 
         <form asp-action="Login" method="post" asp-route-returnUrl="@Model?.ReturnUrl" class="login-form">
             @Html.AntiForgeryToken()
-             
+
             <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
 
             <div class="form-group">
-                <label asp-for="Identifier" class="form-label">Username or Email</label>
+                <label asp-for="Identifier" class="form-label">Tên đăng nhập hoặc Email</label>
                 <input asp-for="Identifier" class="form-control" />
                 <span asp-validation-for="Identifier" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Password" class="form-label">Password</label>
+                <label asp-for="Password" class="form-label">Mật khẩu</label>
                 <input asp-for="Password" class="form-control" type="password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
@@ -34,12 +38,12 @@
                 <div class="alert alert-danger" role="alert">@err</div>
             }
 
-            <button type="submit" class="btn-login">Login</button>
+            <button type="submit" class="btn-login">Đăng nhập</button>
         </form>
 
         <p class="register-text">
-            Don't have an account?
-            <a asp-action="Register" asp-controller="Account" class="link-register">Register here</a>
+            Chưa có tài khoản?
+            <a asp-action="Register" asp-controller="Account" class="link-register">Đăng ký ngay</a>
         </p>
     </div>
 </div>

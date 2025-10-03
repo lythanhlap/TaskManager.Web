@@ -1,0 +1,120 @@
+﻿.login-container {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 80vh;
+    max-width: 1000px;
+    margin: 50px auto;
+    background: #fff0f5;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(232, 62, 140, 0.15);
+    overflow: hidden;
+}
+
+/* left form */
+.login-info {
+    flex: 2;
+    background: linear-gradient(180deg, #ffbfd3, #ffdee9);
+    color: #d63384;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 30px;
+    text-align: center;
+}
+
+    .login-info .logo {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .login-info .slogan {
+        font-size: 1.2rem;
+        line-height: 1.5;
+    }
+
+/* right form */
+.login-form-box {
+    flex: 1;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    .login-form-box .form-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #d63384;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form label.form-label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.login-form input.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+    .login-form input.form-control:focus {
+        border-color: #ff6fcf;
+        box-shadow: 0 0 8px rgba(255, 111, 207, 0.3);
+        outline: none;
+    }
+
+.login-form .text-danger {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: block;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    color: #fff;
+    background: linear-gradient(90deg, #ff4da6, #e83e8c);
+    box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+    .btn-login:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(255, 77, 109, 0.5);
+        background: linear-gradient(90deg, #ff4da6, #e83e8c);
+    }
+
+.register-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+    .register-text .link-register {
+        color: #ff4da6;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+        .register-text .link-register:hover {
+            color: #ff4da6;
+        }

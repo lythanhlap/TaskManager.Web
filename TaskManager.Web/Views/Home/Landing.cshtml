@@ -1,7 +1,7 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
 @{
-    Layout = null; 
+    Layout = null;
 }
 
 @if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -19,53 +19,138 @@ else
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>TaskManager</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
         <style>
-            header {
-                background-color: #F4F5F7;
-            }
             body {
-                background-color: #F4F5F7;
-                font-family: Arial, sans-serif;
+                font-family: 'Segoe UI', Arial, sans-serif;
+                background-color: #FFD6E0;
+                color: #333;
             }
+
+            .navbar {
+                background: linear-gradient(90deg, #ffbfd3, #ffdee9);
+                padding: 15px 40px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid #f8a6c9;
+                box-shadow: 0 4px 10px rgba(232, 62, 140, 0.15);
+                border-radius: 0 0 18px 18px;
+            }
+
             .navbar-brand {
-                font-weight: bold;
-                color: #0052cc !important;
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: #d63384;
+                text-decoration: none;
+                letter-spacing: 1px;
+                transition: transform 0.2s, color 0.3s;
+                font-family: 'Poppins', sans-serif;
             }
+
+                .navbar-brand:hover {
+                    transform: scale(1.05);
+                    color: #e83e8c;
+                    text-shadow: 0 0 6px rgba(232, 62, 140, 0.3);
+                }
+
+            .navbar-nav {
+                display: flex;
+                gap: 25px;
+            }
+
+                .navbar-nav a {
+                    color: #d63384;
+                    font-weight: 500;
+                    text-decoration: none;
+                    font-size: 1rem;
+                    transition: color 0.3s, transform 0.2s;
+                    position: relative;
+                    font-family: 'Poppins', sans-serif;
+                }
+
+                    .navbar-nav a:hover {
+                        color: #b52d6f;
+                        transform: translateY(-2px);
+                    }
+
+                    .navbar-nav a::after {
+                        content: '';
+                        display: block;
+                        height: 2px;
+                        width: 0;
+                        background: #d63384;
+                        transition: width 0.3s;
+                        margin-top: 4px;
+                        border-radius: 4px;
+                    }
+
+                    .navbar-nav a:hover::after {
+                        width: 100%;
+                    }
+
+            /* Button */
+            .btn-primary {
+                background-color: #e60073;
+                border: none;
+                padding: 10px 20px;
+                font-weight: 500;
+                border-radius: 30px;
+            }
+
+                .btn-primary:hover {
+                    background-color: #cc0066;
+                }
+
+            /* Banner */
             .banner {
-                background-color: #e9f2ff;
-                color: #172b4d;
-                font-size: 14px;
-                padding: 10px;
+                background-color: #FFD6E0;
+                color: #333;
+                font-size: 15px;
+                padding: 12px;
                 text-align: center;
             }
+
+                .banner a {
+                    color: #e60073;
+                    text-decoration: none;
+                    font-weight: 500;
+                }
+
+                    .banner a:hover {
+                        text-decoration: underline;
+                    }
+
+            /* Hero section */
             .hero {
                 padding: 80px 0;
             }
-            .hero h1 {
-                font-size: 2.5rem;
-                font-weight: bold;
-                color: #172b4d;
-            }
-            .hero p {
-                font-size: 1.2rem;
-                margin-bottom: 1.5rem;
-                color: #42526e;
-            }
-            .form-control {
-                max-width: 350px;
-            }
-            .btn-primary {
-                background-color: #0052cc;
-                border-color: #0052cc;
-            }
+
+                .hero h1 {
+                    font-size: 2.5rem;
+                    font-weight: bold;
+                    color: #cc0066;
+                }
+
+                .hero p {
+                    font-size: 1.2rem;
+                    margin-bottom: 1.5rem;
+                    color: #555;
+                }
+
+                .hero img {
+                    max-width: 90%;
+                    border-radius: 20px;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                }
         </style>
     </head>
     <body>
 
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="#">TaskManager</a>
+                <a class="navbar-brand" href="#">Task Manager</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -85,8 +170,8 @@ else
 
         <!-- Banner -->
         <div class="banner">
-            Tăng hiệu quả quản lsi công việc của bạn với task manager 
-            <a href="#" class="ms-1">Tìm hiểu thêm</a>
+            💖 Tăng hiệu quả quản lí công việc với <b>Task Manager</b>
+            <a href="#" class="ms-1">Xem thêm</a>
         </div>
 
         <!-- Hero Section -->
@@ -95,18 +180,17 @@ else
                 <div class="row align-items-center">
                     <!-- Text -->
                     <div class="col-lg-6">
-                        <h1>Ghi lại, sắp xếp và giải quyết công việc từ bất cứ đâu.</h1>
-                        <p>Thoát khỏi tình trạng lộn xộn và hỗn loạn – giải phóng năng suất của bạn với TaskManager.</p>
-                        <a href="/Account/Register" class="btn btn-primary gap-2">Đăng kí miên phí</a>
+                        <h1>Ghi lại, sắp xếp và hoàn thành công việc từ bất cứ đâu.</h1>
+                        <p>Thoát khỏi sự lộn xộn và hỗn loạn – giải phóng năng suất của bạn với Task Manager.</p>
+                        <a href="/Account/Register" class="btn btn-primary gap-2">Bắt đầu miễn phí</a>
                         <small class="d-block mt-2 text-muted">
-                            Khi đăng kí bạn đồng ý với <a href="#">chính sách bảo mật</a>.
+                            Khi đăng ký, bạn đồng ý với <a href="#">chính sách bảo mật</a>.
                         </small>
                     </div>
 
                     <!-- Image -->
                     <div class="col-lg-6 text-center">
-                        <img src="~/img/landing_img.png"
-                             class="img-fluid" alt="App Screenshot">
+                        <img src="~/img/landing_img.png" class="img-fluid" alt="App Screenshot">
                     </div>
                 </div>
             </div>

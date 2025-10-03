@@ -21,116 +21,18 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home_index.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-..."
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-
-    <style>
-        .navbar-custom {
-            background: linear-gradient(to right, #6baef7, #C4E7FF);
-            border-bottom: 2px solid #5fa2e0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            border-radius: 0 0 12px 12px;
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.6rem;
-            color: #333;
-        }
-
-            .navbar-brand::before {
-                content: " ";
-            }
-
-        .nav-link {
-            font-weight: 500;
-            color: #444 !important;
-            transition: color .3s ease;
-        }
-
-            .nav-link:hover {
-                color: #d6336c !important;
-            }
-
-        .login-btn {
-            background-color: #0C66E4;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 14px;
-            margin-left: .5rem;
-        }
-
-            .login-btn:hover {
-                background-color: #69A7E4;
-                color: #000;
-            }
-
-        .account-menu {
-            position: relative;
-            margin-left: 1rem;
-        }
-
-        .account-icon {
-            background: transparent;
-            border: 0;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform .2s;
-        }
-
-            .account-icon:hover {
-                transform: scale(1.1);
-            }
-
-        .account-dropdown {
-            position: absolute;
-            top: 120%;
-            right: 0;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,.1);
-            display: none;
-            flex-direction: column;
-            min-width: 200px;
-            z-index: 1000;
-        }
-
-            .account-dropdown a, .account-dropdown button {
-                padding: 10px 16px;
-                text-decoration: none;
-                color: #333;
-                font-size: 14px;
-                border-bottom: 1px solid #eee;
-                display: block;
-                width: 100%;
-                text-align: left;
-                background: none;
-            }
-
-                .account-dropdown a:last-child, .account-dropdown button:last-child {
-                    border-bottom: none;
-                }
-
-                .account-dropdown a:hover, .account-dropdown button:hover {
-                    background: #f8d7da;
-                    color: #d6336c;
-                }
-
-    </style>
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-..."
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 
-<body >
+<body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light navbar-custom mb-3 ">
             <div class="container-fluid">
@@ -170,8 +72,14 @@
                         }
                         else
                         {
-                            <a class="login-btn" asp-controller="Account" asp-action="Login">Login</a>
-                            <a class="login-btn" asp-controller="Account" asp-action="Register">Register</a>
+                            <div class="navbar-actions">
+                                <form asp-controller="Account" asp-action="Login" method="get" style="display:inline;">
+                                    <button type="submit" class="btn-loginreg">Login</button>
+                                </form>
+                                <form asp-controller="Account" asp-action="Register" method="get" style="display:inline;">
+                                    <button type="submit" class="btn-loginreg">Register</button>
+                                </form>
+                            </div>
                         }
                     </div>
                 </div>
@@ -180,8 +88,8 @@
     </header>
     <!--px-4 px-lg-5-->
     <div class="@(ViewBag.BodyClass == "page-wide"
-                ? "container-fluid px-4 px-lg-5"
-                : "container")">
+                         ? "container-fluid px-4 px-lg-5"
+                         : "container")">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

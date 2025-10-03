@@ -1,621 +1,161 @@
-﻿/* 🌸 NỀN TOÀN TRANG */
-body {
-    background-color: #fff;
-    font-family: 'Segoe UI', sans-serif;
+﻿body {
+    background-color: #FFD6E0;
+    color: #333;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
 }
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif;
-}
 
-
-.register-card {
-    box-shadow: none !important; /* bỏ bóng nổi */
-    border: 1px solid #f5f5f5; /* thêm viền nhạt để nhìn vẫn gọn */
-    background-color: #fff; /* giữ nền trắng */
-}
-
-    .register-card:hover {
-        box-shadow: none !important; /* không nổi khi hover */
-        transform: none !important; /* không nhích lên */
-    }
-/* 🌺 THANH ĐIỀU HƯỚNG */
-.bg-custom {
-    background-color: #f8d7da;
-    color: #333;
-}
-
-/* 📁 TIÊU ĐỀ TRANG + NÚT TẠO MỚI */
-.page-header {
+.navbar {
+    background: linear-gradient(90deg, #ffbfd3, #ffdee9);
+    padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 2rem 1rem 1rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    border-bottom: 2px solid #f8a6c9;
+    box-shadow: 0 4px 10px rgba(232, 62, 140, 0.15);
+    border-radius: 0 0 18px 18px;
 }
 
-.page-title {
-    font-size: 2rem;
+.navbar-brand {
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #000;
-    margin: 0;
-}
-
-.btn-create {
-    background-color: #1868DB;
-    color: #fff;
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border-radius: 10px;
-    border: none;
-    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2);
-    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    color: #d63384 !important;
     text-decoration: none;
+    letter-spacing: 1px;
+    transition: transform 0.2s, color 0.3s;
+    font-family: 'Poppins', sans-serif;
 }
 
-    .btn-create:hover {
-        background-color: #1B75F7;
-        transform: translateY(-1px);
+    .navbar-brand:hover {
+        color: #b52d6f !important;
+        transform: scale(1.05);
+        text-shadow: 0 0 6px rgba(232, 62, 140, 0.3);
     }
 
-/* 📋 KANBAN CHUNG */
-.kanban-board {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 2rem;
-    flex-wrap: wrap;
-    height: auto;
-}
-
-.kanban-column {
-    flex: 1 1 45%;
-    max-width: 600px;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    overflow-y: auto;
-    min-height: 500px;
-    transition: transform 0.2s ease;
-}
-
-    .kanban-column:hover {
-        transform: translateY(-2px);
-    }
-
-.kanban-column {
-    scrollbar-width: none;
-}
-
-/* 📋 KANBAN PROJECT */
-.kanban-board-prj {
-    display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    padding: 2rem 1rem;
-}
-
-.kanban-column-prj {
-    min-width: 340px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
-    transition: box-shadow 0.3s ease, transform 0.2s ease;
-}
-
-    .kanban-column-prj:hover {
-        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        transform: translateY(-2px);
-    }
-
-/* 🏷️ TIÊU ĐỀ CỘT */
-.kanban-title,
-.kanban-column h5 {
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 1.25rem;
-    color: #444;
-    padding-bottom: 0.5rem;
-}
-
-.kanban-title {
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #d63384 !important;
+    text-decoration: none;
+    margin: 0 12px;
+    transition: color 0.3s, transform 0.2s;
     position: relative;
-    font-size: 1.4rem;
-    padding-bottom: 6px;
+    font-family: 'Poppins', sans-serif;
 }
 
-    .kanban-title::after {
-        content: "";
+    .navbar-nav .nav-link::after {
+        content: '';
         position: absolute;
         left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 3px; 
-        background: linear-gradient(to right, #7b5cd6, #d56bc6);
-        border-radius: 2px; 
+        bottom: -4px;
+        height: 2px;
+        width: 0;
+        background: #d63384;
+        border-radius: 4px;
+        transition: width 0.3s ease;
     }
 
+    .navbar-nav .nav-link:hover {
+        color: #b52d6f !important;
+        transform: translateY(-2px);
+    }
 
-.kanban-column h5 {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    color: #212529;
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+.navbar-actions {
+    display: flex;
+    gap: 12px;
 }
 
-/* 📦 THẺ DỰ ÁN / NHIỆM VỤ */
-.card,
-.kanban-card {
-    background-color: #fff;
-    border-radius: 12px;
-    margin-bottom: 1.25rem;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    .navbar-actions .btn-loginreg {
+        padding: 8px 18px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #fff;
+        background: #d63384;
+        border: none;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .navbar-actions .btn-loginreg:hover {
+            background: #e06ca8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(224, 108, 168, 0.3);
+        }
+
+.d-flex.align-items-center {
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+}
+
+    .d-flex.align-items-center span {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-right: 10px;
+        color: #d63384 !important;
+    }
+
+.account-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.account-icon {
+    font-size: 1.3rem;
+    background: none;
+    border: none;
     cursor: pointer;
-}
-
-.card {
-    position: relative;
+    padding: 4px 8px;
     border-radius: 8px;
+    transition: transform 0.2s, color 0.3s;
+}
+
+    .account-icon:hover {
+        transform: scale(1.1);
+        color: #e83e8c;
+    }
+
+.account-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 36px;
+    background: #fff;
+    min-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(232, 62, 140, 0.15);
     overflow: hidden;
+    z-index: 1000;
+    flex-direction: column;
 }
 
-    .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 6px; 
-        height: 100%;
-        background: linear-gradient(to bottom, #7b5cd6, #d56bc6);
+    .account-dropdown a,
+    .account-dropdown button {
+        display: block;
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 0.95rem;
+        color: #d63384;
+        text-decoration: none;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s;
     }
 
-.kanban-card {
-    border-left: 5px solid #0d6efd;
-    padding: 1rem;
-}
+        .account-dropdown a:hover,
+        .account-dropdown button:hover {
+            background: #ffe0ef;
+            color: #b52d6f;
+        }
 
-    .card:hover,
-    .kanban-card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-    }
-
-    .kanban-card:hover {
-        background-color: #e9f5ff;
-    }
-
-/* 📄 NỘI DUNG THẺ */
-.card-body {
-    padding: 1.5rem;
+.account-menu.show .account-dropdown {
     display: flex;
     flex-direction: column;
-    border-radius: 18px;
 }
-
-.card-title {
-    font-size: 1.35rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    color: #ff69b4;
-}
-
-.card-dates {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    margin-bottom: 0.75rem;
-    color: #555;
-}
-
-    .card-dates::before {
-        content: "📅 ";
-    }
-
-.card-text {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 1rem;
-}
-
-/* 👥 DANH SÁCH THÀNH VIÊN */
-.card ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0 0 1rem;
-    padding: 0;
-}
-
-    .card ul li {
-        font-size: 0.85rem;
-        background-color: #e2e3e5;
-        padding: 0.4em 0.7em;
-        border-radius: 12px;
-        color: #333;
-    }
-
-.members-prj ul li::before {
-    content: "👤 ";
-}
-
-/* 🛠️ NÚT TRONG THẺ */
-.card .btn,
-.kanban-card .btn {
-    font-size: 0.85rem;
-    padding: 0.4rem 0.75rem;
-    border-radius: 6px;
-}
-
-.kanban-card .badge {
-    font-size: 0.75rem;
-    padding: 4px 8px;
-    border-radius: 6px;
-    background-color: #ffc107;
-    color: #212529;
-}
-
-/* ✅ TRẠNG THÁI */
-.completed {
-    border-left: 5px solid #198754;
-}
-
-.in-progress {
-    border-left: 5px solid #ffc107;
-}
-
-/* 🎀 HERO SECTION */
-.hero-section {
-    padding: 80px 20px;
-    background: linear-gradient(to right, #6baef7, #C4E7FF);
-    border-radius: 0 0 40px 40px;
-    color: #333;
-}
-
-.brand {
-    color: #d6336c;
-    font-weight: bold;
-}
-
-.btn-primary {
-    background-color: #0853C2;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-    .btn-primary:hover {
-        background-color: #0C95FA;
-    }
-
-/* 📌 LIÊN KẾT */
-a {
-    color: #d6336c;
-    text-decoration: underline;
-}
-
-    a:hover {
-        color: #b02a57;
-    }
-
-/* ✨ FEATURES SECTION */
-.features-section {
-    padding: 60px 20px;
-    background-color: #fff;
-    text-align: center;
-}
-
-.section-title {
-    font-size: 2rem;
-    margin-bottom: 40px;
-    color: #000;
-}
-
-.features-grid {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.feature-box {
-    background-color: #C4E7FF;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 280px;
-    transition: transform 0.3s ease;
-}
-
-    .feature-box:hover {
-        transform: translateY(-5px);
-    }
-
-    .feature-box h3 {
-        font-size: 1.4rem;
-        margin-bottom: 10px;
-        color: #d6336c;
-    }
-
-    .feature-box p {
-        font-size: 1rem;
-        color: #555;
-    }
-
-/* 🚀 CTA SECTION */
-.cta-section {
-    background: linear-gradient(to right, #ffb6c1, #ffc0cb);
-    padding: 60px 20px;
-    text-align: center;
-    border-radius: 40px;
-    margin-top: 40px;
-    color: #333;
-}
-
-    .cta-section h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-    }
-
-    .cta-section p {
-        font-size: 1.2rem;
-        margin-bottom: 30px;
-    }
-
-/* 🔑 LOGIN PAGE */
-.login-page {
-    display: flex;
-    min-height: 100vh;
-    max-width: none !important;
-    background: linear-gradient(to right, #DEEAFD, #EEF4FD);
-    font-family: 'Segoe UI', sans-serif;
-    padding: 40px;
-    
-}
-    .login-page body {
-        background-image: url('/img/backgound.png');
-    }
-
-    .login-page .login-info {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 60px;
-        color: #000;
-    }
-
-    .login-page .logo {
-        font-size: 3rem;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .login-page .slogan {
-        font-size: 1.2rem;
-        font-style: italic;
-    }
-
-    .login-page .login-form-box {
-        flex: 1;
-        max-width: 480px;
-        margin-left: auto;
-        background-color: #fff;
-        padding: 60px;
-        border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .login-page .form-title {
-        font-size: 50px;
-        font-weight: bold;
-        text-align: center;
-/*        color: #d6336c;*/
-        color: #000;
-        margin-bottom: 36px;
-        letter-spacing: 1px;
-    }
-
-    .login-page .form-control {
-        border-radius: 8px;
-        padding: 10px 12px;
-    }
-
-        .login-page .form-control:focus {
-            border-color: #ff69b4;
-            box-shadow: 0 0 6px rgba(255, 105, 180, 0.3);
-            outline: none;
-        }
-
-    .login-page .btn-login {
-        display: block;
-        width: 100%;
-        max-width: 320px;
-        margin: 8px auto;
-        padding: 16px 0;
-        background-color: #0C66E4;
-        color: white;
-        border: none;
-        border-radius: 14px;
-        font-size: 18px;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-        .login-page .btn-login:hover {
-            background-color: #4994E4;
-        }
-
-    .login-page .register-text {
-        text-align: center;
-        margin-top: 24px;
-        font-size: 15px;
-        color: #666;
-        width: 100%;
-    }
-
-/* 📝 TEXT + FORM */
-.text-title {
-    color: #e91e63;
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    text-shadow: 1px 1px 2px rgba(233, 30, 99, 0.2);
-}
-
-.text-center {
-    color: #666;
-}
-
-.login-text {
-    color: #e91e63;
-}
-
-.form-floating label {
-    color: #e91e63;
-    font-weight: 500;
-}
-
-.form-control {
-    border: 2px solid #f8bbd0;
-    border-radius: 8px;
-    background-color: #fff;
-    transition: border-color 0.3s ease;
-}
-
-    .form-control:focus {
-        border-color: #e91e63;
-        box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
-    }
-
-/* 🌸 BUTTON CHUNG */
-.btn-success {
-    background-color: #ff69b4;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 16px;
-    color: white;
-    padding: 10px 16px;
-    transition: background-color 0.3s ease;
-}
-
-    .btn-success:hover {
-        background-color: #e055a3;
-    }
-
-/* ⚠️ VALIDATION */
-.text-danger {
-    font-size: 0.875rem;
-}
-
-.alert-danger {
-    background-color: #f8bbd0;
-    color: #880e4f;
-    border: none;
-    border-radius: 8px;
-}
-
-/* 📱 RESPONSIVE */
-@media (max-width: 768px) {
-    .kanban-board,
-    .kanban-board-prj {
-        flex-direction: column;
-    }
-
-    .kanban-column,
-    .kanban-column-prj {
-        width: 100%;
-    }
-
-    .page-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .btn-create {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-
-
-
-/* ======= Biểu đồ tròn & cột ======= */
-canvas {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: box-shadow 0.3s ease;
-}
-
-    canvas:hover {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    }
-
-/* ======= Khung biểu đồ ======= */
-.row.justify-content-center {
-    margin-bottom: 40px;
-}
-
-/* ======= Tiêu đề biểu đồ ======= */
-h4.text-center {
-    color: #6c757d;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-/* Làm alert-danger thực sự đỏ và bỏ nền xám của <li> */
-.validation-summary-errors.alert {
-    background-color: #f8d7da; /* nền đỏ nhạt */
-    border-color: #f5c2c7;
-    color: #842029; /* chữ đỏ đậm */
-}
-
-.validation-summary-errors ul {
-    margin: 0;
-    padding: 0;
-}
-
-    .validation-summary-errors ul li {
-        list-style: none;
-        background: transparent !important; /* bỏ viên xám */
-        color: inherit !important;
-        padding: 0;
-        border-radius: 0;
-        display: block;
-    }
-
-
-/*  full width: gắn class page-wide vào <body> */
-.page-wide .site-container {
-    max-width: 100% !important; 
-    padding-left: 12px; 
-    padding-right: 12px;
-}
-
-@media (min-width: 768px) {
-    .page-wide .site-container {
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-}
-
-

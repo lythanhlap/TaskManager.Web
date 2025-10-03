@@ -1,29 +1,31 @@
 ﻿@{
-    ViewData["Title"] = "Welcome to Task Manager";
+    ViewData["Title"] = "Chào mừng đến với Task Manager";
 }
 
 @if (User.Identity.IsAuthenticated)
 {
     <div class="hero-section text-center mt-5">
         <h1 class="display-4 text-xxl-center">@ViewBag.WelcomeMessage</h1>
-        <p class="lead ">Glad to see you again. Ready to conquer your tasks today?</p>
-        <a class="btn btn-primary btn-lg mt-3" href="/Dashboard">Go to Dashboard</a>
+        <p class="lead">Rất vui được gặp lại bạn. Sẵn sàng chinh phục các công việc hôm nay chưa?</p>
+        <button class="btn btn-primary btn-lg mt-3" onclick="location.href='/Dashboard'">
+            Đi đến Bảng Điều Khiển
+        </button>
     </div>
 
     <div class="features-section mt-5">
-        <h2 class="section-title">📊 Your Productivity Hub</h2>
+        <h2 class="section-title">📊 Bảng Điều Khiển</h2>
         <div class="features-grid">
             <div class="feature-box">
-                <h3>📁 Active Projects</h3>
-                <p>Track your ongoing projects and collaborate with your team.</p>
+                <h3>📁 Dự án đang hoạt động</h3>
+                <p>Theo dõi các dự án hiện tại và hợp tác cùng nhóm của bạn.</p>
             </div>
             <div class="feature-box">
-                <h3>✅ Today's Tasks</h3>
-                <p>Stay focused with your prioritized task list.</p>
+                <h3>✅ Công việc hôm nay</h3>
+                <p>Giữ tập trung với danh sách công việc ưu tiên của bạn.</p>
             </div>
             <div class="feature-box">
-                <h3>🔔 Notifications</h3>
-                <p>Check updates and deadlines you shouldn't miss.</p>
+                <h3>🔔 Thông báo</h3>
+                <p>Kiểm tra các cập nhật và thời hạn bạn không nên bỏ lỡ.</p>
             </div>
         </div>
     </div>
@@ -32,31 +34,31 @@
 else
 {
     <div class="hero-section text-center">
-        <h1 class="display-4">Welcome to <span class="brand">Task Manager </span></h1>
-        <a class="btn btn-primary btn-lg mt-3" href="/Account/Register">Get Started</a>
+        <h1 class="display-4">Chào mừng đến với <span class="brand">Task Manager</span></h1>
+        <a class="btn btn-primary btn-lg mt-3" href="/Account/Register">Bắt đầu ngay</a>
     </div>
 
     <div class="features-section">
-        <h2 class="section-title">✨ What You Can Do with Task Manager</h2>
+        <h2 class="section-title">✨ Những gì bạn có thể làm với Task Manager</h2>
         <div class="features-grid">
             <div class="feature-box">
-                <h3>📁 Manage Projects</h3>
-                <p>Create, track, and collaborate on multiple projects with ease.</p>
+                <h3>📁 Quản lý dự án</h3>
+                <p>Tạo, theo dõi và hợp tác trên nhiều dự án một cách dễ dàng.</p>
             </div>
             <div class="feature-box">
-                <h3>✅ Organize Tasks</h3>
-                <p>Stay productive with smart task lists and progress tracking.</p>
+                <h3>✅ Sắp xếp công việc</h3>
+                <p>Giữ năng suất với danh sách công việc thông minh và theo dõi tiến độ.</p>
             </div>
             <div class="feature-box">
-                <h3>🔔 Stay Notified</h3>
-                <p>Get real-time updates so you never miss a deadline.</p>
+                <h3>🔔 Nhận thông báo</h3>
+                <p>Nhận cập nhật thời gian thực để không bỏ lỡ bất kỳ hạn chót nào.</p>
             </div>
         </div>
     </div>
 
     <div class="cta-section">
-        <h2>Ready to boost your productivity?</h2>
-        <p>Join with us today and simplify your workflow.</p>
-        <a href="/Account/Register" class="btn btn-primary btn-lg">Create Your Account</a>
+        <h2>Sẵn sàng nâng cao năng suất của bạn?</h2>
+        <p>Tham gia cùng chúng tôi ngay hôm nay và đơn giản hóa quy trình làm việc.</p>
+        <a href="/Account/Register" class="btn btn-primary btn-lg">Tạo tài khoản của bạn</a>
     </div>
 }
