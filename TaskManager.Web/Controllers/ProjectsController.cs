@@ -84,12 +84,12 @@ namespace TaskManager.Web.Controllers
                     if (string.IsNullOrWhiteSpace(email)) continue;
 
                     await _noti.EnqueueAsync(new ProjectMemberAdded(
-                        email,                  // RecipientEmail
-                        userId,                 // RecipientUserId
-                        dto.Id.ToString(),      // ProjectId
-                        name,                   // ProjectName
-                        ownerDisplay,           // AddedBy (FullName/DisplayName)
-                        ownerUser               // AddedByUserName  
+                        email,                  
+                        userId,                 
+                        dto.Id.ToString(),      
+                        name,                   
+                        ownerDisplay,          
+                        ownerUser               
                     ));
                 }
             }
@@ -238,7 +238,7 @@ namespace TaskManager.Web.Controllers
         {
             try
             {
-                await _svc.DeleteAsync(id, Uid);   // cần method này trong component
+                await _svc.DeleteAsync(id, Uid); 
                 TempData["Ok"] = "Đã xóa dự án.";
                 return RedirectToAction(nameof(Index));
             }

@@ -46,7 +46,7 @@ public sealed class ProjectTasksPagesController : Controller
                          .ToList();
 
         var map = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (var id in allIds)               // tuần tự -> không lỗi EF
+        foreach (var id in allIds)               
         {
             var u = await _users.GetUserByIdAsync(id, ct);
             map[id] = u?.Username ?? id;
@@ -54,7 +54,7 @@ public sealed class ProjectTasksPagesController : Controller
 
         ViewBag.ProjectId = projectId;
         ViewBag.ActorId = ActorId;
-        ViewBag.UsernameMap = map;               // đẩy xuống view
+        ViewBag.UsernameMap = map;               
 
         return View(list);
     }

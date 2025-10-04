@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TaskManager.Identity.Persistence.EFCore;      // Users table
-using TaskManager.Projects.Persistence.EFCore;      // để loại trừ member đã thuộc project
+using TaskManager.Identity.Persistence.EFCore;     
+using TaskManager.Projects.Persistence.EFCore;      
 
 namespace TaskManager.Web.Controllers
 {
@@ -28,7 +28,7 @@ namespace TaskManager.Web.Controllers
 
             q = q.Trim();
 
-            // Loại các user đã là member của project (nếu truyền projectId)
+            // Loại các user đã là member của project 
             HashSet<string> exclude = new();
             if (projectId.HasValue)
             {

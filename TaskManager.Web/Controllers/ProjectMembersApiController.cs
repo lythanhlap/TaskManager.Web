@@ -24,7 +24,7 @@ public sealed class ProjectMembersApiController : Controller
     [HttpGet("usernames")]
     public async Task<IActionResult> Usernames(Guid projectId, CancellationToken ct = default)
     {
-        // B1: lấy list UserId từ ProjectsDbContext
+        // lấy list UserId từ ProjectsDbContext
         var memberIds = await _prjDb.ProjectMembers.AsNoTracking()
             .Where(m => m.ProjectId == projectId)
             .Select(m => m.UserId)
@@ -32,9 +32,9 @@ public sealed class ProjectMembersApiController : Controller
 
         if (memberIds.Count == 0) return Ok(Array.Empty<object>());
 
-        // B2: query trong IdentityDbContext (một mình) với IN (...)
+        //  query trong IdentityDbContext 
         var rows = await _idDb.Users.AsNoTracking()
-#if USE_IDENTITY_USERNAME // nếu schema của bạn dùng UserName (chuẩn Identity) thì bật define này, hoặc đổi thủ công
+#if USE_IDENTITY_USERNAME 
             .Where(u => memberIds.Contains(u.Id))
             .OrderBy(u => u.UserName)
             .Select(u => new { userId = u.Id, username = u.UserName })

@@ -30,7 +30,7 @@ namespace TaskManager.Web.Controllers
         public async Task<IActionResult> back()
         {
             var projects = await _svc.GetForUserAsync(Uid);
-            return View(projects); // Model = IEnumerable<ProjectDto> 
+            return View(projects);
         }
     }
 }
