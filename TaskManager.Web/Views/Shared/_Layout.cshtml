@@ -20,6 +20,7 @@
     <title>@ViewData["Title"] - Task Manager</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="/css/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet"
@@ -31,10 +32,10 @@
 
     <style>
         .navbar-custom {
-            background: linear-gradient(to right, #6baef7, #C4E7FF);
-            border-bottom: 2px solid #5fa2e0;
+            background: #fff;
+
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            border-radius: 0 0 12px 12px;
+            border-radius: 0 0 4px 4px;
         }
 
         .navbar-brand {
@@ -126,6 +127,29 @@
                     color: #d6336c;
                 }
 
+        .account-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+        .account-icon {
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            transition: transform .2s;
+            font-size: 1rem;
+        }
+
+            .account-icon:hover {
+                transform: scale(1.1);
+            }
+
     </style>
 </head>
 
@@ -156,7 +180,11 @@
                             <span class="me-2 text-dark">Xin chào, @username!</span>
 
                             <div class="account-menu">
-                                <button class="account-icon" id="accountToggle" title="Quản lý tài khoản">👤</button>
+                                <button class="account-icon" id="accountToggle" title="Quản lý tài khoản">
+                                    <img src="https://ui-avatars.com/api/?name=@username&background=0D8ABC&color=FFF&rounded=true&size=40"
+                                         alt="Avatar của @username"
+                                         class="account-avatar" />
+                                </button>
                                 <div class="account-dropdown" id="accountDropdown">
                                     <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
                                     <a asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>

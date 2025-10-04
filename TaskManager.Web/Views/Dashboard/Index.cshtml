@@ -55,7 +55,6 @@
             background: #FFFFFF;
             color: #13353f;
             font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-            background-image: url(/img/bg1.png);
             background-size: cover;
         }
 
@@ -71,12 +70,19 @@
     .logo{font-size:22px; font-weight:700; color:#0b3b44; padding:8px 12px; border:2px solid var(--brand); border-radius:10px; background:#e8ffe3; text-align:center}
     .search{display:flex; align-items:center; gap:10px; padding:0 6px}
     .search input{width:100%; padding:10px 12px; border:2px solid var(--brand); border-radius:10px; outline:none; background:white}
-    .account{justify-self:end; font-weight:700; border:2px solid #f1c40f; background:#fff9ce; padding:0px 8px; border-radius:10px}
+
+        .account {
+            justify-self: end;
+            font-weight: 700;
+            padding: 0px;
+            border-radius: 10px;
+        }
 
     /* Body split */
     .app__body{
-        display:grid; grid-template-columns:280px 1fr; gap:16px; padding:16px;
+        display:grid; grid-template-columns:280px 1fr; gap:60px; padding:16px;
         margin-right:16px; 
+        height:100vh;
     
     }
 
@@ -161,14 +167,19 @@
         .account-menu {
             position: relative;
             margin-left: 1rem;
+            margin-right: 1rem;
         }
 
         .account-icon {
             background: transparent;
-            border: 0;
-            font-size: 1.5rem;
+            border: none; 
+            padding: 0;
             cursor: pointer;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
             transition: transform .2s;
+            font-size: 1rem;
         }
 
             .account-icon:hover {
@@ -236,7 +247,28 @@
           pointer-events:none;                
         }
 
+        .account-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%; 
+            vertical-align: middle; 
+        }
 
+        .account-icon {
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            transition: transform .2s;
+            font-size: 1rem; 
+        }
+
+            .account-icon:hover {
+                transform: scale(1.1);
+            }
         
 
   </style>
@@ -254,10 +286,15 @@
                 <div class="d-flex align-items-center">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
+                        <!-- 
                         <span class="me-2 text-dark"> @username</span>
-
+                        -->
                         <div class="account-menu">
-                            <button class="account-icon" id="accountToggle" title="Quản lý tài khoản">👤</button>
+                            <button class="account-icon " id="accountToggle" title="Quản lý tài khoản" style="margin-right=30px">
+                                <img src="https://ui-avatars.com/api/?name=@username&background=0D8ABC&color=FFF&rounded=true&size=32"
+                                     alt="Avatar của @username"
+                                     class="account-avatar" />
+                            </button>
                             <div class="account-dropdown" id="accountDropdown">
                                 <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
                                 <a asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
