@@ -33,7 +33,7 @@ namespace TaskManager.Web.Controllers
             }
             else
             {
-                return View("Login");
+                return View("Landing");
             }
 
             return View();
