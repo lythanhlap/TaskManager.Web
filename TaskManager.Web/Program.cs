@@ -30,6 +30,17 @@ using TaskManager.Reports.Abstractions;
 using TaskManager.Reports.Mvc;
 using TaskManager.Web.Services;
 using TaskManager.Web.Services;
+using System.Net.NetworkInformation;
+using System;
+// chat
+using Universal.Chat.Abstractions;
+using Universal.Chat.Core;
+using Universal.Chat.Persistence.EFCore;
+using Universal.Chat.Realtime.SignalR;
+using Universal.Chat.Mvc;
+using Universal.Chat.Persistence.EFCore.Entities;
+using Scrutor;
+using TaskManager.Web.Chat;
 
 
 namespace TaskManager.Web
@@ -62,6 +73,12 @@ namespace TaskManager.Web
                 )
             );
 
+            // Chat component
+            services
+                .AddChatEfCore(cfg.GetConnectionString("DefaultConnection"))  // DbContext
+                .AddChatCore()                                                // IChatService/IChatReadOnly
+                .AddChatSignalR();                                            // SignalR Hub + IRealtimeTransport
+
             // Options + Service + Worker
             services.Configure<NotificationsOptions>(cfg.GetSection("Notifications"));
             services.AddScoped<INotificationClient, NotificationService>();
@@ -76,17 +93,19 @@ namespace TaskManager.Web
 
            
             services.AddScoped<NotificationFacade>();
-            //SmtpOptions smtpOptions = cfg.GetSection("Smtp").Get<SmtpOptions>()!;
-            //smtpOptions.FromName ??= "Task Manager";
-
 
             services.AddReportsCoreTwoDb<ProjectsDbContext, TasksDbContext, Project, TaskItem>(cfg =>
             {
                 cfg.ProjectKey = p => p.Id;
                 cfg.ProjectName = p => p.Name;
                 cfg.TaskProjectKey = t => t.ProjectId;
-
                 cfg.IsCompletedByPredicate(t => t.Status == (int)Tasks.Abstractions.TaskStatus.Complete);
+
+                cfg.FilterProjectsVisibleTo = (q, userId) =>
+                    q.Where(p => p.OwnerUserId == userId
+                              || p.Members.Any(m => m.UserId == userId));
+
+                cfg.FilterTasksVisibleTo = (q, userId) => q; 
             });
 
             builder.Services.AddScoped<IProjectAutoStatus, ProjectAutoStatus>();
@@ -129,7 +148,13 @@ namespace TaskManager.Web
             services.AddAuthorization();
 
             services.AddScoped<IUserReadOnly, IdentityUserReadOnlyAdapter>();
-            
+            services.AddScoped<IUserDirectory, UserDirectoryAdapter>();
+            services.AddScoped<IChatMessageObserver, TaskManager.Web.Chat.MentionNotifyObserver>();
+            //services.AddScoped<MentionNotifyObserver>(); // observer
+            services.Decorate<IChatService, TaskManager.Web.Chat.MentioningChatServiceDecorator>();
+            //services.Decorate<IChatReadOnly, TaskManager.Web.Chat.MentioningChatDecorator>(); 
+
+
             services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -177,6 +202,8 @@ namespace TaskManager.Web
 
                 await sp.GetRequiredService<TasksDbContext>().Database.MigrateAsync();
 
+                await sp.GetRequiredService<ChatDbContext>().Database.MigrateAsync(); 
+
 
             }
 
@@ -192,6 +219,10 @@ namespace TaskManager.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.MapControllers();
+
+            // (ADD) Bật SignalR Hub cho chat
+            app.MapHub<ChatHub>("/hubs/chat");
 
             app.MapControllerRoute(
                 name: "default",

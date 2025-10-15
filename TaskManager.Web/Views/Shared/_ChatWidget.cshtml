@@ -1,0 +1,21 @@
+﻿@model Guid /* conversationId */
+<div id="chat" data-cid="@Model">
+    <div id="msgs" class="border rounded p-2 mb-2" style="height:320px;overflow:auto">Đang tải…</div>
+    <div class="input-group">
+        <input id="msg-input" class="form-control" placeholder="Nhập tin nhắn" />
+        <button id="msg-send" class="btn btn-primary">Gửi</button>
+    </div>
+</div>
+<script src="https://unpkg.com/@@microsoft/signalr@latest/dist/browser/signalr.js"></script>
+<script>
+    (function () {
+        const wrap = document.getElementById('chat'); if (!wrap) return; const cid = wrap.dataset.cid;
+        const msgs = document.getElementById('msgs'); const input = document.getElementById('msg-input');
+        function escapeHtml(s) { const d = document.createElement('div'); d.innerText = s; return d.innerHTML; }
+        async function load() { const r = await fetch(`/api/chat/messages/${cid}?take=50&user=${window.DEMO_USER || 'userA'}`); const items = await r.json(); msgs.innerHTML = items.map(m => `<div class='mb-1'><b>${m.senderUserId}</b>: ${escapeHtml(m.content)} <small class='text-muted'>${new Date(m.sentAt).toLocaleTimeString()}</small></div>`).join(''); msgs.scrollTop = msgs.scrollHeight; }
+        document.getElementById('msg-send').onclick = async () => { const content = input.value.trim(); if (!content) return; await fetch(`/api/chat/messages?user=${window.DEMO_USER || 'userA'}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ conversationId: cid, content }) }); input.value = ''; };
+        const hub = new signalR.HubConnectionBuilder().withUrl('/hubs/chat').build();
+        hub.on('message', m => { if (m.conversationId !== cid) return; load(); });
+        hub.start().then(() => hub.invoke('Join', cid));
+        load();
+    })();</script>

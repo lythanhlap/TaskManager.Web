@@ -23,6 +23,18 @@
         _ => "badge bg-light text-dark"
     };
 }
+@using System.Text.Json
+@{
+    var members = Model.Members ?? Enumerable.Empty<ProjectMemberDto>();
+    var memberIdsJson = System.Text.Json.JsonSerializer.Serialize(members.Select(m => m.UserId));
+    var userMapObj = members.ToDictionary(m => m.UserId, m => (object)new { name = m.Username, avatar = (string?)null });
+    // thêm actor
+    var actorId = User.FindFirst("sub")?.Value ?? User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+    if (actorId != null && !userMapObj.ContainsKey(actorId))
+        userMapObj[actorId] = new { name = User.Identity?.Name ?? "Me", avatar = (string?)null };
+    var userMapJson = System.Text.Json.JsonSerializer.Serialize(userMapObj);
+}
+
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="page-title">📁 @Model.Name</h2>
@@ -200,14 +212,27 @@
 
     <div class="col-lg-3">
         <div class="card shadow-sm" style="position:sticky; top:1rem;">
-            <div class="card-body">
-                <h5 class="mb-3">💬 Comment</h5>
-                <div id="commentPanel" style="min-height:400px;">
-                    <textarea class="form-control" rows="3" placeholder="Viết bình luận..."></textarea>
+            <div class="card-body chat-panel">
+                <!-- đổi: chat-panel -->
+                <h5 class="mb-3">Thảo luận</h5>
+
+                <div id="chatMessages" class="chat-messages">
+                    <!-- đổi: chat-messages -->
+                    <div class="text-muted small">Đang tải…</div>
+                </div>
+
+                <div class="chat-input">
+                    <!-- đổi: chat-input -->
+                    <div class="input-group">
+                        <input id="chatInput" class="form-control" placeholder="Nhập tin nhắn và nhấn Enter…" autocomplete="off" maxlength="4000" />
+                        <button id="chatSendBtn" class="btn btn-primary" type="button">Gửi</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 </div>
 
 
@@ -383,4 +408,18 @@
             })();
         </script>
     }
+
+
+    <!-- Chat JS ngoài -->
+    <script src="~/js/chat-project.js" asp-append-version="true"></script>
+
+    <script>
+        window.ChatProject.init({
+            projectId: '@Model.Id',
+            actorId: '@actorId',
+            memberIds: @Html.Raw(memberIdsJson),
+            userMap: @Html.Raw(userMapJson)
+          });
+    </script>
+
 }
