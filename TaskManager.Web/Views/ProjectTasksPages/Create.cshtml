@@ -11,26 +11,26 @@
     <input type="hidden" asp-for="ProjectId" />
 
     <div class="mb-2">
-        <label asp-for="Name" class="form-label"></label>
+        <label asp-for="Name" class="form-label">Tiêu đề</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="mb-2">
-        <label asp-for="Description" class="form-label"></label>
+        <label asp-for="Description" class="form-label">Mô tả</label>
         <textarea asp-for="Description" class="form-control" rows="3"></textarea>
     </div>
     <div class="col-md-4 mb-3">
-        <label class="form-label">Start At</label>
+        <label class="form-label">Ngày bắt đầu</label>
         <input name="StartAt" type="date" class="form-control" />
     </div>
     <div class="col-md-4 mb-3">
-        <label class="form-label">End At</label>
+        <label class="form-label">Ngày kết thúc</label>
         <input name="EndAt" type="date" class="form-control" />
     </div>
 
     <div class="mt-3 position-relative">
-        <label class="form-label">Giao cho (tìm theo username trong project)</label>
+        <label class="form-label">Người phụ trách (tìm theo username trong dự án)</label>
         <input id="assigneeSearch" class="form-control form-control-sm"
                placeholder="Gõ username..." autocomplete="off" />
         <div id="assigneeSuggest" class="list-group position-absolute w-100"
@@ -38,7 +38,7 @@
 
         <div id="assigneesChips" class="d-flex flex-wrap gap-2 mt-2"></div>
         <div id="assigneesHidden"></div>
-        <small class="text-muted d-block mt-1">Click gợi ý để thêm; bấm × để bỏ.</small>
+        <small class="text-muted d-block mt-1">Click vào gợi ý để thêm; bấm × để bỏ.</small>
     </div>
 
 
@@ -53,7 +53,6 @@
     <script>
         (function () {
             var pid = '@Model.ProjectId';
-            console.log('PID:', pid); // phải thấy GUID ở console
 
             var input = document.getElementById('assigneeSearch');
             var box = document.getElementById('assigneeSuggest');
@@ -79,13 +78,12 @@
                 try {
                     var url = '/api/projects/' + pid + '/members/suggest?q=' + encodeURIComponent(q) + '&take=8';
                     var res = await fetch(url);
-                    if (!res.ok) { console.warn('Suggest HTTP', res.status); hideSuggest(); return; }
+                    if (!res.ok) { hideSuggest(); return; }
                     var items = await res.json();                 // [{userId, username}]
                     items = items.filter(function (x) { return !selected.has(x.userId); });
 
                     renderSuggest(items);
                 } catch (err) {
-                    console.error('Suggest error:', err);
                     hideSuggest();
                 }
             }
@@ -130,8 +128,8 @@
 
                 var x = document.createElement('button');
                 x.type = 'button';
-                x.className = 'btn-close btn-close-red btn-sm ms-1';
-                x.setAttribute('aria-label', 'Remove');
+                x.className = 'btn-close btn-sm ms-1 custom-close';
+                x.setAttribute('aria-label', 'Xóa');
                 x.addEventListener('click', function () {
                     selected.delete(userId);
                     chip.remove();
@@ -159,4 +157,17 @@
             }
         })();
     </script>
+
+    <style>
+        /* Nút × rõ hơn trong chip */
+        #assigneesChips .custom-close {
+            filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+            opacity: 0.7;
+        }
+
+            #assigneesChips .custom-close:hover {
+                opacity: 1;
+                filter: invert(20%) sepia(80%) saturate(3000%) hue-rotate(330deg) brightness(95%) contrast(100%);
+            }
+    </style>
 }

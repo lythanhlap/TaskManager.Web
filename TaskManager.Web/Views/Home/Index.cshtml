@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Task Manager</title>
+    <title>@ViewData["Title"] - Trình Quản Lý Công Việc</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
@@ -42,21 +42,20 @@
         }
 
         .hero-section {
-            background: linear-gradient(135deg, #e0f7fa, #f0f4ff);
+            background: #e9f2ff;
             padding: 4rem 2rem;
             border-radius: var(--border-radius);
             text-align: center;
+            color: #0052cc;
         }
-        .hero-section h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0 0 0.5rem;
-        }
-        .hero-section p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin: 0 0 1.5rem;
-        }
+
+            .hero-section h1 {
+                color: #0052cc;
+            }
+
+            .hero-section p {
+                color: #42526e;
+            }
 
         .btn {
             display: inline-block;
@@ -68,27 +67,35 @@
             cursor: pointer;
             border: none;
         }
+
         .btn-primary {
             background-color: var(--primary-color);
             color: white;
             box-shadow: 0 4px 15px rgba(13, 110, 253, 0.25);
         }
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.35);
+
+            .btn-primary:hover {
+                background-color: var(--primary-hover);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(13, 110, 253, 0.35);
+            }
+
+        .ms-2 {
+            margin-left: 0.5rem;
         }
-        .ms-2 { margin-left: 0.5rem; }
 
         .features-section {
             margin-top: 3.5rem;
         }
+
         .section-title {
+            color: #0052cc;
             text-align: center;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 2.5rem;
         }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -107,19 +114,23 @@
             text-decoration: none;
             color: inherit;
         }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--card-hover-shadow);
-        }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--card-hover-shadow);
+            }
+
         .feature-icon {
             font-size: 1.5rem;
             padding-top: 5px;
         }
+
         .feature-content h3 {
             font-size: 1.25rem;
             font-weight: 600;
             margin: 0 0 0.5rem 0;
         }
+
         .feature-content p {
             color: var(--text-muted);
             margin: 0;
@@ -132,11 +143,25 @@
             color: var(--text-muted);
         }
 
-        .fw-bold { font-weight: 700 !important; }
-        .text-primary { color: var(--primary-color) !important; }
-        .text-info { color: #0dcaf0 !important; }
-        .text-success { color: #198754 !important; }
-        .text-warning { color: #ffc107 !important; }
+        .fw-bold {
+            font-weight: 700 !important;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .text-info {
+            color: #0dcaf0 !important;
+        }
+
+        .text-success {
+            color: #198754 !important;
+        }
+
+        .text-warning {
+            color: #ffc107 !important;
+        }
 
         .hero-title {
             font-size: 2.8rem;
@@ -149,10 +174,10 @@
         @if (User.Identity.IsAuthenticated)
         {
             <section class="hero-section">
-                <h1 class="hero-title">@ViewBag.WelcomeMessage</h1>
+                <h1 class="hero-title">@welcomeMessage</h1>
                 <p>Bạn có <span class="fw-bold text-primary">@taskCount công việc</span> cần hoàn thành hôm nay. Hãy bắt đầu nào!</p>
                 <a class="btn btn-primary" href="/Dashboard">
-                    Tới Bảng điều khiển <i class="fas fa-arrow-right ms-2"></i>
+                    Tới bảng điều khiển <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </section>
 
@@ -165,7 +190,7 @@
                         </div>
                         <div class="feature-content">
                             <h3>Dự án đang hoạt động</h3>
-                            <p>Theo dõi tiến độ và cộng tác cùng đội nhóm.</p>
+                            <p>Theo dõi tiến độ và cộng tác với đội nhóm.</p>
                         </div>
                     </a>
                     <a href="/Tasks" class="feature-card">
@@ -174,7 +199,7 @@
                         </div>
                         <div class="feature-content">
                             <h3>Công việc hôm nay</h3>
-                            <p>Tập trung vào danh sách công việc ưu tiên của bạn.</p>
+                            <p>Tập trung vào những việc quan trọng nhất.</p>
                         </div>
                     </a>
                     <a href="/Notifications" class="feature-card">
@@ -183,7 +208,7 @@
                         </div>
                         <div class="feature-content">
                             <h3>Thông báo mới</h3>
-                            <p>Kiểm tra cập nhật và các deadline quan trọng.</p>
+                            <p>Xem các cập nhật và hạn chót quan trọng.</p>
                         </div>
                     </a>
                 </div>
@@ -193,7 +218,6 @@
         {
             <p>Vui lòng đăng nhập để xem nội dung.</p>
         }
-
     </div>
 </body>
 </html>

@@ -1,25 +1,21 @@
 ﻿@using TaskManager.Projects.Abstractions
+@using System.Security.Claims
 @model IEnumerable<ProjectDto>
-
-@{
-    ViewData["Title"] = "Dashboard";
-    var userName = User?.Identity?.Name ?? "Test I";
-    var fullName = User?.FindFirst("name")?.Value ?? userName;
-}
 @{
     Layout = null;
 }
-@using System.Security.Claims
+
 @{
-    // Lấy userId (ưu tiên NameIdentifier, fallback "sub")
+    ViewData["Title"] = "Bảng điều khiển";
+    var userName = User?.Identity?.Name ?? "Khách";
+    var fullName = User?.FindFirst("name")?.Value ?? userName;
+
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
                  ?? User.FindFirst("sub")?.Value
                  ?? string.Empty;
 
-    // Lấy username để hiển thị
-    var username = User.FindFirst("username")?.Value
-                ?? User.FindFirst("name")?.Value
-                ?? User.FindFirstValue(ClaimTypes.Name)
+    var username = User.FindFirstValue("username")
+                ?? User.FindFirstValue("name")
                 ?? User.Identity?.Name
                 ?? "User";
 }
@@ -27,173 +23,68 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Task Manager</title>
-  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-  <style>
-    :root{
-      --bg:#e9f6fb;
-      --border:#224f60;
-      --brand:#104e5b;
-      --header:#b5efac;
-      --sidebar-top:#92cfe4;
-      --sidebar:#0e5670;
-      --main:#f6ded3;
-      --card:#eec6e7;
-      --banner:#8eb8f0;
-      --accent:#f2f6ff;
-      --radius:14px;
-      --radius-lg:14px;
-      --shadow:0 2px 6px rgba(0,0,0,.08);
-
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
             margin: 0;
-            background: #FFFFFF;
-            color: #13353f;
-            font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-            background-size: cover;
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
         }
 
-    /* Layout shell */
-    .app{max-width:100%;  overflow:hidden;}
+        /* Header */
+        .app__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 28px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 6px rgba(0,0,0,.05);
+        }
 
-    /* Header */
-    .app__header{
-      display:grid; grid-template-columns:220px 1fr 160px; gap:12px;
-      align-items:center; padding:10px 14px;
-            border-bottom: 1px solid #ccc5c5
-    }
-    .logo{font-size:22px; font-weight:700; color:#0b3b44; padding:8px 12px; border:2px solid var(--brand); border-radius:10px; background:#e8ffe3; text-align:center}
-    .search{display:flex; align-items:center; gap:10px; padding:0 6px}
-    .search input{width:100%; padding:10px 12px; border:2px solid var(--brand); border-radius:10px; outline:none; background:white}
-
-        .account {
-            justify-self: end;
+        .logo {
+            font-size: 22px;
             font-weight: 700;
-            padding: 0px;
-            border-radius: 10px;
+            color: #2563eb;
         }
 
-    /* Body split */
-    .app__body{
-        display:grid; grid-template-columns:280px 1fr; gap:60px; padding:16px;
-        margin-right:16px; 
-        height:100vh;
-    
-    }
-
-
-
-    /* Sidebar */
-    .sidebar{display:flex; flex-direction:column; gap:16px}
-    .sidebar .panel{
-     border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow);
-    }
-    .sidebar .panel--top{}
-    .sidebar .panel--top h3{margin:0; padding:24px 18px; font-size:20px; color:black; text-shadow:0 1px 0 rgba(0,0,0,.25)}
-    .sidebar .panel--main{min-height:360px}
-
-    /* Main */
-    .main{}
-
-    .banner{
-            background-image: linear-gradient(135deg, #88A2FF, #A87EBB);
-      border-radius:8px; 
-      height:130px; 
-      display:grid;
-      align-items:start; 
-      padding:10px; 
-      box-shadow:var(--shadow);
-    }
-    .banner .hello{
-        border-radius:8px; 
-        font-weight:700;
-        width: fit-content;
-        font-size: 24px;
-        height:80px;
-        
-    }
-
-    .section-title{
-      margin:16px 0 12px; color:black; font-size:20px; font-weight:700; padding-top:10px; padding-right:10px;
-    }
-
-    .cards{display:grid; grid-template-columns:repeat(4, minmax(180px,1fr)); gap:14px;margin-right: 120px}
-
-        .card {
-            display: block;
-            height: 120px;
+        .search input {
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            text-decoration: none;
-            color: #333;
-            font-family: sans-serif;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            outline: none;
+            width: 260px;
         }
 
-        .card-header {
-            height: 70%;
-            background: linear-gradient(135deg, #667eea, #e964a6); /* tím -> hồng */
-        }
-            .card-header:hover {
-                filter: brightness(1.3);
+            .search input:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 3px rgba(37,99,235,.2);
             }
 
-        .card-body {
-            height: 30%;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-    .card--new{
-            background: #E8E8E8;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-    }
-        .card--new:hover {
-            background: #d4d4d4;
-            color: #000;
-            text-decoration: none;
-        }
-
+        /* Account */
         .account-menu {
             position: relative;
-            margin-left: 1rem;
-            margin-right: 1rem;
         }
 
-        .account-icon {
-            background: transparent;
-            border: none; 
-            padding: 0;
-            cursor: pointer;
+        .account-avatar {
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            transition: transform .2s;
-            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid #2563eb;
         }
-
-            .account-icon:hover {
-                transform: scale(1.1);
-            }
 
         .account-dropdown {
             position: absolute;
             top: 120%;
             right: 0;
             background: #fff;
-            border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,.1);
+            box-shadow: 0 6px 18px rgba(0,0,0,.15);
             display: none;
             flex-direction: column;
             min-width: 200px;
@@ -202,246 +93,284 @@
 
             .account-dropdown a, .account-dropdown button {
                 padding: 10px 16px;
-                text-decoration: none;
-                color: #333;
-                font-size: 14px;
-                border-bottom: 1px solid #eee;
-                display: block;
-                width: 100%;
                 text-align: left;
+                border: none;
                 background: none;
+                font-size: 14px;
+                color: #374151;
+                border-bottom: 1px solid #f3f4f6;
+                width: 100%;
+                text-decoration: none; /* bỏ gạch chân */
             }
-
-                .account-dropdown a:last-child, .account-dropdown button:last-child {
-                    border-bottom: none;
-                }
 
                 .account-dropdown a:hover, .account-dropdown button:hover {
-                    background: #f8d7da;
-                    color: #d6336c;
+                    background: #f9fafb;
+                    color: #2563eb;
                 }
 
-        .card-title{font-weight:600;margin-bottom:6px}
-         
-        .progress-meta{display:flex;gap:10px;font-size:12px;color:#64748b;margin-top:6px;flex-wrap:wrap}
-        .progress-meta .percent{margin-left:auto;font-weight:700;color:#111827}
-        .card-title{font-weight:600;margin-bottom:6px;text-align:center}
-        .progress-line{ height:10px; background:#fff; border:3px solid #000; border-radius:6px; overflow:hidden; }
-        .progress-line__bar{ height:100%; background:#22c55e; transition:width .35s ease; }
-        .card{ position:relative; }
-        .card-body{ padding-bottom: 26px; } 
-
-        .progress-rail{
-          position:absolute; left:0px; right:0px; bottom:0px;
-          height:12px; border:1px solid #000; border-radius:10px;
-          background:#fff; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.12);
-        }
-        .progress-rail__bar{
-          height:100%; background:#22c55e; transition:width .35s ease;
-        }
-        .progress-rail__label{
-          position:absolute; inset:0;        
-          display:flex; align-items:center; justify-content:center;
-          font-size:12px; font-weight:700; letter-spacing:.2px;
-          color:#111; text-shadow:0 1px 0 rgba(255,255,255,.6);
-          pointer-events:none;                
+        /* Layout */
+        .app__body {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 24px;
+            padding: 24px;
         }
 
-        .account-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%; 
-            vertical-align: middle; 
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+            padding: 24px;
         }
 
-        .account-icon {
-            background: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            transition: transform .2s;
-            font-size: 1rem; 
-        }
-
-            .account-icon:hover {
-                transform: scale(1.1);
+            .sidebar a {
+                display: block;
+                margin-bottom: 20px;
+                font-weight: 700;
+                font-size: 18px;
+                color: #374151;
+                text-decoration: none;
+                padding: 8px 4px;
             }
-        
 
-  </style>
+                .sidebar a:hover {
+                    color: #2563eb;
+                }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(135deg, #3b82f6, #9333ea);
+            border-radius: 12px;
+            padding: 28px;
+            color: white;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 16px rgba(0,0,0,.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .banner h1 {
+                margin: 0;
+                font-size: 26px;
+                font-weight: 700;
+            }
+
+            .banner p {
+                margin: 6px 0 0;
+                font-size: 16px;
+            }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+            gap: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform .2s, box-shadow .2s;
+            text-decoration: none;
+        }
+
+            .card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 14px rgba(0,0,0,.08);
+            }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: #111827;
+        }
+
+            .card-body small {
+                display: block;
+                margin-top: 6px;
+                color: #6b7280;
+            }
+
+        .progress-rail {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            margin: 0 16px 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-rail__bar {
+            height: 100%;
+            background: #22c55e;
+            transition: width .3s ease;
+        }
+
+        .progress-rail__label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .card--new {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9fafb;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+            .card--new:hover {
+                background: #e5e7eb;
+                color: #111827;
+            }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 24px 0 16px;
+        }
+    </style>
 </head>
 <body>
-  <div class="app">
-        <!-- Header -->
-        <header class="app__header">
-            <div class="logo">Task Manager</div>
-            <div class="search">
-                <input type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm" />
-                
-            </div>
-            <div class="account">
-                <div class="d-flex align-items-center">
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-                        <!-- 
-                        <span class="me-2 text-dark"> @username</span>
-                        -->
-                        <div class="account-menu">
-                            <button class="account-icon " id="accountToggle" title="Quản lý tài khoản" style="margin-right=30px">
-                                <img src="https://ui-avatars.com/api/?name=@username&background=0D8ABC&color=FFF&rounded=true&size=32"
-                                     alt="Avatar của @username"
-                                     class="account-avatar" />
-                            </button>
-                            <div class="account-dropdown" id="accountDropdown">
-                                <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
-                                <a asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
-
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-link dropdown-item p-2 ps-3">Đăng xuất</button>
-                                </form>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <a class="login-btn" asp-controller="Account" asp-action="Login">Login</a>
-                        <a class="login-btn" asp-controller="Account" asp-action="Register">Register</a>
-                    }
+    <header class="app__header">
+        <div class="logo">Task Manager</div>
+        <div class="search"><input type="search" placeholder="🔍 Tìm kiếm..." /></div>
+        <div class="account">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="account-menu">
+                    <img src="https://ui-avatars.com/api/?name=@username&background=2563eb&color=fff&rounded=true&size=38"
+                         alt="Avatar @username" class="account-avatar" id="accountToggle" />
+                    <div class="account-dropdown" id="accountDropdown">
+                        <a asp-controller="Account" asp-action="Profile">👤 Thông tin tài khoản</a>
+                        <a asp-controller="Account" asp-action="ChangePassword">🔑 Đổi mật khẩu</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                            @Html.AntiForgeryToken()
+                            <button type="submit">🚪 Đăng xuất</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </header>
-
-    <!-- Body -->
-    <div class="app__body">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <section class="panel panel--top">
-                    <h3><a class="nav-link text-black" asp-controller="Home" asp-action="Index">Trang chủ</a></h3>
-        </section>
-        <section class="panel panel--main" aria-label="Điều hướng phụ">
-            <h4><a class="nav-link text-black" asp-controller="Projects" asp-action="Index">Dự án</a></h4>
-                    <h4><a class="nav-link text-black" asp-controller="Reports" asp-action="Portfolio">Tiến độ</a></h4>
-            <h4><a class="nav-link text-black" asp-controller="Account" asp-action="Profile">Tài khoản</a></h4>
-
-        </section>
-      </aside>
-
-      <!-- Main content -->
-      <main class="main">
-        <div class="banner">
-          <div id="today">
-
-          </div>
-          <div class="hello">Xin chào @fullName </div>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-light">Đăng nhập</a>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Đăng ký</a>
+            }
         </div>
+    </header>
 
-        <div class="section-title">Dự án của bạn</div>
+    <div class="app__body">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a asp-controller="Home" asp-action="Index">🏠 Trang chủ</a>
+            <a asp-controller="Projects" asp-action="Index">📁 Dự án</a>
+            <a asp-controller="Reports" asp-action="Portfolio">📊 Tiến độ</a>
+            <a asp-controller="Account" asp-action="Profile">⚙️ Tài khoản</a>
+        </aside>
 
-        <section class="cards" aria-label="Danh sách dự án">
-              @if (Model != null && Model.Any())
-              {
-                  foreach (var p in Model)
-                  {
-                      <a class="card" href="/projects/@p.Id" title="@p.Name" data-project-id="@p.Id">
-                          <div class="card-header"></div>
+        <!-- Main -->
+        <main class="main">
+            <div class="banner">
+                <div>
+                    <h1>Xin chào, @fullName 👋</h1>
+                    <p id="today"></p>
+                    <small class="d-block mt-2">Bạn có <b>@(Model?.Count() ?? 0) dự án</b> đang quản lý</small>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=@fullName&background=9333ea&color=fff&rounded=true&size=72"
+                     class="rounded-circle shadow" />
+            </div>
 
-                          <div class="card-body">
-                            <div class="card-title">@p.Name</div>
-                          </div>
-                          <div class="progress-rail" role="progressbar"
-                             aria-label="Tiến độ dự án"
-                             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                              <div class="progress-rail__bar" style="width:0%"></div>
-                              <span class="progress-rail__label">0%</span>
-                        </div>
-                      </a>
-                         
-                  }
-              }
-              else
-              {
-                  <div class="tm-card">Chưa có dự án</div>
-              }
-          <a class="card card--new" href="/projects/create">Tạo dự án mới</a>
-        </section>
-      </main>
+            <div class="section-title">📌 Dự án của bạn</div>
+            <section class="cards">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var p in Model)
+                    {
+                        <a class="card" href="/projects/@p.Id" data-project-id="@p.Id">
+                            <div class="card-body">
+                                📁 @p.Name
+                                <small>Bắt đầu: @(p.StartDate?.ToString("dd/MM/yyyy") ?? "-")</small>
+                            </div>
+                            <div class="progress-rail" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-rail__bar" style="width:0%"></div>
+                                <span class="progress-rail__label">0%</span>
+                            </div>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <div class="card card--new">Chưa có dự án</div>
+                }
+                <a class="card card--new" href="/projects/create">➕ Tạo dự án mới</a>
+            </section>
+        </main>
     </div>
-  </div>
-</body>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
 
-<script>
-    const today = new Date();
-    const options = { weekday: 'long', day: 'numeric', month: 'long' };
-    document.getElementById("today").textContent = today.toLocaleDateString("vi-VN", options);
-</script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("today").textContent =
+          new Date().toLocaleDateString("vi-VN", { weekday:"long", day:"numeric", month:"long" });
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
         const toggle = document.getElementById("accountToggle");
         const dropdown = document.getElementById("accountDropdown");
         if (toggle && dropdown) {
-            toggle.addEventListener("click", function () {
-                dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
-            });
-            document.addEventListener("click", function (e) {
-                if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = "none";
-                }
-            });
+          toggle.addEventListener("click", () => {
+            dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+          });
+          document.addEventListener("click", (e) => {
+            if (!toggle.contains(e.target) && !dropdown.contains(e.target)) dropdown.style.display = "none";
+          });
         }
-    });
-</script>
 
-<script>
-(async function(){
-  const res = await fetch('/api/reports/portfolio', { credentials:'same-origin' });
-  if(!res.ok) return;
-  const data = await res.json();
-  const map = new Map(data.items.map(i => [String(i.projectId).toLowerCase(), i]));
+        // Tiến độ dự án
+        (async function(){
+          const res = await fetch('/api/reports/portfolio', { credentials:'same-origin' });
+          if(!res.ok) return;
+          const data = await res.json();
+          const map = new Map(data.items.map(i => [String(i.projectId).toLowerCase(), i]));
 
-  document.querySelectorAll('.card[data-project-id]').forEach(card=>{
-    const id  = (card.getAttribute('data-project-id')||'').toLowerCase();
-    const itm = map.get(id);
-    if(!itm) return;
+          document.querySelectorAll('.card[data-project-id]').forEach(card=>{
+            const id  = (card.getAttribute('data-project-id')||'').toLowerCase();
+            const itm = map.get(id);
+            if(!itm) return;
 
-    const completed = itm.completedCount|0;
-    const pending   = itm.pendingCount|0;
-    const total     = completed + pending;
-    const pct       = total ? (completed*100/total) : 0;
+            const completed = itm.completedCount|0;
+            const pending   = itm.pendingCount|0;
+            const total     = completed + pending;
+            const pct       = total ? (completed*100/total) : 0;
 
-    const rail  = card.querySelector('.progress-rail');
-    const bar   = card.querySelector('.progress-rail__bar');
-    const label = card.querySelector('.progress-rail__label');
+            const bar   = card.querySelector('.progress-rail__bar');
+            const label = card.querySelector('.progress-rail__label');
 
-    if(bar)   bar.style.width = pct.toFixed(2) + '%';
-    if(rail)  rail.setAttribute('aria-valuenow', pct.toFixed(0));
-    if(label){
-      label.textContent = pct.toFixed(0) + '%';
-      // chữ trắng khi nền xanh chiếm nhiều, dễ đọc hơn
-      label.style.color = (pct >= 55) ? '#fff' : '#111';
-      label.style.textShadow = (pct >= 55) ? '0 1px 0 rgba(0,0,0,.35)' : '0 1px 0 rgba(255,255,255,.6)';
-    }
-
-    // màu thanh theo % (tùy chọn)
-    if(bar){
-      bar.style.background = pct >= 80 ? '#16a34a'
-                          : pct >= 40 ? '#22c55e'
-                                      : '#f97316';
-    }
-  });
-})();
-</script>
-
-
-
-
+            if(bar) bar.style.width = pct.toFixed(2) + '%';
+            if(label){
+              label.textContent = pct.toFixed(0) + '%';
+              label.style.color = (pct >= 55) ? '#fff' : '#111827';
+            }
+            if(bar){
+              bar.style.background = pct >= 80 ? '#16a34a'
+                                  : pct >= 40 ? '#22c55e'
+                                              : '#f97316';
+            }
+          });
+        })();
+    </script>
+</body>
 </html>
-
-

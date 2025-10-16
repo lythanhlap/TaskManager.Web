@@ -13,7 +13,7 @@
 }
 
 @{
-    ViewData["Title"] = "Project Details";
+    ViewData["Title"] = "Chi tiết dự án";
     string Badge(ProjectStatus s) => s switch
     {
         ProjectStatus.Planned => "badge bg-secondary",
@@ -35,7 +35,7 @@
             <i class="fa-solid fa-rotate" style="color: #74C0FC;"></i>
         </button>
     </form>
-    <a asp-action="Index" class="btn btn-light">← Back to Projects</a>
+    <a asp-action="Index" class="btn btn-light">← Trở về danh sách dự án</a>
 </div>
 @if (TempData["Ok"] is string ok && !string.IsNullOrWhiteSpace(ok))
 {
@@ -54,14 +54,14 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div><span class="@Badge(Model.Status)">@Model.Status</span></div>
-                    <small class="text-muted">Created: @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                    <small class="text-muted">Tạo lúc: @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <small><strong>Start:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                        <small><strong>Bắt đầu:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
                     </div>
                     <div class="col-md-6">
-                        <small><strong>End:</strong> @(Model.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                        <small><strong>Kết thúc:</strong> @(Model.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
                     </div>
                 </div>
                 @if (!string.IsNullOrWhiteSpace(Model.Description))
@@ -74,7 +74,7 @@
 
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">Members</h5>
+                <h5 class="card-title">Danh sách thành viên</h5>
                 @if (Model.Members?.Any() == true)
                 {
                     <ul class="list-group list-group-flush">
@@ -86,7 +86,7 @@
                                     <small class="text-muted">(@m.Role)</small>
                                     @if (m.UserId == Model.OwnerUserId)
                                     {
-                                        <span class="badge bg-dark ms-2">owner</span>
+                                        <span class="badge bg-dark ms-2">chủ dự án</span>
                                     }
                                 </span>
                                 @if (isOwner && m.UserId != Model.OwnerUserId)
@@ -96,7 +96,7 @@
                                         <input type="hidden" name="memberUserId" value="@m.UserId" />
                                         <button class="btn btn-sm btn-outline-danger"
                                                 onclick="return confirm('Xoá @m.Username khỏi dự án?');">
-                                            Remove
+                                            Xóa
                                         </button>
                                     </form>
                                 }
@@ -107,7 +107,7 @@
                                         <input type="hidden" name="memberUserId" value="@m.UserId" />
                                         <button class="btn btn-sm btn-outline-warning"
                                                 onclick="return confirm('Rời khỏi dự án này?');">
-                                            Leave
+                                            Rời khỏi
                                         </button>
                                     </form>
                                 }
@@ -117,7 +117,7 @@
                 }
                 else
                 {
-                    <span class="text-muted">No members</span>
+                    <span class="text-muted">Không có thành viên</span>
                 }
             </div>
         </div>
@@ -201,7 +201,7 @@
     <div class="col-lg-3">
         <div class="card shadow-sm" style="position:sticky; top:1rem;">
             <div class="card-body">
-                <h5 class="mb-3">💬 Comment</h5>
+                <h5 class="mb-3">💬 Bình luận</h5>
                 <div id="commentPanel" style="min-height:400px;">
                     <textarea class="form-control" rows="3" placeholder="Viết bình luận..."></textarea>
                 </div>
@@ -269,7 +269,7 @@
                           <th>Tiêu đề</th>
                           <th>Thời gian</th>
                           <th>Trạng thái</th>
-                          <th>Assignees</th>
+                          <th>Người phụ trách</th>
                           <th class="text-end"></th>
                         </tr>
                       </thead>

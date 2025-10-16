@@ -1,41 +1,41 @@
 ﻿@model TaskManager.Web.Models.RegisterVm
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Đăng ký";
 }
 
-<div class="row justify-content-center mt-5">
+<div class="register-page row justify-content-center mt-5">
     <div class="col-md-8 col-lg-6">
         <div class="card register-card border-0 rounded-4">
             <div class="card-body p-4 bg-light">
-                <h2 class="text-title">Register</h2>
+                <h2 class="text-title">Đăng ký</h2>
                 <form asp-action="Register" method="post">
                     <div class="form-floating mb-3">
-                        <input asp-for="Username" class="form-control" placeholder="Username" />
-                        <label asp-for="Username"></label>
+                        <input asp-for="Username" class="form-control" placeholder="Tên đăng nhập" />
+                        <label asp-for="Username">Tên đăng nhập</label>
                         <span asp-validation-for="Username" class="text-danger small"></span>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input asp-for="Email" class="form-control" type="email" placeholder="Email" />
-                        <label asp-for="Email"></label>
+                        <label asp-for="Email">Email</label>
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="FullName" class="form-control" type="text" placeholder="Full name" />
-                        <label asp-for="FullName"></label>
+                        <input asp-for="FullName" class="form-control" type="text" placeholder="Họ và tên" />
+                        <label asp-for="FullName">Họ và tên</label>
                         <span asp-validation-for="FullName" class="text-danger small"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
-                        <label asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Mật khẩu" />
+                        <label asp-for="Password">Mật khẩu</label>
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="ConfirmPassword" />
-                        <label asp-for="ConfirmPassword"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Xác nhận mật khẩu" />
+                        <label asp-for="ConfirmPassword">Xác nhận mật khẩu</label>
                         <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                     </div>
 
@@ -45,12 +45,12 @@
                     }
 
                     <button type="submit" class="btn btn-success w-100 py-2 fw-bold">
-                        Register
+                        Đăng ký
                     </button>
                 </form>
 
                 <p class="text-center mt-4">
-                    Already have an account? <a asp-action="Login" class="login-text">Login here</a>
+                    Đã có tài khoản? <a asp-action="Login" class="login-text">Đăng nhập tại đây</a>
                 </p>
             </div>
         </div>
@@ -60,4 +60,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
