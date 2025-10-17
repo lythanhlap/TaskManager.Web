@@ -199,10 +199,10 @@ body {
 }
 
 .card-title {
-    font-size: 1.35rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
-    color: #ff69b4;
+    color: #000;
 }
 
 .card-dates {
@@ -469,7 +469,7 @@ a {
 
 /* 📝 TEXT + FORM */
 .text-title {
-    color: #e91e63;
+    color: #0D6CF2;
     font-size: 2rem;
     font-weight: 700;
     text-align: center;
@@ -491,7 +491,7 @@ a {
 }
 
 .form-control {
-    border: 2px solid #f8bbd0;
+    border: 2px solid #0D6CF2;
     border-radius: 8px;
     background-color: #fff;
     transition: border-color 0.3s ease;
@@ -504,7 +504,7 @@ a {
 
 /* 🌸 BUTTON CHUNG */
 .btn-success {
-    background-color: #ff69b4;
+    background-color: #0D6CF2;
     border: none;
     border-radius: 12px;
     font-weight: bold;
@@ -710,4 +710,49 @@ h4.text-center {
     color: #fff;
     opacity: .85;
     text-align: right;
+}
+
+@media (min-width: 992px){
+    .tasks-card {
+        display: flex;
+        flex-direction: column;
+        height: calc(100dvh - 100px);
+        min-height: 360px;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0;
+        scrollbar-gutter: stable;
+    }
+  .tasks-card__header{
+    flex:0 0 auto;
+    position:sticky; top:0; z-index:2;
+    background:#fff; border-bottom:1px solid #e5e7eb;
+  }
+
+  /* Vùng cuộn: KHÔNG padding để thead dính sát trên cùng */
+  #tasksScroll{
+    flex:1 1 auto;
+    overflow-y:auto; overflow-x:hidden;
+    padding:0;               /* quan trọng */
+  }
+
+  /* Bảng không margin để canh sát viền container */
+  #tasksScroll table{
+    margin:0; 
+    border-collapse:separate; /* giúp z-index thead hoạt động ổn định */
+    width
+  }
+
+  /* Sticky THEAD */
+  #tasksScroll table thead{
+    position:sticky;
+    top:0;                 /* dính sát đỉnh vùng cuộn */
+    z-index:5;
+    background:#fff;
+    box-shadow:0 2px 0 rgba(0,0,0,.03); /* đường nhấn nhỏ dưới header */
+  }
+
+  /* Nếu cần, bảo đảm từng ô header cũng có nền trắng */
+  #tasksScroll table thead th{ background:#fff; }
 }
