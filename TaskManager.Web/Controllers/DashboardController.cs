@@ -26,8 +26,8 @@ namespace TaskManager.Web.Controllers
             return View(projects); // Model = IEnumerable<ProjectDto> 
         }
 
-        [HttpGet("/back")]
-        public async Task<IActionResult> back()
+        [HttpGet("/Test2")]
+        public async Task<IActionResult> Test2()
         {
             var projects = await _svc.GetForUserAsync(Uid);
             return View(projects);

@@ -239,5 +239,20 @@
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+
+    <script>
+        const conn = new signalR.HubConnectionBuilder().withUrl("/hubs/chat").withAutomaticReconnect().build();
+
+        conn.on("message", (msg) => { console.log("message:", msg); /* TODO: render UI */ });
+        conn.on("presence", (p) => { console.log("presence:", p); });
+
+        async function joinConversation(conversationId) { await conn.invoke("Join", conversationId); }
+        async function leaveConversation(conversationId) { await conn.invoke("Leave", conversationId); }
+
+        conn.start().catch(console.error);
+    </script>
 </body>
 </html>

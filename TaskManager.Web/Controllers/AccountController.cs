@@ -79,7 +79,7 @@ public class AccountController : Controller
             });
         Response.Cookies.Delete("access_token", new CookieOptions { Path = "/" });
 
-        return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+        return Redirect(returnUrl ?? Url.Action("Login", "Account")!);
     }
 
     [HttpGet("profile")]
