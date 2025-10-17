@@ -47,10 +47,10 @@ public class AccountController : Controller
                 new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = Request.IsHttps,      //  quan trọng khi dev HTTP
+                    Secure = Request.IsHttps,      
                     SameSite = SameSiteMode.Lax,
                     Expires = resp.ExpiresAt,
-                    Path = "/"                    // cho chắc cookie có hiệu lực toàn site
+                    Path = "/"                    // cookie có hiệu lực toàn site
                 });
 
             Console.WriteLine($"[Debug] JWT = {resp.AccessToken}");
@@ -75,11 +75,11 @@ public class AccountController : Controller
                 Secure = Request.IsHttps,
                 SameSite = SameSiteMode.Lax,
                 Expires = DateTimeOffset.UtcNow.AddDays(-1),
-                Path = "/" // nhớ khớp Path với lúc bạn set khi login
+                Path = "/" // nhớ khớp Path với lúc set khi login
             });
         Response.Cookies.Delete("access_token", new CookieOptions { Path = "/" });
 
-        return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+        return Redirect(returnUrl ?? Url.Action("Login", "Account")!);
     }
 
     [HttpGet("profile")]

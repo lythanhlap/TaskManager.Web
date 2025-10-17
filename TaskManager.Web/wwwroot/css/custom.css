@@ -1,0 +1,14 @@
+﻿/* custom.css */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1320px;
+    }
+}
+/* custom.css */
+.container {
+    /* Giảm padding hai bên xuống còn 10px */
+    padding-left: 10px;
+    padding-right: 10px;
+    /* Hoặc xóa hoàn toàn padding */
+    /* padding: 0; */
+}

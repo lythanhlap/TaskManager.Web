@@ -28,7 +28,8 @@ namespace TaskManager.Web.Controllers
 
                 // Với NameClaimType = "username", Name chính là username
                 var userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Meowster" : User.Identity.Name;
-                ViewBag.WelcomeMessage = $"{timeGreeting}, {userName}! 👋";
+                var fullName = User?.FindFirst("name")?.Value ?? userName;
+                ViewBag.WelcomeMessage = $"{timeGreeting}, {fullName}! ";
             }
             else
             {
@@ -40,6 +41,25 @@ namespace TaskManager.Web.Controllers
 
         public IActionResult UITest()
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var hour = DateTime.Now.Hour;
+                var timeGreeting = hour switch
+                {
+                    < 12 => "Good morning",
+                    < 18 => "Good afternoon",
+                    _ => "Good evening"
+                };
+
+                var userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Meowster" : User.Identity.Name;
+                var fullName = User?.FindFirst("name")?.Value ?? userName;
+                ViewBag.WelcomeMessage = $"{timeGreeting}, {fullName}! ";
+            }
+            else
+            {
+                return View("Landing");
+            }
+
             return View();
         }
         public IActionResult Dashboard()
@@ -49,6 +69,29 @@ namespace TaskManager.Web.Controllers
 
         public IActionResult Privacy()
         {
+            return View();
+        }
+        public IActionResult Test()
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var hour = DateTime.Now.Hour;
+                var timeGreeting = hour switch
+                {
+                    < 12 => "Good morning",
+                    < 18 => "Good afternoon",
+                    _ => "Good evening"
+                };
+
+                // Với NameClaimType = "username", Name chính là username
+                var userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Meowster" : User.Identity.Name;
+                ViewBag.WelcomeMessage = $"{timeGreeting}, {userName}! 👋";
+            }
+            else
+            {
+                return View("Landing");
+            }
+
             return View();
         }
 

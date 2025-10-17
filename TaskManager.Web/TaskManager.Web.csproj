@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="Scriban" Version="6.4.0" />
+    <PackageReference Include="Scrutor" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -81,6 +82,21 @@
     </Reference>
     <Reference Include="TaskManager.Users.Abstractions">
       <HintPath>lib\users.abstraction\TaskManager.Users.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Universal.Chat.Abstractions">
+      <HintPath>lib\chat\Universal.Chat.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Universal.Chat.Core">
+      <HintPath>lib\chat\Universal.Chat.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Universal.Chat.Mvc">
+      <HintPath>lib\chat\Universal.Chat.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Universal.Chat.Persistence.EFCore">
+      <HintPath>lib\chat\Universal.Chat.Persistence.EFCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Universal.Chat.Realtime.SignalR">
+      <HintPath>lib\chat\Universal.Chat.Realtime.SignalR.dll</HintPath>
     </Reference>
   </ItemGroup>
 

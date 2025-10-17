@@ -199,10 +199,10 @@ body {
 }
 
 .card-title {
-    font-size: 1.35rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
-    color: #ff69b4;
+    color: #000;
 }
 
 .card-dates {
@@ -270,7 +270,7 @@ body {
     border-left: 5px solid #ffc107;
 }
 
-/* 🎀 HERO SECTION */
+/*  HERO SECTION */
 .hero-section {
     padding: 80px 20px;
     background: linear-gradient(to right, #6baef7, #C4E7FF);
@@ -469,7 +469,7 @@ a {
 
 /* 📝 TEXT + FORM */
 .text-title {
-    color: #e91e63;
+    color: #0D6CF2;
     font-size: 2rem;
     font-weight: 700;
     text-align: center;
@@ -491,7 +491,7 @@ a {
 }
 
 .form-control {
-    border: 2px solid #f8bbd0;
+    border: 2px solid #0D6CF2;
     border-radius: 8px;
     background-color: #fff;
     transition: border-color 0.3s ease;
@@ -504,7 +504,7 @@ a {
 
 /* 🌸 BUTTON CHUNG */
 .btn-success {
-    background-color: #ff69b4;
+    background-color: #0D6CF2;
     border: none;
     border-radius: 12px;
     font-weight: bold;
@@ -619,3 +619,140 @@ h4.text-center {
 }
 
 
+.chat-panel {
+    display: flex;
+    flex-direction: column;
+    height: 560px;
+}
+/* hoặc 60vh */
+.chat-messages {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: .5rem;
+    padding: .5rem;
+}
+
+.chat-input {
+    flex: 0 0 auto;
+    margin-top: .5rem;
+}
+
+.chat-messages .msg {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .5rem;
+    align-items: flex-end;
+}
+
+    .chat-messages .msg.me {
+        justify-content: flex-end;
+    }
+
+.msg .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+    .msg .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+.msg .meta {
+    font-size: .7rem;
+    opacity: .7;
+    margin: 0 .25rem;
+}
+
+.msg .bubble {
+    max-width: 85%;
+    padding: .5rem .6rem;
+    border-radius: .6rem;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.msg.me .bubble {
+    background: #0d6efd;
+    color: #fff;
+    border-top-right-radius: .2rem;
+}
+
+.msg.other .bubble {
+    background: #fff;
+    border: 1px solid #eee;
+    border-top-left-radius: .2rem;
+}
+
+.msg .meta-name {
+    font-size: .8rem;
+    font-weight: 600;
+    margin-bottom: .15rem;
+}
+
+.msg.other .meta-name {
+    color: #111;
+}
+
+.msg.me .meta-name {
+    color: #fff;
+    opacity: .85;
+    text-align: right;
+}
+
+@media (min-width: 992px){
+    .tasks-card {
+        display: flex;
+        flex-direction: column;
+        height: calc(100dvh - 100px);
+        min-height: 360px;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0;
+        scrollbar-gutter: stable;
+    }
+  .tasks-card__header{
+    flex:0 0 auto;
+    position:sticky; top:0; z-index:2;
+    background:#fff; border-bottom:1px solid #e5e7eb;
+  }
+
+  /* Vùng cuộn: KHÔNG padding để thead dính sát trên cùng */
+  #tasksScroll{
+    flex:1 1 auto;
+    overflow-y:auto; overflow-x:hidden;
+    padding:0;               /* quan trọng */
+  }
+
+  /* Bảng không margin để canh sát viền container */
+  #tasksScroll table{
+    margin:0; 
+    border-collapse:separate; /* giúp z-index thead hoạt động ổn định */
+    width
+  }
+
+  /* Sticky THEAD */
+  #tasksScroll table thead{
+    position:sticky;
+    top:0;                 /* dính sát đỉnh vùng cuộn */
+    z-index:5;
+    background:#fff;
+    box-shadow:0 2px 0 rgba(0,0,0,.03); /* đường nhấn nhỏ dưới header */
+  }
+
+  /* Nếu cần, bảo đảm từng ô header cũng có nền trắng */
+  #tasksScroll table thead th{ background:#fff; }
+}

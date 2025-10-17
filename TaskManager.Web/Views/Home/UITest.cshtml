@@ -1,8 +1,10 @@
-﻿@{
+﻿
+@{
+    // CHỖ THAY ĐỔI 1: Cập nhật logic lấy tên người dùng và dữ liệu
     ViewData["Title"] = "Bảng điều khiển";
     var userName = User.Identity?.Name?.Split('@')[0] ?? "bạn";
     var welcomeMessage = $"Chào mừng trở lại, {userName}! 👋";
-    var taskCount = 3;
+    var taskCount = 3; // Lấy số lượng công việc thực tế từ C#
 }
 
 
@@ -194,6 +196,9 @@
             <p>Vui lòng đăng nhập để xem nội dung.</p>
         }
 
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Task Manager. All Rights Reserved.</p>
+        </footer>
     </div>
 </body>
 </html>

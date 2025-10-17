@@ -1,0 +1,427 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Welcome to Task Manager";
+    var userName = User.Identity.Name?.Split('@')[0] ?? "User";
+}
+@{
+    Layout = null;
+}
+@{
+    // Lấy userId (ưu tiên NameIdentifier, fallback "sub")
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                 ?? User.FindFirst("sub")?.Value
+                 ?? string.Empty;
+
+    // Lấy username để hiển thị
+    var username = User.FindFirst("username")?.Value
+                ?? User.FindFirst("name")?.Value
+                ?? User.FindFirstValue(ClaimTypes.Name)
+                ?? User.Identity?.Name
+                ?? "User";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TaskManager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* --- BIẾN MÀU SẮC ĐỂ DỄ QUẢN LÝ --- */
+        :root {
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #343a40;
+            --text-muted: #6c757d;
+            --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            --border-radius: 12px;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .py-5 {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .mt-5 {
+            margin-top: 3rem;
+        }
+
+        /* --- HEADER (VÍ DỤ) --- */
+        .app-header {
+            padding: 1rem 0;
+            background-color: #fff;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .app-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .main-nav a {
+            margin-left: 1rem;
+            text-decoration: none;
+            color: var(--text-muted);
+        }
+
+        /* --- KHU VỰC HERO --- */
+        .hero-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #e0f7fa, #f0f4ff);
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        .brand-text {
+            color: var(--primary-color);
+        }
+
+        /* --- NÚT BẤM CHÍNH --- */
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+        }
+        .btn-lg {
+             padding: 0.5rem 1rem;
+             font-size: 1.25rem;
+             line-height: 1.5;
+             border-radius: 0.3rem;
+        }
+        .mt-3 {
+            margin-top: 1rem;
+        }
+        .ms-2 {
+            margin-left: 0.5rem;
+        }
+
+        /* --- KHU VỰC TÍNH NĂNG --- */
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover-shadow);
+            color: inherit;
+        }
+
+        .feature-icon { flex-shrink: 0; }
+        .feature-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+        .feature-content p { color: var(--text-muted); margin-bottom: 0; }
+
+        /* --- KHU VỰC KÊU GỌI HÀNH ĐỘNG (CTA) --- */
+        .cta-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+        .cta-section h2 { font-weight: 700; margin: 0 0 0.5rem 0; }
+        .cta-section p { opacity: 0.9; margin-bottom: 1.5rem; }
+        .cta-section .btn-light {
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: #fff;
+        }
+
+        /* --- FOOTER --- */
+        .app-footer {
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: auto;
+            background-color: #fff;
+            border-top: 1px solid #dee2e6;
+        }
+
+        /* --- UTILITIES --- */
+        .fw-bold { font-weight: 700 !important; }
+        .text-primary { color: var(--primary-color) !important; }
+        .text-info { color: #17a2b8 !important; }
+        .text-success { color: #28a745 !important; }
+        .text-warning { color: #ffc107 !important; }
+        .text-muted { color: var(--text-muted) !important; }
+
+        .account-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+        .account-icon {
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            transition: transform .2s;
+            font-size: 1rem;
+        }
+
+            .account-icon:hover {
+                transform: scale(1.1);
+            }
+
+        .account-dropdown {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.1);
+            display: none;
+            flex-direction: column;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+            .account-dropdown a, .account-dropdown button {
+                padding: 10px 16px;
+                text-decoration: none;
+                color: #333;
+                font-size: 14px;
+                border-bottom: 1px solid #eee;
+                display: block;
+                width: 100%;
+                text-align: left;
+                background: none;
+            }
+
+                .account-dropdown a:last-child, .account-dropdown button:last-child {
+                    border-bottom: none;
+                }
+
+                .account-dropdown a:hover, .account-dropdown button:hover {
+                    background: #f8d7da;
+                    color: #d6336c;
+                }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="/" class="logo">Task Manager</a>
+            <nav class="main-nav">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="account-menu">
+                        <button class="account-icon " id="accountToggle" title="Quản lý tài khoản" style="margin-right=30px">
+                            <img src="https://ui-avatars.com/api/?name=@username&background=0D8ABC&color=FFF&rounded=true&size=32"
+                                 alt="Avatar của @username"
+                                 class="account-avatar" />
+                        </button>
+                        <div class="account-dropdown" id="accountDropdown">
+                            <a asp-controller="Account" asp-action="Profile">Thông tin tài khoản</a>
+                            <a asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
+
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-link dropdown-item p-2 ps-3">Đăng xuất</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a href="/Account/Login">Đăng nhập</a>
+                    <a href="/Account/Register">Đăng ký</a>
+                }
+            </nav>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <section class="hero-section">
+                <h1 class="hero-title">Chào mừng trở lại, @userName! 👋</h1>
+                <p class="hero-subtitle">Bạn có <span class="fw-bold text-primary">3 công việc</span> cần hoàn thành hôm nay. Hãy bắt đầu nào!</p>
+                <a class="btn btn-primary btn-lg mt-3" href="/Dashboard">
+                    Tới Bảng điều khiển <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </section>
+
+            <section class="features-section mt-5">
+                <h2 class="section-title">Bảng điều khiển của bạn</h2>
+                <div class="features-grid">
+                    <a href="/Projects" class="feature-card">
+                        <div class="feature-icon text-info"><i class="fas fa-folder-open fa-2x"></i></div>
+                        <div class="feature-content">
+                            <h3>Dự án đang hoạt động</h3>
+                            <p>Theo dõi tiến độ và cộng tác cùng đội nhóm.</p>
+                        </div>
+                    </a>
+                    <a href="/Tasks/Today" class="feature-card">
+                        <div class="feature-icon text-success"><i class="fas fa-tasks fa-2x"></i></div>
+                        <div class="feature-content">
+                            <h3>Công việc hôm nay</h3>
+                            <p>Tập trung vào danh sách công việc ưu tiên của bạn.</p>
+                        </div>
+                    </a>
+                    <a href="/Notifications" class="feature-card">
+                        <div class="feature-icon text-warning"><i class="fas fa-bell fa-2x"></i></div>
+                        <div class="feature-content">
+                            <h3>Thông báo mới</h3>
+                            <p>Kiểm tra cập nhật và các deadline quan trọng.</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        }
+        else
+        {
+            <section class="hero-section">
+                <h1 class="hero-title">Chào mừng đến với <span class="brand-text">Task Manager</span></h1>
+                <p class="hero-subtitle">Nền tảng đơn giản để quản lý công việc và tăng hiệu suất đội nhóm.</p>
+                <a class="btn btn-primary btn-lg mt-3" href="/Account/Register">
+                    Bắt đầu miễn phí <i class="fas fa-rocket ms-2"></i>
+                </a>
+            </section>
+
+            <section class="features-section mt-5">
+                <h2 class="section-title">Các tính năng chính của Task Manager</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon text-info"><i class="fas fa-sitemap fa-2x"></i></div>
+                        <div class="feature-content">
+                            <h3>Quản lý dự án</h3>
+                            <p>Tạo, theo dõi và cộng tác trên nhiều dự án một cách dễ dàng.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon text-success"><i class="fas fa-check-circle fa-2x"></i></div>
+                        <div class="feature-content">
+                            <h3>Sắp xếp công việc</h3>
+                            <p>Luôn làm việc hiệu quả với danh sách công việc thông minh.</p>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon text-warning"><i class="fas fa-bell fa-2x"></i></div>
+                        <div class="feature-content">
+                            <h3>Luôn được thông báo</h3>
+                            <p>Nhận cập nhật thời gian thực để không bao giờ bỏ lỡ deadline.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section mt-5">
+                <h2>Sẵn sàng để tăng năng suất của bạn?</h2>
+                <p>Tham gia ngay hôm nay và đơn giản hóa quy trình làm việc của bạn.</p>
+                <a href="/Account/Register" class="btn btn-light btn-lg">Tạo tài khoản ngay</a>
+            </section>
+        }
+    </main>
+
+    <footer class="app-footer">
+        <p class="text-muted">&copy; @DateTime.Now.Year - Task Manager. All Rights Reserved.</p>
+    </footer>
+
+</body>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggle = document.getElementById("accountToggle");
+        const dropdown = document.getElementById("accountDropdown");
+        if (toggle && dropdown) {
+            toggle.addEventListener("click", function () {
+                dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+            });
+        document.addEventListener("click", function (e) {
+                    if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = "none";
+                    }
+                });
+            }
+        });
+</script>
+</html>
