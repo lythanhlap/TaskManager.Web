@@ -1,7 +1,7 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
 @{
-    Layout = null;
+    Layout = null; 
 }
 
 @if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -20,187 +20,49 @@ else
         <title>TaskManager</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
+            header {
+                background-color: #F4F5F7;
+            }
             body {
                 background-color: #F4F5F7;
-                font-family: 'Segoe UI', Arial, sans-serif;
-                color: #172b4d;
+                font-family: Arial, sans-serif;
             }
-
-            .navbar {
-                position: sticky;
-                top: 0;
-                z-index: 1000;
-            }
-
             .navbar-brand {
                 font-weight: bold;
                 color: #0052cc !important;
-                font-size: 1.4rem;
             }
-
-            .nav-link {
-                color: #42526e !important;
-                transition: 0.3s;
-            }
-
-                .nav-link:hover {
-                    color: #0052cc !important;
-                }
-
             .banner {
                 background-color: #e9f2ff;
-                padding: 12px;
+                color: #172b4d;
+                font-size: 14px;
+                padding: 10px;
                 text-align: center;
-                border-bottom: 1px solid #dfe1e6;
             }
-
-                .banner a {
-                    color: #0052cc;
-                    font-weight: 500;
-                    text-decoration: none;
-                }
-
-                    .banner a:hover {
-                        text-decoration: underline;
-                    }
-
             .hero {
-                padding: 100px 0;
-                text-align: center;
-                background: linear-gradient(to right, #e9f2ff, #fff);
+                padding: 80px 0;
             }
-
-                .hero h1 {
-                    font-size: 2.8rem;
-                    font-weight: bold;
-                    color: #0052cc;
-                }
-
-                .hero p {
-                    font-size: 1.2rem;
-                    color: #42526e;
-                    margin: 20px 0;
-                    line-height: 1.6;
-                }
-
+            .hero h1 {
+                font-size: 2.5rem;
+                font-weight: bold;
+                color: #172b4d;
+            }
+            .hero p {
+                font-size: 1.2rem;
+                margin-bottom: 1.5rem;
+                color: #42526e;
+            }
+            .form-control {
+                max-width: 350px;
+            }
             .btn-primary {
                 background-color: #0052cc;
                 border-color: #0052cc;
-                font-weight: 500;
-                padding: 12px 24px;
-                border-radius: 8px;
-                transition: 0.3s;
             }
-
-                .btn-primary:hover {
-                    background-color: #0747a6;
-                }
-
-            .section {
-                padding: 70px 0;
-            }
-
-            .section-title {
-                text-align: center;
-                margin-bottom: 40px;
-                font-size: 2rem;
-                color: #0052cc;
-                font-weight: bold;
-            }
-
-            .feature-box {
-                background: #fff;
-                border-radius: 10px;
-                padding: 25px;
-                text-align: center;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-                transition: 0.3s;
-                height: 100%;
-            }
-
-                .feature-box:hover {
-                    transform: translateY(-5px);
-                }
-
-                .feature-box h5 {
-                    margin-top: 15px;
-                    font-weight: bold;
-                }
-
-            .pricing-card {
-                background: #fff;
-                border-radius: 10px;
-                padding: 30px;
-                text-align: center;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-                transition: 0.3s;
-                height: 100%;
-            }
-
-                .pricing-card:hover {
-                    transform: translateY(-5px);
-                }
-
-                .pricing-card h3 {
-                    color: #0052cc;
-                    font-weight: bold;
-                }
-
-            .pricing-price {
-                font-size: 2rem;
-                margin: 20px 0;
-                color: #172b4d;
-                font-weight: bold;
-            }
-
-            .cta-section {
-                background: #e9f2ff;
-                color: #0052cc;
-                padding: 70px 20px;
-                text-align: center;
-            }
-
-                .cta-section h2 {
-                    font-size: 2rem;
-                    font-weight: bold;
-                }
-
-                .cta-section p {
-                    font-size: 1.1rem;
-                    margin: 15px 0;
-                }
-                .cta-section .btn-light {
-                    background-color: #0052cc;
-                    color: #fff;
-                    border: none;
-                    padding: 12px 30px;
-                    border-radius: 8px;
-                    font-weight: 500;
-                    transition: 0.3s;
-                }
-                    .cta-section .btn-light:hover {
-                        background-color: #0747a6;
-                        color: #fff;
-                    }
-
-            footer {
-                background: #172b4d;
-                color: #fff;
-                padding: 40px 0;
-            }
-
-                footer a {
-                    color: #e9f2ff;
-                    text-decoration: none;
-                }
-
-                    footer a:hover {
-                        text-decoration: underline;
-                    }
         </style>
     </head>
     <body>
-        <!-- Thanh điều hướng -->
+
+        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="#">TaskManager</a>
@@ -211,11 +73,11 @@ else
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="#">Tính năng</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Giải pháp</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Gói dịch vụ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Gói</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Tài liệu</a></li>
                     </ul>
                     <div>
-                        <a href="/Account/Login" class="btn btn-primary">Đăng nhập</a>
+                        <a href="/Account/Login" class="btn btn-primary">Quản lí dự án của bạn</a>
                     </div>
                 </div>
             </div>
@@ -223,139 +85,32 @@ else
 
         <!-- Banner -->
         <div class="banner">
-            Tăng hiệu quả quản lý công việc của bạn với TaskManager
-            <a href="#" class="ms-1">Xem chi tiết</a>
+            Tăng hiệu quả quản lsi công việc của bạn với task manager 
+            <a href="#" class="ms-1">Tìm hiểu thêm</a>
         </div>
 
-        <!-- Hero -->
+        <!-- Hero Section -->
         <section class="hero">
             <div class="container">
-                <h1>Quản lý công việc thông minh và hiệu quả</h1>
-                <p>
-                    TaskManager giúp bạn tổ chức, theo dõi và tối ưu hiệu suất công việc.
-                    Với giao diện trực quan và tính năng mạnh mẽ, bạn dễ dàng kiểm soát mọi dự án,
-                    dù làm việc cá nhân hay cùng đội nhóm.
-                </p>
-                <a href="/Account/Register" class="btn btn-primary">Bắt đầu ngay - Miễn phí</a>
-            </div>
-        </section>
-
-        <!-- Giới thiệu -->
-        <section class="section bg-white">
-            <div class="container">
-                <h2 class="section-title">Vì sao chọn TaskManager?</h2>
-                <p class="text-center col-lg-8 mx-auto">
-                    TaskManager không chỉ giúp bạn ghi chú công việc mà còn hỗ trợ lập kế hoạch,
-                    phân công nhiệm vụ, theo dõi tiến độ và phân tích kết quả.
-                    Nhờ vậy, bạn có thể tập trung vào điều quan trọng nhất: hoàn thành mục tiêu.
-                </p>
-            </div>
-        </section>
-
-        <!-- Tính năng nổi bật -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Tính năng nổi bật</h2>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="feature-box">
-                            <h5>Tạo & quản lý công việc</h5>
-                            <p>Dễ dàng thêm nhiệm vụ, đặt hạn chót và theo dõi tiến độ từng công việc.</p>
-                        </div>
+                <div class="row align-items-center">
+                    <!-- Text -->
+                    <div class="col-lg-6">
+                        <h1>Ghi lại, sắp xếp và giải quyết công việc từ bất cứ đâu.</h1>
+                        <p>Thoát khỏi tình trạng lộn xộn và hỗn loạn – giải phóng năng suất của bạn với TaskManager.</p>
+                        <a href="/Account/Register" class="btn btn-primary gap-2">Đăng kí miên phí</a>
+                        <small class="d-block mt-2 text-muted">
+                            Khi đăng kí bạn đồng ý với <a href="#">chính sách bảo mật</a>.
+                        </small>
                     </div>
-                    <div class="col-md-4">
-                        <div class="feature-box">
-                            <h5>Làm việc nhóm hiệu quả</h5>
-                            <p>Phân công nhiệm vụ, chia sẻ tiến độ và trao đổi trực tiếp trong dự án.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="feature-box">
-                            <h5>Báo cáo & phân tích</h5>
-                            <p>Xem thống kê trực quan để đưa ra quyết định chính xác và tăng năng suất.</p>
-                        </div>
+
+                    <!-- Image -->
+                    <div class="col-lg-6 text-center">
+                        <img src="~/img/landing_img.png"
+                             class="img-fluid" alt="App Screenshot">
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Gói dịch vụ -->
-        <section class="section bg-white">
-            <div class="container">
-                <h2 class="section-title">Gói dịch vụ</h2>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="pricing-card">
-                            <h3>Miễn phí</h3>
-                            <div class="pricing-price">0₫</div>
-                            <p>Tính năng cơ bản cho cá nhân</p>
-                            <a href="/Account/Register" class="btn btn-primary">Bắt đầu</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="pricing-card">
-                            <h3>Pro</h3>
-                            <div class="pricing-price">99.000₫/tháng</div>
-                            <p>Dành cho nhóm nhỏ cần quản lý nâng cao</p>
-                            <a href="/Account/Register" class="btn btn-primary">Đăng ký</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="pricing-card">
-                            <h3>Doanh nghiệp</h3>
-                            <div class="pricing-price">Liên hệ</div>
-                            <p>Giải pháp toàn diện cho doanh nghiệp</p>
-                            <a href="/Account/Register" class="btn btn-primary">Liên hệ</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="cta-section">
-            <div class="container">
-                <h2>Sẵn sàng tăng tốc công việc của bạn?</h2>
-                <p>Đăng ký ngay để trải nghiệm TaskManager và khám phá cách làm việc hiệu quả hơn.</p>
-                <a href="/Account/Register" class="btn btn-light">Đăng ký miễn phí</a>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h5>TaskManager</h5>
-                        <p>Công cụ quản lý công việc thông minh, giúp bạn và đội nhóm đạt hiệu quả cao hơn.</p>
-                    </div>
-                    <div class="col-md-2">
-                        <h6>Liên kết</h6>
-                        <ul class="list-unstyled">
-                            <li><a href="#">Tính năng</a></li>
-                            <li><a href="#">Giải pháp</a></li>
-                            <li><a href="#">Gói dịch vụ</a></li>
-                            <li><a href="#">Tài liệu</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2">
-                        <h6>Hỗ trợ</h6>
-                        <ul class="list-unstyled">
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                            <li><a href="#">Chính sách bảo mật</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Kết nối</h6>
-                        <a href="#">Facebook</a> | <a href="#">LinkedIn</a> | <a href="#">Twitter</a>
-                    </div>
-                </div>
-                <div class="text-center mt-3">
-                    © 2025 TaskManager. Mọi quyền được bảo lưu.
-                </div>
-            </div>
-        </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>

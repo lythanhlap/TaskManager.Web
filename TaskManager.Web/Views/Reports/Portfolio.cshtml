@@ -16,33 +16,30 @@
       if(!res.ok){ alert('Không tải được dữ liệu'); return; }
       const data = await res.json();
 
-      // Biểu đồ tròn
       new Chart(document.getElementById('portfolio_pie').getContext('2d'), {
         type: 'pie',
         data: {
-          labels: ['Hoàn thành','Chưa hoàn thành'],
+          labels: ['Completed','Incomplete'],
           datasets: [{ data: [data.totalCompleted, data.totalPending] }]
         }
       });
 
-      // Biểu đồ cột
       new Chart(document.getElementById('portfolio_bar').getContext('2d'), {
         type: 'bar',
         data: {
           labels: data.items.map(x => x.projectName),
           datasets: [
-            { label: 'Hoàn thành',  data: data.items.map(x => x.completedCount) },
-            { label: 'Chưa hoàn thành', data: data.items.map(x => x.pendingCount) }
+            { label: 'Completed',  data: data.items.map(x => x.completedCount) },
+            { label: 'Incomplete', data: data.items.map(x => x.pendingCount) }
           ]
         },
         options: { responsive: true, plugins: { legend: { position: 'top' } } }
       });
 
-      // Bảng tổng hợp
       document.getElementById('project_table_holder').innerHTML = `
         <table class="table table-striped">
           <thead><tr>
-            <th>Dự án</th><th>Đã hoàn thành</th><th>Chưa hoàn thành</th><th>Tổng số</th><th>% Đã xong</th>
+            <th>Dự án</th><th>Hoàn thành</th><th>Chưa hoàn thành</th><th>Tổng</th><th>% Đã xong</th>
           </tr></thead>
           <tbody>
             ${data.items.map(x => `
