@@ -1,9 +1,9 @@
 ﻿@using TaskManager.Projects.Abstractions
 @{
-    ViewData["Title"] = "Create Project";
+    ViewData["Title"] = "Tạo dự án";
 }
 
-<h2 class="mb-3">Create Project</h2>
+<h2 class="mb-3">Tạo dự án</h2>
 
 @if (TempData["Err"] is string err && !string.IsNullOrWhiteSpace(err))
 {
@@ -14,37 +14,37 @@
     @Html.AntiForgeryToken()
 
     <div class="mb-3">
-        <label class="form-label">Project Name</label>
+        <label class="form-label">Tên dự án</label>
         <input name="name" class="form-control" required maxlength="200" />
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Description</label>
+        <label class="form-label">Mô tả</label>
         <textarea name="description" class="form-control" rows="3" maxlength="2000"></textarea>
     </div>
 
     <div class="row">
         <div class="col-md-4 mb-3">
-            <label class="form-label">Start Date</label>
+            <label class="form-label">Ngày bắt đầu</label>
             <input name="startDate" type="date" class="form-control" />
         </div>
         <div class="col-md-4 mb-3">
-            <label class="form-label">End Date</label>
+            <label class="form-label">Ngày kết thúc</label>
             <input name="endDate" type="date" class="form-control" />
         </div>
         <div class="col-md-4 mb-3">
-            <label class="form-label">Status</label>
+            <label class="form-label">Trạng thái</label>
             <select name="status" class="form-select">
-                <option value="@ProjectStatus.Planned">Planned</option>
-                <option value="@ProjectStatus.InProgress">InProgress</option>
-                <option value="@ProjectStatus.Completed">Completed</option>
-                <option value="@ProjectStatus.Archived">Archived</option>
+                <option value="@ProjectStatus.Planned">Đã lên kế hoạch</option>
+                <option value="@ProjectStatus.InProgress">Đang thực hiện</option>
+                <option value="@ProjectStatus.Completed">Hoàn thành</option>
+                <option value="@ProjectStatus.Archived">Lưu trữ</option>
             </select>
         </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Members (usernames, comma-separated)</label>
+        <label class="form-label">Thành viên (username, cách nhau bằng dấu phẩy)</label>
         <div class="col-12 position-relative">
             <input id="usernamesCsv" name="usernamesCsv" class="form-control" placeholder="alice, bob, charlie" autocomplete="off" />
             <div id="user-suggest-box" class="list-group position-absolute w-100" style="z-index:1000; display:none; max-height:220px; overflow:auto;"></div>
@@ -52,8 +52,8 @@
         <div class="form-text">Thêm thành viên bằng username (đã đăng ký trong hệ thống).</div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary ms-2">Back</a>
+    <button type="submit" class="btn btn-primary">Tạo mới</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Quay lại</a>
 </form>
 
 

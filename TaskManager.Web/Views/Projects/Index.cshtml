@@ -2,7 +2,7 @@
 @model IEnumerable<ProjectDto>
 
 @{
-    ViewData["Title"] = "Projects";
+    ViewData["Title"] = "Dự án";
     string Badge(ProjectStatus s) => s switch
     {
         ProjectStatus.Planned => "badge bg-secondary",
@@ -14,8 +14,8 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Project Management</h1>
-    <a asp-action="Create" class="btn btn-create">Create New Project</a>
+    <h1 class="page-title">Quản lí dự án</h1>
+    <a asp-action="Create" class="btn btn-create">Tạo dự án mới</a>
 </div>
 
 @if (TempData["Ok"] is string ok && !string.IsNullOrWhiteSpace(ok))
@@ -30,7 +30,7 @@
 <!-- Kanban board: 1 cột -->
 <div class="kanban-board-prj d-flex flex-wrap gap-4">
     <div class="kanban-column-prj flex-grow-1">
-        <h4 class="kanban-title">All Projects</h4>
+        <h4 class="kanban-title">Tất cả dự án</h4>
         <div class="kanban-cards">
             @foreach (var p in Model)
             {
@@ -42,9 +42,9 @@
                                 <span class="@Badge(p.Status)">@p.Status</span>
                             </div>
 
-                            <div class="d-flex justify-content-between mb-2 mt-2">
-                                <small><strong>Start:</strong> @(p.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
-                                <small><strong>End:</strong> @(p.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                            <div class="d-flex justify-content-between mb-2 mt-2 ">
+                                <small><strong>Bắt đầu:</strong> @(p.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                                <small><strong>Kết thúc:</strong> @(p.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
                             </div>
 
                             @if (!string.IsNullOrWhiteSpace(p.Description))
@@ -52,7 +52,7 @@
                                 <p class="card-text text-muted mb-2">@p.Description</p>
                             }
 
-                            <small class="text-muted">Created: @p.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                            <small class="text-muted">Tạo lúc: @p.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
                         </div>
                     </div>
                 </a>

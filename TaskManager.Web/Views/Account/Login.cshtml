@@ -1,46 +1,50 @@
 ﻿@model TaskManager.Web.Models.LoginVm
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Đăng nhập";
 }
 
-<div class=" login-page body">
-    <div class="login-info">
-        <h1 class="logo">Task Manager</h1>
-        <p class="slogan">Your friendly task manager</p>
+<div class="login-page">
+    <!-- Cột trái -->
+    <div class="login-left">
+        <h1 class="logo">Trình Quản Lý Công Việc</h1>
+        <p class="slogan">Người bạn đồng hành trong quản lý công việc</p>
     </div>
 
-    <div class="login-form-box">
-        <h2 class="form-title"> Login</h2>
+    <!-- Cột phải -->
+    <div class="login-right">
+        <div class="login-form-box">
+            <h2 class="form-title">Đăng nhập</h2>
 
-        <form asp-action="Login" method="post" asp-route-returnUrl="@Model?.ReturnUrl" class="login-form">
-            @Html.AntiForgeryToken()
-             
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger "></div>
+            <form asp-action="Login" method="post" asp-route-returnUrl="@Model?.ReturnUrl" class="login-form">
+                @Html.AntiForgeryToken()
 
-            <div class="form-group">
-                <label asp-for="Identifier" class="form-label">Username or Email</label>
-                <input asp-for="Identifier" class="form-control" />
-                <span asp-validation-for="Identifier" class="text-danger"></span>
-            </div>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger "></div>
 
-            <div class="form-group">
-                <label asp-for="Password" class="form-label">Password</label>
-                <input asp-for="Password" class="form-control" type="password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Identifier" class="form-label">Tên đăng nhập hoặc Email</label>
+                    <input asp-for="Identifier" class="form-control" placeholder="Nhập tên đăng nhập hoặc email" />
+                    <span asp-validation-for="Identifier" class="text-danger"></span>
+                </div>
 
-            @if (ViewBag.Error is string err)
-            {
-                <div class="alert alert-danger" role="alert">@err</div>
-            }
+                <div class="form-group mb-3">
+                    <label asp-for="Password" class="form-label">Mật khẩu</label>
+                    <input asp-for="Password" class="form-control" type="password" placeholder="Nhập mật khẩu" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
 
-            <button type="submit" class="btn-login">Login</button>
-        </form>
+                @if (ViewBag.Error is string err)
+                {
+                    <div class="alert alert-danger text-center" role="alert">@err</div>
+                }
 
-        <p class="register-text">
-            Don't have an account?
-            <a asp-action="Register" asp-controller="Account" class="link-register">Register here</a>
-        </p>
+                <button type="submit" class="btn-login">Đăng nhập</button>
+            </form>
+
+            <p class="register-text">
+                Chưa có tài khoản?
+                <a asp-action="Register" asp-controller="Account" class="link-register">Đăng ký tại đây</a>
+            </p>
+        </div>
     </div>
 </div>
 

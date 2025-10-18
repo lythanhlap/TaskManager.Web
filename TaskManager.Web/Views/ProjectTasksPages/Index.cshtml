@@ -2,7 +2,7 @@
 @model IReadOnlyList<TaskDto>
 
 @{
-    ViewData["Title"] = "Tasks";
+    ViewData["Title"] = "Công việc";
     var pid = (Guid)ViewBag.ProjectId;
     var actorId = (string)ViewBag.ActorId;
     // Lấy map từ Controller
@@ -13,10 +13,10 @@
 
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3 class="mb-0">Tasks</h3>
+    <h3 class="mb-0">Danh sách công việc</h3>
     <div class="d-flex gap-2">
-        <a class="btn btn-primary btn-sm" asp-action="Create" asp-route-projectId="@pid">Thêm task</a>
-        <a class="btn btn-outline-secondary btn-sm" asp-controller="Projects" asp-action="Details" asp-route-id="@pid">Quay lại Project</a>
+        <a class="btn btn-primary btn-sm" asp-action="Create" asp-route-projectId="@pid">Thêm công việc</a>
+        <a class="btn btn-outline-secondary btn-sm" asp-controller="Projects" asp-action="Details" asp-route-id="@pid">Quay lại dự án</a>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
 
 @if (!(Model?.Any() ?? false))
 {
-    <div class="alert alert-light">Chưa có task.</div>
+    <div class="alert alert-light">Chưa có công việc nào.</div>
 }
 else
 {
@@ -69,7 +69,7 @@ else
                             }
                             else
                             {
-                                @("(chưa gán)")
+                                @("(chưa được gán)")
                             }
                         }
                     </td>
@@ -86,7 +86,7 @@ else
                               asp-route-taskId="@t.Id"
                               method="post"
                               class="d-inline"
-                              onsubmit="return confirm('Xóa task “@t.Name”?');">
+                              onsubmit="return confirm('Xóa công việc “@t.Name”?');">
                             @Html.AntiForgeryToken()
                             <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
                         </form>
