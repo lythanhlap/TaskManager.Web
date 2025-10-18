@@ -1,0 +1,192 @@
+﻿@media (max-width: 991.98px) {
+    /*  HEADER: avatar + tên cùng 1 dòng, avatar bên trái  */
+    .app__header {
+        position: sticky;
+        top: 0;
+        z-index: 1040;
+        display: grid !important;
+        grid-template-columns: auto 1fr auto !important; /* menu | title | avatar */
+        grid-template-areas:
+            "menu title avatar"
+            "search search search"; /* search xuống hàng */
+        align-items: center;
+        column-gap: .75rem;
+        padding: 10px 12px;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Nút hamburger bên trái */
+    .hamburger {
+        grid-area: menu;
+        border: 0;
+        background: #fff;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 1px 4px rgba(0,0,0,.08);
+        color: #1f2937;
+        font-size: 1.2rem;
+    }
+
+        .hamburger:active {
+            transform: scale(.98);
+        }
+
+    /* Tiêu đề ở GIỮA */
+    .logo {
+        grid-area: title;
+        justify-self: center; /* căn giữa trong cột giữa */
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2563eb;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Avatar bên phải */
+    .account {
+        grid-area: avatar;
+        justify-self: end; /* đẩy sát phải */
+        display: flex;
+        align-items: center;
+    }
+
+    .account-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #2563eb;
+    }
+
+    /* Ô tìm kiếm full width ở hàng dưới */
+    .search {
+        grid-area: search;
+        width: 100%;
+        margin-top: .5rem;
+        position: relative;
+    }
+
+        .search input {
+            width: 100%;
+        }
+    /*  BODY: sidebar off-canvas + nội dung căn giữa  */
+    .app__body {
+        display: block;
+        padding: 12px;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        width: 280px;
+        height: 100vh;
+        overflow-y: auto;
+        background: #fff;
+        border-right: 1px solid #e5e7eb;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+        transform: translateX(-100%);
+        transition: transform .25s ease;
+        padding: 20px 16px;
+    }
+
+        .sidebar.is-open {
+            transform: translateX(0);
+        }
+
+        .sidebar a {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1045;
+        background: rgba(0, 0, 0, .35);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .2s ease;
+    }
+
+        .sidebar-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+    body.noscroll {
+        overflow: hidden;
+        touch-action: none;
+    }
+
+    /* MAIN CONTENT: căn giữa banner + cards  */
+    .main {
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
+    .banner {
+        margin: 8px auto 1rem;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: .75rem;
+    }
+
+        .banner h1 {
+            font-size: 20px;
+        }
+
+        .banner img {
+            width: 80px;
+            height: 80px;
+            margin-top: .75rem;
+        }
+
+    .section-title {
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cards {
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        justify-items: center;
+        width: 100%;
+    }
+
+        .cards .card {
+            width: 100%;
+            max-width: 480px;
+        }
+
+    .card-body {
+        padding: 16px;
+        font-size: 15px;
+    }
+
+    .progress-rail {
+        height: 10px;
+        margin: 0 12px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}

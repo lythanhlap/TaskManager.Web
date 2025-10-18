@@ -24,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <!-- Font Awesome (free) -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
           referrerpolicy="no-referrer" />
 
@@ -356,10 +356,18 @@
                 text-decoration: none !important;
             }
     </style>
+
+    <link rel="stylesheet" href="~/css/dashboard.responsive.css" asp-append-version="true" />
+
 </head>
 
 <body>
     <header class="app__header">
+        <!-- NÚT HAMBURGER (MOBILE <992px) Ở BÊN TRÁI -->
+        <button id="menuToggle" class="hamburger d-inline-flex d-lg-none" aria-label="Mở menu" aria-controls="sidebar" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
         <div class="logo">Task Manager</div>
 
         <div class="search">
@@ -396,10 +404,12 @@
             }
         </div>
     </header>
+    <!-- OVERLAY khi mở sidebar (chỉ hiện trên mobile) -->
+    <div id="sidebarOverlay" class="sidebar-overlay d-lg-none"></div>
 
     <div class="app__body">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <a asp-controller="Home" asp-action="Index">
                 <i class="fa-solid fa-house icon-home" aria-hidden="true"></i>
                 <span>Trang chủ</span>
@@ -518,6 +528,37 @@
             } catch (e) { console.warn(e); }
         })();
     </script>
+
+    <script>
+        (function () {
+            const btn = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (!btn || !sidebar || !overlay) return;
+
+            const openMenu = () => {
+                sidebar.classList.add('is-open');
+                overlay.classList.add('is-visible');
+                document.body.classList.add('noscroll');
+                btn.setAttribute('aria-expanded', 'true');
+            };
+            const closeMenu = () => {
+                sidebar.classList.remove('is-open');
+                overlay.classList.remove('is-visible');
+                document.body.classList.remove('noscroll');
+                btn.setAttribute('aria-expanded', 'false');
+            };
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.contains('is-open') ? closeMenu() : openMenu();
+            });
+            overlay.addEventListener('click', closeMenu);
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+        })();
+    </script>
+
 </body>
 
 </html>
