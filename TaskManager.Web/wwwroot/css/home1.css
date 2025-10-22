@@ -1,0 +1,780 @@
+﻿/* ================= TOÀN TRANG ================= */
+body {
+    background-color: #e9f2ff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #172b4d;
+}
+
+/* ================= REGISTER ================= */
+
+/* Card form */
+.register-card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    background: #fff;
+    padding: 40px 30px;
+}
+
+    .register-card .card-body {
+        background: #fff;
+        border-radius: 0 0 12px 12px;
+    }
+
+/* Tiêu đề */
+.text-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #0052cc;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Input */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #dfe1e6;
+    background-color: #fff;
+    color: #172b4d;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+    .form-control:focus {
+        border-color: #0052cc;
+        box-shadow: 0 0 0 0.2rem rgba(0,82,204,0.25);
+    }
+
+/* Label */
+.form-floating label {
+    color: #6c757d;
+}
+
+/* Nút Register */
+.btn-success {
+    background-color: #0052cc !important;
+    border-color: #0052cc !important;
+    color: #fff !important;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+    .btn-success:hover {
+        background-color: #0747a6 !important;
+        border-color: #0747a6 !important;
+        transform: translateY(-2px);
+    }
+
+/* Link Login */
+.text-center {
+    color: #0052cc;
+}
+
+.login-text {
+    color: #0052cc;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+    .login-text:hover {
+        color: #0747a6;
+        text-decoration: underline;
+    }
+
+/* Thông báo lỗi */
+.text-danger {
+    font-size: 0.85rem;
+    color: #d6336c !important;
+}
+
+.alert-danger {
+    border-radius: 8px;
+    background-color: #ffe5ea;
+    color: #d6336c;
+    border: 1px solid #f5c2c7;
+    font-size: 0.9rem;
+}
+
+/* ================= LOGIN ================= */
+
+/* Bố cục */
+.login-page {
+    display: flex;
+    min-height: 100vh; /* full chiều cao màn hình */
+    background: #e9f2ff;
+}
+
+/* Cột trái */
+.login-left {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #e9f2ff;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+    .login-left .logo {
+        font-size: 2.6rem;
+        font-weight: bold;
+        color: #0052cc;
+        margin-bottom: 1rem;
+    }
+
+    .login-left .slogan {
+        font-size: 1.2rem;
+        color: #42526e;
+        max-width: 500px;
+    }
+
+/* Cột phải */
+.login-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* giữ form giữa dọc */
+    padding: 40px 20px;
+}
+
+/* Card form login */
+.login-form-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 50px 40px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 460px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Tiêu đề */
+.form-title {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #0052cc;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Input */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #dfe1e6;
+    padding: 12px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+    .form-control:focus {
+        border-color: #0052cc;
+        box-shadow: 0 0 0 0.2rem rgba(0,82,204,0.25);
+    }
+
+/* Nút Login */
+.btn-login {
+    background-color: #0052cc;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+    .btn-login:hover {
+        background-color: #0747a6;
+        transform: translateY(-2px);
+    }
+
+/* Link Register */
+.register-text {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: #0052cc;
+}
+
+.link-register {
+    color: #0052cc;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+    .link-register:hover {
+        color: #0747a6;
+        text-decoration: underline;
+    }
+/* ================= PROJECTS ================= */
+
+body.projects-page {
+    background-color: #fff; /* nền trắng toàn trang */
+}
+
+.projects-container {
+    background-color: #fff;
+    padding: 20px;
+}
+/* Tiêu đề trang */
+.page-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0052cc;
+    margin: 0;
+}
+
+/* Nút Create Project */
+.btn-create {
+    background-color: #0052cc;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+    .btn-create:hover {
+        background-color: #0747a6;
+        transform: translateY(-2px);
+    }
+
+/* Kanban board */
+.kanban-board-prj {
+    margin-top: 20px;
+}
+
+/* Tiêu đề cột */
+.kanban-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #0052cc;
+}
+
+/* Card project */
+.kanban-cards .card {
+    border: none;
+    border-radius: 12px;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+
+.kanban-cards .card-body {
+    padding: 1.25rem;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0052cc;
+}
+
+.card-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #42526e;
+}
+
+/* Hover project card */
+.hover-card {
+    cursor: pointer;
+}
+
+    .hover-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+/* Badge trạng thái */
+.badge {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+/* Alert thông báo */
+.alert {
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+}
+
+.alert-success {
+    background-color: #e6f4ea;
+    border: 1px solid #b7e1cd;
+    color: #1e7e34;
+}
+
+.alert-danger {
+    background-color: #ffe5ea;
+    border: 1px solid #f5c2c7;
+    color: #d6336c;
+}
+
+/* ====== Project Details Page ====== */
+.page-title {
+    font-weight: 700;
+    color: #0052cc;
+}
+
+/* Card chung */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+.card-header {
+    background-color: #f8faff;
+    border-bottom: 1px solid #e6ebf5;
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 600;
+    color: #0052cc;
+}
+
+/* Nút */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-light {
+    background-color: #0052cc;
+    border: 1px solid #dfe3eb;
+    color: #fff;
+}
+
+    .btn-light:hover {
+        background-color: #0052cc;
+    }
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    box-shadow: 0 2px 6px rgba(13,110,253,0.25);
+}
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+    }
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+
+/* Badge trạng thái */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.4em 0.65em;
+    border-radius: 6px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+/* Danh sách thành viên */
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #f1f3f5;
+    padding: 0.75rem 0;
+}
+
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+
+/* Bảng công việc */
+.table {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+    .table thead {
+        background-color: #e9f2ff;
+        color: #0052cc;
+        font-weight: 600;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #f8faff;
+}
+
+/* Bình luận */
+#commentPanel textarea {
+    border-radius: 10px;
+    border: 1px solid #dfe3eb;
+    resize: none;
+    transition: all 0.2s ease;
+}
+
+    #commentPanel textarea:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13,110,253,0.2);
+    }
+
+/* Alert */
+.alert {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Nút xoay refresh */
+.fa-rotate {
+    transition: transform 0.3s ease;
+}
+
+button:hover .fa-rotate {
+    transform: rotate(180deg);
+}
+
+/* ======= Tasks Page ======= */
+.page-title, h3 {
+    font-weight: 700;
+    color: #0052cc;
+}
+
+.table {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+    .table thead {
+        background-color: #e9f2ff;
+        color: #0052cc;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #f8faff;
+    transition: background 0.2s ease;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 0.9rem;
+}
+
+/* Badge trạng thái */
+.badge {
+    font-size: 0.8rem;
+    padding: 0.45em 0.75em;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* Alert */
+.alert {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Nút hành động */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    box-shadow: 0 3px 8px rgba(13,110,253,0.25);
+}
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+        transform: translateY(-2px);
+    }
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Empty state */
+.alert-light {
+    background: #f4f5f7;
+    border: none;
+    color: #6c757d;
+    font-style: italic;
+    text-align: center;
+    border-radius: 8px;
+}
+a {
+    color: #d6336c;
+    text-decoration: underline;
+}
+
+/* ======= Biểu đồ tròn & cột ======= */
+canvas {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+    canvas:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+/* ======= Khung biểu đồ ======= */
+.row.justify-content-center {
+    margin-bottom: 40px;
+}
+
+/* ======= Tiêu đề biểu đồ ======= */
+h4.text-center {
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Làm alert-danger thực sự đỏ và bỏ nền xám của <li> */
+.validation-summary-errors.alert {
+    background-color: #f8d7da; /* nền đỏ nhạt */
+    border-color: #f5c2c7;
+    color: #842029; /* chữ đỏ đậm */
+}
+
+.validation-summary-errors ul {
+    margin: 0;
+    padding: 0;
+}
+
+    .validation-summary-errors ul li {
+        list-style: none;
+        background: transparent !important; /* bỏ viên xám */
+        color: inherit !important;
+        padding: 0;
+        border-radius: 0;
+        display: block;
+    }
+
+
+/*  full width: gắn class page-wide vào <body> */
+.page-wide .site-container {
+    max-width: 100% !important;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+@media (min-width: 768px) {
+    .page-wide .site-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+
+.chat-panel {
+    display: flex;
+    flex-direction: column;
+    height: 560px;
+}
+/* hoặc 60vh */
+.chat-messages {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: .5rem;
+    padding: .5rem;
+}
+
+.chat-input {
+    flex: 0 0 auto;
+    margin-top: .5rem;
+}
+
+.chat-messages .msg {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .5rem;
+    align-items: flex-end;
+}
+
+    .chat-messages .msg.me {
+        justify-content: flex-end;
+    }
+
+.msg .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+    .msg .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+.msg .meta {
+    font-size: .7rem;
+    opacity: .7;
+    margin: 0 .25rem;
+}
+
+.msg .bubble {
+    max-width: 85%;
+    padding: .5rem .6rem;
+    border-radius: .6rem;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.msg.me .bubble {
+    background: #0d6efd;
+    color: #fff;
+    border-top-right-radius: .2rem;
+}
+
+.msg.other .bubble {
+    background: #fff;
+    border: 1px solid #eee;
+    border-top-left-radius: .2rem;
+}
+
+.msg .meta-name {
+    font-size: .8rem;
+    font-weight: 600;
+    margin-bottom: .15rem;
+}
+
+.msg.other .meta-name {
+    color: #111;
+}
+
+.msg.me .meta-name {
+    color: #fff;
+    opacity: .85;
+    text-align: right;
+}
+
+@media (min-width: 992px) {
+    .tasks-card {
+        display: flex;
+        flex-direction: column;
+        height: calc(100dvh - 100px);
+        min-height: 360px;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0;
+        scrollbar-gutter: stable;
+    }
+
+    .tasks-card__header {
+        flex: 0 0 auto;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Vùng cuộn: KHÔNG padding để thead dính sát trên cùng */
+    #tasksScroll {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0; /* quan trọng */
+    }
+
+        /* Bảng không margin để canh sát viền container */
+        #tasksScroll table {
+            margin: 0;
+            border-collapse: separate; /* giúp z-index thead hoạt động ổn định */
+            width
+        }
+
+            /* Sticky THEAD */
+            #tasksScroll table thead {
+                position: sticky;
+                top: 0; /* dính sát đỉnh vùng cuộn */
+                z-index: 5;
+                background: #fff;
+                box-shadow: 0 2px 0 rgba(0,0,0,.03); /* đường nhấn nhỏ dưới header */
+            }
+
+                /* Nếu cần, bảo đảm từng ô header cũng có nền trắng */
+                #tasksScroll table thead th {
+                    background: #fff;
+                }
+}
+
+a {
+    text-decoration: none !important;
+}

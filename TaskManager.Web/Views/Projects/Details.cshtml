@@ -13,7 +13,7 @@
 }
 
 @{
-    ViewData["Title"] = "Project Details";
+    ViewData["Title"] = "Chi tiết dự án";
     string Badge(ProjectStatus s) => s switch
     {
         ProjectStatus.Planned => "badge bg-secondary",
@@ -39,15 +39,15 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="page-title">📁 @Model.Name</h2>
     <form asp-action="ForceRecalc"
-      asp-controller="Projects"
-      asp-route-projectId="@Model.Id"
-      method="post" class="d-inline">
+          asp-controller="Projects"
+          asp-route-projectId="@Model.Id"
+          method="post" class="d-inline">
         @Html.AntiForgeryToken()
         <button type="submit" class="btn btn-sm">
             <i class="fa-solid fa-rotate" style="color: #74C0FC;"></i>
         </button>
     </form>
-    <a asp-action="Index" class="btn btn-light">← Back to Projects</a>
+    <a asp-action="Index" class="btn btn-light">Quay lại dự án</a>
 </div>
 @if (TempData["Ok"] is string ok && !string.IsNullOrWhiteSpace(ok))
 {
@@ -68,14 +68,14 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div><span class="@Badge(Model.Status)">@Model.Status</span></div>
-                    <small class="text-muted">Created: @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                    <small class="text-muted">Tạo lúc: @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <small><strong>Start:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                        <small><strong>Bắt đầu:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd") ?? "-")</small>
                     </div>
                     <div class="col-md-6">
-                        <small><strong>End:</strong> @(Model.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
+                        <small><strong>Kết thúc:</strong> @(Model.EndDate?.ToString("yyyy-MM-dd") ?? "-")</small>
                     </div>
                 </div>
                 @if (!string.IsNullOrWhiteSpace(Model.Description))
@@ -88,7 +88,7 @@
 
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">Members</h5>
+                <h5 class="card-title">Danh sách thành viên</h5>
                 @if (Model.Members?.Any() == true)
                 {
                     <ul class="list-group list-group-flush">
@@ -110,7 +110,7 @@
                                         <input type="hidden" name="memberUserId" value="@m.UserId" />
                                         <button class="btn btn-sm btn-outline-danger"
                                                 onclick="return confirm('Xoá @m.Username khỏi dự án?');">
-                                            Remove
+                                            Xóa
                                         </button>
                                     </form>
                                 }
@@ -121,7 +121,7 @@
                                         <input type="hidden" name="memberUserId" value="@m.UserId" />
                                         <button class="btn btn-sm btn-outline-warning"
                                                 onclick="return confirm('Rời khỏi dự án này?');">
-                                            Leave
+                                            Rời khỏi
                                         </button>
                                     </form>
                                 }
@@ -131,7 +131,7 @@
                 }
                 else
                 {
-                    <span class="text-muted">No members</span>
+                    <span class="text-muted">Không có thành viên</span>
                 }
             </div>
         </div>
@@ -233,7 +233,10 @@
 
 </div>
 
-
+@section Styles {
+    <link rel="stylesheet" href="~/css/tasks.responsive.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/btn-toggle-status.css" asp-append-version="true" />
+}
 
 
 @section Scripts {
@@ -285,20 +288,23 @@
                     return;
                 }
 
+                const header = ["Tiêu đề", "Thời gian", "Trạng thái", "Người phụ trách", "Trạng thái"];
+
                 const html = `
-                    <table class="table table-hover align-middle mb-0">
-                      <thead>
-                        <tr>
-                          <th>Tiêu đề</th>
-                          <th>Thời gian</th>
-                          <th>Trạng thái</th>
-                          <th>Assignees</th>
-                          <th class="text-end"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        ${rows.map(t => {
-                    const done = t.status === 1; // 0=Incomplete, 1=Complete
+                            <div class="table-responsive">
+                              <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>${header[0]}</th>
+                                    <th>${header[1]}</th>
+                                    <th>${header[2]}</th>
+                                    <th>${header[3]}</th>
+                                    <th class="text-end">${header[4]}</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  ${rows.map(t => {
+                    const done = t.status === 1;
                     const badge = done
                         ? '<span class="badge bg-success">Hoàn thành</span>'
                         : '<span class="badge bg-secondary">Chưa hoàn thành</span>';
@@ -306,30 +312,37 @@
                     const meAssigned = (t.assigneeUserIds || []).includes(actorId);
                     const canToggle = isOwner || meAssigned;
                     const toggleBtn = canToggle
-                        ? `<button class="btn btn-sm btn-outline-primary"
-                                           onclick="toggleTaskStatus('${t.id}', ${done ? 0 : 1})">
-                                     Đổi sang ${done ? 'Chưa hoàn thành' : 'Hoàn thành'}
-                                   </button>`
+                        ? `<button class="btn btn-sm btn-toggle-status ${done ? 'done' : 'pending'}"
+                                            onclick="toggleTaskStatus('${t.id}', ${done ? 0 : 1})">
+                                            Đổi sang ${done ? 'Chưa hoàn thành' : 'Hoàn thành'}
+                                            </button>`
                         : '';
 
-                    // -> đổi ID sang username
                     const names = (t.assigneeUserIds && t.assigneeUserIds.length)
-                        ? t.assigneeUserIds.map(id => uname[id] ? (uname[id]) : id).join(', ')
+                        ? t.assigneeUserIds.map(id => uname[id] ? uname[id] : id).join(', ')
                         : '(chưa gán)';
 
+                    // Thời gian: xuống 2 dòng cho gọn
+                    const timeCol = `
+                                      <div class="small">${fmt(t.startAt) || ''}</div>
+                                      <div class="small">${fmt(t.endAt) || ''}</div>
+                                    `;
+
                     return `
-                              <tr>
-                                <td class="fw-semibold">${escapeHtml(t.name)}
-                                  ${t.description ? `<div class="small text-muted">${escapeHtml(t.description)}</div>` : ''}
-                                </td>
-                                <td class="small">${fmt(t.startAt)} → ${fmt(t.endAt)}</td>
-                                <td>${badge}</td>
-                                <td class="small">${names}</td>
-                                <td class="text-end">${toggleBtn}</td>
-                              </tr>`;
+                                      <tr>
+                                        <td data-th="${header[0]}" class="fw-semibold">
+                                          ${escapeHtml(t.name)}
+                                          ${t.description ? `<div class="small text-muted task-desc">${escapeHtml(t.description)}</div>` : ''}
+                                        </td>
+                                        <td data-th="${header[1]}">${timeCol}</td>
+                                        <td data-th="${header[2]}">${badge}</td>
+                                        <td data-th="${header[3]}" class="small">${names}</td>
+                                        <td data-th="${header[4]}" class="text-end">${toggleBtn}</td>
+                                      </tr>`;
                 }).join('')}
-                      </tbody>
-                    </table>`;
+                                </tbody>
+                              </table>
+                            </div>`;
                 holder.innerHTML = html;
             }
 
@@ -417,7 +430,7 @@
             actorId: '@actorId',
             memberIds: @Html.Raw(memberIdsJson),
             userMap: @Html.Raw(userMapJson)
-          });
+                  });
     </script>
 
 }

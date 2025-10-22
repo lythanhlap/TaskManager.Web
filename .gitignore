@@ -364,3 +364,11 @@ FodyWeavers.xsd
 
 # do not commit local secrets
 TaskManager.Web/.env
+bin/
+obj/
+*.user
+*.suo
+.vs/
+secrets.json
+appsettings.Development.json
+appsettings.Production.json

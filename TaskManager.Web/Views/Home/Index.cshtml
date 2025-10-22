@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Task Manager</title>
+    <title>@ViewData["Title"] - Trình Quản Lý Công Việc</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
@@ -42,21 +42,20 @@
         }
 
         .hero-section {
-            background: linear-gradient(135deg, #e0f7fa, #f0f4ff);
+            background: #e9f2ff;
             padding: 4rem 2rem;
             border-radius: var(--border-radius);
             text-align: center;
+            color: #0052cc;
         }
-        .hero-section h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0 0 0.5rem;
-        }
-        .hero-section p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin: 0 0 1.5rem;
-        }
+
+            .hero-section h1 {
+                color: #0052cc;
+            }
+
+            .hero-section p {
+                color: #42526e;
+            }
 
         .btn {
             display: inline-block;
@@ -85,6 +84,7 @@
         }
         .section-title {
             text-align: center;
+            color: #0052cc;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 2.5rem;
@@ -152,7 +152,7 @@
                 <h1 class="hero-title">@ViewBag.WelcomeMessage</h1>
                 <p>Bạn có <span class="fw-bold text-primary">@taskCount công việc</span> cần hoàn thành hôm nay. Hãy bắt đầu nào!</p>
                 <a class="btn btn-primary" href="/Dashboard">
-                    Tới Bảng điều khiển <i class="fas fa-arrow-right ms-2"></i>
+                    Tới bảng điều khiển <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </section>
 
@@ -183,7 +183,7 @@
                         </div>
                         <div class="feature-content">
                             <h3>Thông báo mới</h3>
-                            <p>Kiểm tra cập nhật và các deadline quan trọng.</p>
+                            <p>Kiểm tra cập nhật và các hạn chót quan trọng.</p>
                         </div>
                     </a>
                 </div>

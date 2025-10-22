@@ -1,0 +1,103 @@
+﻿@media (max-width: 991.98px) {
+
+    /* Header card gọn, có thể dính trên nếu nội dung cuộn */
+    .tasks-card__header {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 2;
+        flex-wrap: wrap;
+        gap: .5rem;
+        border-bottom: 1px solid #eef2f6;
+    }
+
+        .tasks-card__header h5 {
+            margin-bottom: .25rem !important;
+        }
+
+    /* Khung cuộn cho danh sách task (tránh kéo trang quá dài) */
+    #tasksScroll {
+        max-height: 65vh;
+        /* điều chỉnh 60–70vh tùy ý */
+        overflow: auto;
+        padding-right: .25rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Bảng -> danh sách thẻ */
+    .tasks-card .table {
+        margin: 0;
+        width: 100%;
+    }
+
+        .tasks-card .table thead {
+            display: none;
+        }
+
+        /* ẩn header bảng */
+
+        .tasks-card .table tbody tr {
+            display: block;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+            margin-bottom: .65rem;
+            overflow: hidden;
+        }
+
+        .tasks-card .table tbody td {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: .6rem;
+            padding: .6rem .8rem;
+            border: 0;
+            border-bottom: 1px solid #f1f5f9;
+            word-break: break-word;
+            /* tránh tràn dòng dài */
+        }
+
+            .tasks-card .table tbody td:last-child {
+                border-bottom: 0;
+            }
+
+            /* Nhãn cột (lấy từ data-th do JS gắn) */
+            .tasks-card .table tbody td::before {
+                content: attr(data-th);
+                flex: 0 0 8.8rem;
+                /* độ rộng nhãn ổn định */
+                font-weight: 600;
+                color: #64748b;
+            }
+
+            /* Nút hành động gọn & căn phải */
+            .tasks-card .table tbody td.text-end {
+                justify-content: flex-end;
+            }
+
+                .tasks-card .table tbody td.text-end .btn {
+                    white-space: normal;
+                    line-height: 1.2;
+                    padding: .45rem .6rem;
+                }
+
+    .tasks-card .badge {
+        white-space: nowrap;
+    }
+
+    .tasks-card .table .small {
+        font-size: .875rem;
+    }
+    .task-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 400px) {
+    .tasks-card .table tbody td::before {
+        flex-basis: 7.4rem;
+    }
+}
