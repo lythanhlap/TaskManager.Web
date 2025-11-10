@@ -8,7 +8,9 @@
         <div class="card register-card border-0 rounded-4">
             <div class="card-body p-4 bg-light">
                 <h2 class="text-title">Đăng ký</h2>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                 <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="form-floating mb-3">
                         <input asp-for="Username" class="form-control" placeholder="Tên đăng nhập" />
                         <label asp-for="Username">Tên đăng nhập</label>
@@ -38,12 +40,6 @@
                         <label asp-for="ConfirmPassword">Xác nhận mật khẩu</label>
                         <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                     </div>
-
-                    @if (ViewBag.Error != null)
-
-                    {
-                        <div class="alert alert-danger text-center">@ViewBag.Error</div>
-                    }
 
                     <button type="submit" class="btn btn-success w-100 py-2 fw-bold">
                         Đăng ký

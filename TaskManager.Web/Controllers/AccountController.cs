@@ -25,8 +25,19 @@ public class AccountController : Controller
         }
         catch (InvalidOperationException ex)
         {
-            // Map lỗi duplicate -> hiển thị
-            ModelState.AddModelError(string.Empty, ex.Message);
+            var msg = ex.Message?.ToLowerInvariant() ?? "";
+            if (msg.Contains("username"))
+                ModelState.AddModelError(nameof(vm.Username), "Tên đăng nhập đã tồn tại.");
+            else if (msg.Contains("email"))
+                ModelState.AddModelError(nameof(vm.Email), "Email đã được sử dụng.");
+            else
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+            return View(vm);
+        }
+        catch
+        {
+            ModelState.AddModelError(string.Empty, "Đăng ký thất bại. Vui lòng thử lại.");
             return View(vm);
         }
     }
@@ -123,10 +134,6 @@ public class AccountController : Controller
         ModelState.Clear();
         return View(new ChangePasswordVm());
 
-        //TempData["Success"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.";
-        //// Đăng xuất sau khi đổi mật khẩu
-        //Response.Cookies.Delete("access_token", new CookieOptions { Path = "/" });
-        //return RedirectToAction("Login");
     }
 
 }

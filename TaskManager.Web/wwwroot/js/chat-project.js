@@ -1,5 +1,4 @@
-﻿// wwwroot/js/chat-project.js
-// Gọi: window.ChatProject.init({ projectId, actorId, memberIds, selectors?, hubUrl?, pageSize? })
+﻿// Gọi: window.ChatProject.init({ projectId, actorId, memberIds, selectors?, hubUrl?, pageSize? })
 
 window.ChatProject = (function () {
     // ----------------- Helpers -----------------
@@ -33,10 +32,10 @@ window.ChatProject = (function () {
         return ct.includes('application/json') ? r.json() : r.text();
     }
 
-    // ----------------- Module state -----------------
+    // Module state
     let opts, userMap = {}, dom = {}, convId = null, hub = null, lastSender = null;
 
-    // ----------------- UI rendering -----------------
+    // UI rendering
     function senderInfo(userId) {
         const u = userMap[userId] || {};
         return { name: u.name || userId, avatar: u.avatar || null };
@@ -97,7 +96,7 @@ window.ChatProject = (function () {
 
     function scrollToBottom() { dom.box.scrollTop = dom.box.scrollHeight; }
 
-    // ----------------- API operations -----------------
+    // API operations
     async function ensureConversation() {
         // Find by name "proj:{projectId}" or create group
         const convName = `proj:${opts.projectId}`;
@@ -134,7 +133,7 @@ window.ChatProject = (function () {
         append(m); // optimistic render
     }
 
-    // ----------------- SignalR -----------------
+    // SignalR 
     async function startHub() {
         if (!window.signalR) {
             console.warn('SignalR chưa được nạp. Thêm <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>.');
@@ -157,7 +156,7 @@ window.ChatProject = (function () {
         try { await hub.invoke('Join', convId); } catch { }
     }
 
-    // ----------------- Public API -----------------
+    // Public API
     async function init(initOpts) {
         // defaults
         opts = Object.assign({

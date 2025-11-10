@@ -37,7 +37,7 @@
 
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="page-title">📁 @Model.Name</h2>
+    <h2 class="page-title"> @Model.Name</h2>
     <form asp-action="ForceRecalc"
           asp-controller="Projects"
           asp-route-projectId="@Model.Id"
@@ -432,5 +432,6 @@
             userMap: @Html.Raw(userMapJson)
                   });
     </script>
+
 
 }
